@@ -1,6 +1,6 @@
 <!-- HomePrint24 – PRINT YOUR LEGACY: Designer v7.9 (Back getrennt, Kids 25 %, Preset inline, Preview links, Fjalla One) -->
 <div id="hpt24">
-  <h2 class="hpt24-title">PRINT YOUR LEGACY — HomePrint24</h2>
+  <h2 class="hpt24-title">HomePrint24 — Print Your Legacy</h2>
 
   <!-- Produkt-Tabs -->
   <div id="hpt24-tabs">
@@ -97,11 +97,13 @@
             <option value="134-140" data-kid="1">134–140</option>
             <option value="146-152" data-kid="1">146–152</option>
             <option value="158-164" data-kid="1">158–164</option>
-            <!-- Erwachsenengrößen -->
-            <option value="S" data-kid="0">S</option>
-            <option value="M" data-kid="0">M</option>
-            <option value="L" data-kid="0">L</option>
-            <option value="XL" data-kid="0">XL</option>
+            <!-- Erwachsenengrößen – Frau bekommt zusätzlich XXS/XS -->
+            <option value="XXS" data-kid="0" data-woman="1">XXS</option>
+            <option value="XS"  data-kid="0" data-woman="1">XS</option>
+            <option value="S"   data-kid="0">S</option>
+            <option value="M"   data-kid="0">M</option>
+            <option value="L"   data-kid="0">L</option>
+            <option value="XL"  data-kid="0">XL</option>
             <option value="XXL" data-kid="0">XXL</option>
             <option value="3XL" data-kid="0">3XL</option>
           </select>
@@ -510,7 +512,7 @@
     hoodie:{
       w:mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8853-a6c6bdf.jpeg')),
       b:mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/C6A2641C-228E-49BF-9C18-818668CBD38C.png')),
-      r:mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/BA1189AE-1B6C-42AC-96CB-59E9FB086453.png')),
+      r:mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/BA1189AE-1B6-42AC-96CB-59E9FB086453.png')),
       g:mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/C7C44B04-3E08-4E0F-953D-100F164A27D3.png')),
       s:mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/06A96D19-6648-4D49-A422-5656B5AB4F03.png'))
     },
@@ -644,25 +646,47 @@
     priceEl.value=fmt(unit*qty);
   }
 
-  /* Kindergrößen nur bei „Kind“ */
+  /* Kindergrößen nur bei „Kind“, XXS/XS nur bei „Frau“ */
   function applyKidSizeLock(){
     if(!sizeEl) return;
-    const isKid = genderEl && genderEl.value==='kid';
+    const genderVal = genderEl ? genderEl.value : '';
+    const isKid = genderVal === 'kid';
     let firstEnabled=null;
+
     Array.from(sizeEl.options).forEach(o=>{
-      if(!o.value){o.disabled=false;return;}
-      const isChildOpt = o.dataset.kid === '1';
-      const enable = isKid ? isChildOpt : !isChildOpt;
+      if(!o.value){
+        o.disabled=false;
+        return;
+      }
+      const isChildOpt   = o.dataset.kid === '1';
+      const isWomanOnly  = o.dataset.woman === '1';
+      let enable = false;
+
+      if(isKid){
+        // Nur Kindergrößen
+        enable = isChildOpt;
+      }else if(genderVal === 'woman'){
+        // Alle Erwachsenengrößen, inkl. XXS/XS
+        enable = !isChildOpt;
+      }else if(genderVal === 'man'){
+        // Erwachsene, aber ohne Frau-only (XXS/XS)
+        enable = !isChildOpt && !isWomanOnly;
+      }else{
+        // Noch keine Passform gewählt: alles deaktiviert außer Placeholder
+        enable = false;
+      }
+
       o.disabled = !enable;
       if(enable && !firstEnabled) firstEnabled=o;
     });
-    if(isKid){
+
+    if(genderVal === 'kid' || genderVal === 'woman' || genderVal === 'man'){
       sizeEl.value = firstEnabled ? firstEnabled.value : '';
-      if(kidNoteEl) kidNoteEl.style.display='block';
     }else{
-      sizeEl.value='';  
-      if(kidNoteEl) kidNoteEl.style.display='none';
+      sizeEl.value = '';
     }
+
+    if(kidNoteEl) kidNoteEl.style.display = isKid ? 'block' : 'none';
     updatePrice();
   }
 
@@ -828,8 +852,21 @@
   scaleEl.addEventListener('input',()=>{const L=layers[active];if(!L||!L.img)return;L.scale=Number(scaleEl.value)/100;scaleVal.textContent=`(${scaleEl.value}%)`;draw();});
   rotLayerEl.addEventListener('input',()=>{const L=layers[active];if(!L||!L.img)return;L.rot=Number(rotLayerEl.value);rotLayerVal.textContent=`(${rotLayerEl.value}°)`;draw();});
   opaEl.addEventListener('input',()=>{const L=layers[active];if(!L||!L.img)return;L.op=Number(opaEl.value)/100;opaVal.textContent=`(${opaEl.value}%)`;draw();});
-  document.getElementById('ld-layer-vis').addEventListener('click',()=>{const L=layers[active];if(!L||!L.img)return;L.vis=!L.vis;syncUIFromLayer();renderUploadRows();draw();updatePrice();});
-  document.getElementById('ld-layer-del').addEventListener('click',()=>{layers[active]=makeLayer();renderUploadRows();syncUIFromLayer();draw();updatePrice();});
+  document.getElementById('ld-layer-vis').addEventListener('click',()=>{
+    const L=layers[active];if(!L||!L.img)return;
+    L.vis=!L.vis;
+    syncUIFromLayer();
+    renderUploadRows();
+    draw();
+    updatePrice();
+  });
+  document.getElementById('ld-layer-del').addEventListener('click',()=>{
+    layers[active]=makeLayer();
+    renderUploadRows();
+    syncUIFromLayer();
+    draw();
+    updatePrice();
+  });
 
   let dragging=false,last={x:0,y:0};
   function getPos(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*(canvas.width/r.width),y:(e.clientY-r.top)*(canvas.height/r.height)};}
@@ -1022,6 +1059,4 @@
   init();
 })();
 </script>
-<!-- /Designer v7.9 -->
-
-
+<!-- /Designer v7.9 (mit XXS/XS nur für Frau) -->
