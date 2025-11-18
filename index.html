@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -5,19 +7,22 @@
 <title>PRINT YOUR LEGACY — HomePrint24</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
-/* ========== BASE STYLES ========== */
 :root {
---bg-page: #f3f3f5;
---bg-card: #ffffff;
---bg-highlight: #ffeaa7;
---border-soft: #dcdde1;
---accent: #000000;
---accent-soft: #636e72;
---accent-tab-active: #000000;
---accent-tab-bg: #dfe6e9;
---accent-tab-bg-active: #000000;
---accent-tab-color-active: #ffffff;
---danger: #d63031;
+--bg-page: #e5e7eb;
+--bg-card: #f4f4f7;
+--bg-inner: #ffffff;
+--accent: #111827;
+--accent-soft: #374151;
+--accent-pill: #111827;
+--accent-pill-soft: #4b5563;
+--border-soft: #d1d5db;
+--shadow-soft: 0 18px 35px rgba(15, 23, 42, 0.18);
+--radius-lg: 18px;
+--radius-md: 10px;
+--radius-pill: 999px;
+--yellow: #ffeaa7;
+--font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+sans-serif;
 }
 
 * {
@@ -26,335 +31,358 @@ box-sizing: border-box;
 
 body {
 margin: 0;
-font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-sans-serif;
-background: var(--bg-page);
-color: #2d3436;
+padding: 24px 8px 40px;
+font-family: var(--font-main);
+background: radial-gradient(circle at top, #f9fafb, #e5e7eb 55%);
+color: #111827;
 }
-
-/* ========== PAGE WRAPPER ========== */
 
 #hpt24 {
 max-width: 1200px;
 margin: 0 auto;
-padding: 16px;
+background: var(--bg-card);
+border-radius: 22px;
+box-shadow: var(--shadow-soft);
+padding: 28px 26px 26px;
+border: 1px solid rgba(148, 163, 184, 0.4);
 }
 
 .hpt24-title {
-margin: 0 0 16px;
+margin: 0 0 14px;
 text-align: center;
-font-size: 2rem;
-font-weight: 700;
-letter-spacing: 0.03em;
+letter-spacing: 0.12em;
+font-size: 1.4rem;
+font-weight: 800;
+text-transform: uppercase;
+color: #111827;
 }
-
 .hpt24-title span {
 display: block;
-font-size: 1.3rem;
-font-weight: 500;
+font-size: 1.05rem;
+font-weight: 600;
+letter-spacing: 0.12em;
 margin-top: 4px;
-color: var(--accent-soft);
+color: #4b5563;
 }
 
-/* ========== PRODUCT TABS ========== */
+/* Tabs */
 
-#hpt24-tabs {
+.hpt24-tabs {
 display: flex;
+justify-content: center;
 flex-wrap: wrap;
 gap: 8px;
-justify-content: center;
-margin-bottom: 16px;
+margin-bottom: 20px;
 }
 
 .ld-tab {
-border: none;
-background: var(--accent-tab-bg);
-color: #2d3436;
-padding: 8px 14px;
-border-radius: 16px;
-font-size: 0.9rem;
+border-radius: var(--radius-pill);
+border: 1px solid var(--border-soft);
+padding: 7px 16px;
+font-size: 0.85rem;
+background: #f9fafb;
+color: #4b5563;
 cursor: pointer;
-transition: all 0.15s ease-out;
-white-space: nowrap;
-}
-
-.ld-tab.active {
-background: var(--accent-tab-bg-active);
-color: var(--accent-tab-color-active);
-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+font-weight: 500;
+transition: all 0.15s ease;
 }
 
 .ld-tab:hover {
-filter: brightness(0.95);
+border-color: #9ca3af;
+background: #ffffff;
 }
 
-/* ========== MAIN LAYOUT ========== */
+.ld-tab.active {
+background: #111827;
+color: #f9fafb;
+border-color: #111827;
+box-shadow: 0 8px 16px rgba(15, 23, 42, 0.35);
+}
+
+/* Layout */
 
 .hpt24-layout {
-display: flex;
-align-items: flex-start;
-gap: 20px;
+display: grid;
+grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+gap: 22px;
+align-items: stretch;
+}
+
+@media (max-width: 900px) {
+.hpt24-layout {
+grid-template-columns: minmax(0, 1fr);
+}
 }
 
 .hpt24-left,
 .hpt24-right {
-flex: 1 1 0;
+display: flex;
+flex-direction: column;
+gap: 12px;
 }
-
-/* ========== CARDS ========== */
 
 .hpt24-card {
-background: var(--bg-card);
-border-radius: 12px;
-padding: 16px 18px;
-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-border: 1px solid rgba(0, 0, 0, 0.04);
-margin-bottom: 16px;
+background: var(--bg-inner);
+border-radius: var(--radius-lg);
+padding: 16px 18px 18px;
+border: 1px solid rgba(148, 163, 184, 0.7);
 }
 
-.hpt24-card h3 {
-margin: 0 0 12px;
-font-size: 1rem;
-letter-spacing: 0.03em;
+.hpt24-card-title {
+margin: 0 0 10px;
+font-size: 0.9rem;
+font-weight: 700;
+letter-spacing: 0.08em;
 text-transform: uppercase;
-color: var(--accent-soft);
+color: #6b7280;
 }
 
-/* ========== PREVIEW (LINKS) ========== */
+/* Live Preview */
 
-.hpt24-preview-wrapper {
-background: #ecf0f1;
-border-radius: 12px;
-padding: 16px;
+.mockup-frame {
+position: relative;
+background: linear-gradient(145deg, #f3f4f6, #e5e7eb);
+border-radius: 16px;
+padding: 20px 18px;
+overflow: hidden;
 display: flex;
 justify-content: center;
 align-items: center;
+min-height: 320px;
 }
 
-#previewCanvas {
+.mockup-base {
 max-width: 100%;
-height: auto;
+width: 100%;
+max-height: 420px;
+object-fit: contain;
 display: block;
-background: #ecf0f1;
-border-radius: 8px;
+filter: drop-shadow(0 12px 20px rgba(15, 23, 42, 0.18));
 }
 
-/* ========== FORM (RECHTS) ========== */
-
-.upload-dropzone {
-border: 2px dashed #b2bec3;
-border-radius: 12px;
-padding: 18px 16px;
-text-align: center;
-background: #fafafa;
-margin-bottom: 10px;
+.mockup-motive {
+position: absolute;
+max-width: 64%;
+max-height: 64%;
+object-fit: contain;
+display: none;
 }
 
-.upload-dropzone strong {
-display: block;
-margin-bottom: 8px;
-font-size: 1rem;
+/* Upload + Preis */
+
+.upload-drop {
+border-radius: 14px;
+border: 2px dashed #d1d5db;
+background: #f9fafb;
+padding: 14px 14px 16px;
+display: flex;
+flex-direction: column;
+gap: 8px;
+cursor: pointer;
+position: relative;
+overflow: hidden;
 }
 
-.upload-dropzone input[type="file"] {
-display: block;
-margin: 0 auto 6px;
+.upload-drop:hover {
+background: #ffffff;
+border-color: #9ca3af;
+}
+
+.upload-drop input[type="file"] {
+position: absolute;
+inset: 0;
+opacity: 0;
+cursor: pointer;
+}
+
+.upload-label-main {
+font-weight: 600;
+font-size: 0.95rem;
+color: #111827;
+}
+
+.upload-label-sub {
+font-size: 0.8rem;
+color: #6b7280;
+}
+
+.upload-btn {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+padding: 6px 14px;
+border-radius: var(--radius-pill);
+border: 1px solid #111827;
+background: #111827;
+color: #f9fafb;
+font-size: 0.8rem;
+font-weight: 600;
+margin-top: 6px;
 }
 
 .upload-filename {
 font-size: 0.8rem;
-color: var(--accent-soft);
-min-height: 1.2em;
+color: #4b5563;
+margin-left: 2px;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
 }
 
-.sw-toggle {
-display: inline-flex;
-align-items: center;
-gap: 6px;
-font-size: 0.85rem;
-padding: 4px 8px;
-border-radius: 999px;
-border: 1px solid #b2bec3;
-cursor: pointer;
-margin-top: 6px;
-}
-
-.sw-toggle input {
-margin: 0;
-}
-
-.hpt24-row {
-display: flex;
-gap: 10px;
-flex-wrap: wrap;
-margin-bottom: 10px;
-}
-
-.hpt24-row > div {
-flex: 1 1 120px;
-min-width: 0;
-}
-
-select,
-input[type="number"],
-input[type="text"] {
-width: 100%;
-padding: 6px 8px;
-border-radius: 8px;
-border: 1px solid #dcdde1;
-font-size: 0.9rem;
-}
-
-.kinder-row {
-display: flex;
-align-items: center;
-gap: 8px;
-margin-top: 4px;
-}
-
-.kinder-row input {
-margin: 0;
-}
-
-.kinder-row span {
-font-size: 0.88rem;
-}
-
-/* ========== PRICE BOX ========== */
-
-.price-box {
-background: var(--bg-highlight);
-border-radius: 12px;
-padding: 14px 16px;
-font-size: 1rem;
-font-weight: 600;
+.motive-row {
 display: flex;
 justify-content: space-between;
 align-items: center;
+margin-top: 10px;
+padding: 8px 10px;
+border-radius: 12px;
+background: #f9fafb;
+border: 1px solid #e5e7eb;
+font-size: 0.82rem;
 gap: 10px;
 }
 
-.price-box span {
-font-weight: 500;
+.motive-row span {
+color: #111827;
 }
 
-.price-box strong {
-font-size: 1.3rem;
+.pill-group {
+display: inline-flex;
+gap: 6px;
+flex-shrink: 0;
 }
 
-.price-details {
-margin-top: 6px;
-font-size: 0.8rem;
-color: var(--accent-soft);
-}
-
-.btn-primary {
-width: 100%;
-margin-top: 10px;
-border: none;
-background: var(--accent);
-color: #fff;
-border-radius: 999px;
-padding: 10px 14px;
-font-size: 0.95rem;
-font-weight: 600;
-cursor: pointer;
-text-transform: uppercase;
-letter-spacing: 0.05em;
-}
-
-.btn-primary:hover {
-filter: brightness(1.03);
-}
-
-.hint {
-margin-top: 6px;
+.pill-btn {
+border-radius: var(--radius-pill);
+border: 1px solid #d1d5db;
+background: #f9fafb;
+padding: 4px 10px;
 font-size: 0.75rem;
-color: var(--accent-soft);
+cursor: pointer;
+color: #4b5563;
+font-weight: 500;
+min-width: 40px;
+text-align: center;
 }
 
-/* ========== RESPONSIVE ========== */
-
-@media (max-width: 1024px) {
-#hpt24 {
-padding: 12px;
+.pill-btn.active {
+background: #111827;
+color: #f9fafb;
+border-color: #111827;
 }
 
-.hpt24-title {
-font-size: 1.6rem;
+.pill-btn.danger {
+border-color: #f87171;
+color: #b91c1c;
+background: #fff1f2;
 }
 
-.hpt24-card {
-padding: 14px;
-}
+.kid-row {
+display: flex;
+align-items: center;
+gap: 8px;
+font-size: 0.86rem;
+margin-top: 14px;
+color: #111827;
 }
 
-@media (max-width: 768px) {
-.hpt24-layout {
+.kid-row input {
+width: 16px;
+height: 16px;
+}
+
+.kid-row small {
+display: block;
+font-size: 0.75rem;
+color: #6b7280;
+}
+
+.price-card {
+margin-top: 16px;
+padding: 14px 16px;
+border-radius: 14px;
+background: var(--yellow);
+display: flex;
 flex-direction: column;
+gap: 4px;
 }
 
-.hpt24-left,
-.hpt24-right {
+.price-card-label {
+font-size: 0.85rem;
+font-weight: 600;
+color: #111827;
+}
+
+.price-card-value {
+font-size: 1.2rem;
+font-weight: 800;
+letter-spacing: 0.03em;
+}
+
+.price-card-breakdown {
+font-size: 0.75rem;
+color: #4b5563;
+}
+
+.cart-btn {
+margin-top: 12px;
 width: 100%;
+border-radius: var(--radius-pill);
+border: none;
+background: #111827;
+color: #f9fafb;
+padding: 10px 16px;
+font-weight: 700;
+font-size: 0.9rem;
+cursor: pointer;
+letter-spacing: 0.06em;
+text-transform: uppercase;
 }
 
-/* Tabs horizontal scroll */
-#hpt24-tabs {
-flex-wrap: nowrap;
-overflow-x: auto;
--webkit-overflow-scrolling: touch;
-justify-content: flex-start;
+.cart-btn:hover {
+background: #020617;
 }
 
-#hpt24-tabs::-webkit-scrollbar {
-height: 4px;
+.price-note {
+margin-top: 8px;
+font-size: 0.7rem;
+color: #6b7280;
+line-height: 1.5;
 }
 
-#hpt24-tabs .ld-tab {
-flex: 0 0 auto;
+.hpt24-footer-hint {
+margin: 12px 4px 0;
+font-size: 0.7rem;
+color: #6b7280;
+line-height: 1.4;
 }
 
-.hpt24-title {
-font-size: 1.4rem;
+@media (max-width: 900px) {
+body {
+padding: 12px 6px 24px;
 }
-
-select,
-input[type="number"],
-input[type="text"],
-.btn-primary {
-width: 100%;
-}
-}
-
-@media (max-width: 480px) {
 #hpt24 {
-padding: 8px;
+padding: 18px 16px 16px;
+border-radius: 18px;
 }
-
 .hpt24-title {
 font-size: 1.2rem;
 }
-
-.hpt24-card {
-padding: 10px;
-}
-
-.price-box strong {
-font-size: 1.1rem;
+.mockup-frame {
+min-height: 260px;
 }
 }
 </style>
 </head>
 <body>
 <div id="hpt24">
-<h2 class="hpt24-title">
-PRINT YOUR LEGACY
+<h1 class="hpt24-title">
+PRINT YOUR LEGACY —
 <span>HomePrint24 – Designer</span>
-</h2>
+</h1>
 
 <!-- Produkt-Tabs -->
-<div id="hpt24-tabs">
+<div class="hpt24-tabs" id="hpt24-tabs">
 <button class="ld-tab active" data-prod="tshirt">T-Shirt</button>
 <button class="ld-tab" data-prod="vneck">V-Ausschnitt</button>
 <button class="ld-tab" data-prod="polo">Polo Shirt</button>
@@ -365,268 +393,262 @@ PRINT YOUR LEGACY
 </div>
 
 <div class="hpt24-layout">
-<!-- LINKES PANEL: PREVIEW -->
-<div class="hpt24-left">
+<!-- LINKS: Live-Vorschau -->
+<section class="hpt24-left">
 <div class="hpt24-card">
-<h3>Live-Vorschau</h3>
-<div class="hpt24-preview-wrapper">
-<canvas id="previewCanvas" width="600" height="700">
-Dein Browser unterstützt kein Canvas.
-</canvas>
-</div>
-</div>
-</div>
-
-<!-- RECHTES PANEL: FORM + PREIS -->
-<div class="hpt24-right">
-<div class="hpt24-card">
-<h3>Motiv hochladen</h3>
-<div class="upload-dropzone">
-<strong>Dein Motiv (Vorderseite)</strong>
-<input
-type="file"
-id="fileInput"
-accept="image/*"
+<h2 class="hpt24-card-title">Live-Vorschau</h2>
+<div class="mockup-frame">
+<img
+id="productBase"
+class="mockup-base"
+src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/24676B3E-AD3C-41A4-8CA3-995D466FC6ED.png/:/rs=w:800,h:800"
+alt="Produkt-Vorschau"
 />
-<div class="upload-filename" id="fileName">
+<img id="motiveImg" class="mockup-motive" alt="Dein Motiv" />
+</div>
+</div>
+</section>
+
+<!-- RECHTS: Upload + Preis -->
+<section class="hpt24-right">
+<div class="hpt24-card">
+<h2 class="hpt24-card-title">Motiv hochladen</h2>
+
+<label class="upload-drop">
+<input type="file" id="upload" accept="image/*" />
+<div class="upload-label-main">Dein Motiv (Vorderseite)</div>
+<div class="upload-label-sub">
+Lade dein Design hoch und wir platzieren es automatisch in der
+Mitte des Textils.
+</div>
+<div class="upload-btn">Datei auswählen</div>
+<div class="upload-filename" id="uploadFilename">
 Keine Datei ausgewählt
 </div>
-
-<label class="sw-toggle">
-<input type="checkbox" id="swToggle" />
-<span>S/W Druck (3,50 € statt 5,50 €)</span>
 </label>
-</div>
 
-<div class="hpt24-row">
-<div>
-<label
-for="sizeSelect"
-style="font-size: 0.8rem; display: block; margin-bottom: 2px"
->Größe</label
+<div class="motive-row" id="motiveRow" style="display: none">
+<span>
+Motiv&nbsp;1 – <span id="motiveModeLabel">Farbe&nbsp;5,50&nbsp;€</span>
+</span>
+<div class="pill-group">
+<button type="button" class="pill-btn" id="swToggle">
+S/W
+</button>
+<button
+type="button"
+class="pill-btn danger"
+id="removeMotive"
+title="Motiv entfernen"
 >
-<select id="sizeSelect">
-<option value="M">M</option>
-<option value="L">L</option>
-<option value="XL">XL</option>
-<option value="XXL">XXL</option>
-</select>
+X
+</button>
 </div>
-<div>
-<label
-for="qtyInput"
-style="font-size: 0.8rem; display: block; margin-bottom: 2px"
->Menge</label
+</div>
+
+<label class="kid-row">
+<input type="checkbox" id="isChild" />
+<span>
+Kindergröße (−25 % auf Textilpreis)<br />
+<small
+>Rabatt gilt nur auf das blanko Textil – Druckkosten pro Motiv
+bleiben gleich.</small
 >
-<input
-type="number"
-id="qtyInput"
-min="1"
-value="1"
-/>
+</span>
+</label>
+
+<div class="price-card">
+<div class="price-card-label">Gesamtpreis:</div>
+<div class="price-card-value" id="totalPrice">15,99&nbsp;€</div>
+<div class="price-card-breakdown" id="priceBreakdown">
+Textil: 8,00 € + Druck: 5,50 € = Netto 13,50 € / Brutto 16,07 €
 </div>
 </div>
 
-<div class="kinder-row">
-<input type="checkbox" id="kinderCheck" />
-<span>Kindergöße (–25% auf Textilpreis)</span>
-</div>
-
-<div class="hint">
-Textilpreis + Druckkosten (pro Motiv) → Automatische
-Brutto-Berechnung (inkl. 19% MwSt).
-</div>
-</div>
-
-<div class="hpt24-card">
-<h3>Gesamtpreis</h3>
-<div class="price-box">
-<span id="priceLabel">Gesamtpreis:</span>
-<strong id="totalPrice">0,00 €</strong>
-</div>
-<div class="price-details" id="priceDetails"></div>
-
-<button class="btn-primary" type="button">
-In den Warenkorb (Demo)
+<button type="button" class="cart-btn">
+IN DEN WARENKORB (DEMO)
 </button>
 
-<div class="hint">
-Dies ist ein Demo-Rechner für HomePrint24. Finale Preise & Checkout
-laufen im Shop-System.
+<p class="price-note">
+Dies ist ein Demo-Rechner für HomePrint24. Finale Preise &amp;
+Checkout laufen im Shop-System.
+</p>
 </div>
+</section>
 </div>
-</div>
-</div>
+
+<p class="hpt24-footer-hint">
+— Test für dich: 1. Motiv auf <strong>Front</strong> hochladen,
+Position checken. 2. Kindervariante aktivieren/deaktivieren und sieh dir
+an, wie sich der Textilpreis ändert. 3. S/W-Button testen
+(3,50&nbsp;€ statt 5,50&nbsp;€ Druckkosten).
+</p>
 </div>
 
 <script>
-// ===== Produkt-Stammdaten =====
+// ---------- Produktdaten (Netto-Textilpreis + Basis-Bild) ----------
 const PRODUCTS = {
 tshirt: {
 name: "T-Shirt",
-textil: 10.49,
-// TODO: Ersetze diese URL durch dein echtes T-Shirt-Bild
-img: "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/24676B3E-AD3C-41A4-8CA3-995D466FC6ED.png/:/rs=w:600,h:700"
+baseNet: 8.0,
+img:
+"https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/24676B3E-AD3C-41A4-8CA3-995D466FC6ED.png/:/rs=w:800,h:800",
 },
 vneck: {
 name: "V-Ausschnitt",
-textil: 11.49,
-img: "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/B9B49545-8EED-4A80-AC88-30EA45A3448A.png/:/rs=w:600,h:700"
+baseNet: 8.5,
+img:
+"https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/B9B49545-8EED-4A80-AC88-30EA45A3448A.png/:/rs=w:800,h:800",
 },
 polo: {
 name: "Polo Shirt",
-textil: 12.99,
-img: "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8861-93371b9.jpeg/:/rs=w:600,h:700"
+baseNet: 9.5,
+img:
+"https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8861-93371b9.jpeg/:/rs=w:800,h:800",
 },
 hoodie: {
 name: "Hoodie",
-textil: 19.99,
-img: "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8858.jpeg/:/rs=w:600,h:700"
+baseNet: 12.0,
+img:
+"https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_2C06C545-468C-41A1-AD84-4487C4845387.jpeg/:/rs=w:800,h:800",
 },
 sweat: {
 name: "Sweatshirt",
-textil: 17.99,
-img: "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8859.jpeg/:/rs=w:600,h:700"
+baseNet: 10.0,
+img:
+"https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8858.jpeg/:/rs=w:800,h:800",
 },
 track: {
 name: "Trainingsjacke",
-textil: 24.99,
-img: "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8853-a6c6bdf.jpeg/:/rs=w:600,h:700"
+baseNet: 18.0,
+img:
+"https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8853-a6c6bdf.jpeg/:/rs=w:800,h:800",
 },
 jogger: {
 name: "Jogginghose",
-textil: 18.99,
-img: "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8854.jpeg/:/rs=w:600,h:700"
-}
+baseNet: 14.0,
+img:
+"https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8859.jpeg/:/rs=w:800,h:800",
+},
 };
 
-const FARBE_PREIS = 5.5;
-const SW_PREIS = 3.5;
-const MWST = 0.19;
+// ---------- State ----------
+let currentKey = "tshirt";
+let hasMotive = false;
+let isBW = false;
 
-const canvas = document.getElementById("previewCanvas");
-const ctx = canvas.getContext("2d");
-
-const tabs = document.querySelectorAll(".ld-tab");
-const fileInput = document.getElementById("fileInput");
-const fileNameEl = document.getElementById("fileName");
+const baseImg = document.getElementById("productBase");
+const motiveImg = document.getElementById("motiveImg");
+const uploadInput = document.getElementById("upload");
+const uploadFilename = document.getElementById("uploadFilename");
+const motiveRow = document.getElementById("motiveRow");
+const motiveModeLabel = document.getElementById("motiveModeLabel");
 const swToggle = document.getElementById("swToggle");
-const kinderCheck = document.getElementById("kinderCheck");
-const qtyInput = document.getElementById("qtyInput");
+const removeMotive = document.getElementById("removeMotive");
+const isChildCheckbox = document.getElementById("isChild");
 const totalPriceEl = document.getElementById("totalPrice");
-const priceDetailsEl = document.getElementById("priceDetails");
+const priceBreakdownEl = document.getElementById("priceBreakdown");
 
-let currentProductKey = "tshirt";
-let motifImage = null;
-
-function formatEuro(value) {
-return value.toFixed(2).replace(".", ",") + " €";
-}
-
-// ===== Canvas Rendering =====
-function drawPreview() {
-const prod = PRODUCTS[currentProductKey];
-const baseImg = new Image();
-baseImg.crossOrigin = "anonymous";
+// ---------- Produktwechsel ----------
+function setProduct(key) {
+const prod = PRODUCTS[key];
+if (!prod) return;
+currentKey = key;
 baseImg.src = prod.img;
 
-baseImg.onload = () => {
-ctx.clearRect(0, 0, canvas.width, canvas.height);
-ctx.drawImage(baseImg, 0, 0, canvas.width, canvas.height);
-
-if (motifImage) {
-const maxMotifWidth = canvas.width * 0.6;
-const maxMotifHeight = canvas.height * 0.45;
-let w = motifImage.width;
-let h = motifImage.height;
-const ratio = Math.min(
-maxMotifWidth / w,
-maxMotifHeight / h,
-1
-);
-w *= ratio;
-h *= ratio;
-const x = (canvas.width - w) / 2;
-const y = canvas.height * 0.3 - h / 2;
-ctx.drawImage(motifImage, x, y, w, h);
-}
-};
-}
-
-// ===== Preis-Berechnung =====
-function updatePrice() {
-const prod = PRODUCTS[currentProductKey];
-const qty = Math.max(1, parseInt(qtyInput.value || "1", 10));
-const isKinder = kinderCheck.checked;
-const hasMotif = !!motifImage;
-const druckPreis = hasMotif ? (swToggle.checked ? SW_PREIS : FARBE_PREIS) : 0;
-
-let textilPreis = prod.textil;
-if (isKinder) textilPreis *= 0.75;
-
-const netto = (textilPreis + druckPreis) * qty;
-const brutto = netto * (1 + MWST);
-
-totalPriceEl.textContent = formatEuro(brutto);
-
-priceDetailsEl.innerHTML =
-"Textil: " +
-formatEuro(textilPreis) +
-" + Druck: " +
-formatEuro(druckPreis) +
-" × Menge " +
-qty +
-" → Netto " +
-formatEuro(netto) +
-" / Brutto " +
-formatEuro(brutto) +
-" (inkl. 19% MwSt).";
-}
-
-// ===== Events =====
-
-tabs.forEach((tab) => {
-tab.addEventListener("click", () => {
-tabs.forEach((t) => t.classList.remove("active"));
-tab.classList.add("active");
-currentProductKey = tab.dataset.prod;
-drawPreview();
+// Motiv bleibt, Preis wird neu berechnet
 updatePrice();
+}
+
+document.querySelectorAll(".ld-tab").forEach((btn) => {
+btn.addEventListener("click", () => {
+const key = btn.getAttribute("data-prod");
+document
+.querySelectorAll(".ld-tab")
+.forEach((b) => b.classList.remove("active"));
+btn.classList.add("active");
+setProduct(key);
 });
 });
 
-fileInput.addEventListener("change", () => {
-const file = fileInput.files[0];
-if (!file) {
-motifImage = null;
-fileNameEl.textContent = "Keine Datei ausgewählt";
-drawPreview();
-updatePrice();
-return;
-}
-fileNameEl.textContent = file.name;
+// ---------- Upload ----------
+uploadInput.addEventListener("change", (e) => {
+const file = e.target.files[0];
+if (!file) return;
+
 const reader = new FileReader();
-reader.onload = (e) => {
-const img = new Image();
-img.onload = () => {
-motifImage = img;
-drawPreview();
+reader.onload = (ev) => {
+motiveImg.src = ev.target.result;
+motiveImg.style.display = "block";
+hasMotive = true;
+isBW = false;
+motiveModeLabel.textContent = "Farbe 5,50 €";
+swToggle.classList.remove("active");
+motiveRow.style.display = "flex";
+uploadFilename.textContent = file.name;
 updatePrice();
-};
-img.src = e.target.result;
 };
 reader.readAsDataURL(file);
 });
 
-[swToggle, kinderCheck, qtyInput].forEach((el) =>
-el.addEventListener("change", () => {
+// ---------- S/W Toggle ----------
+swToggle.addEventListener("click", () => {
+if (!hasMotive) return;
+isBW = !isBW;
+if (isBW) {
+swToggle.classList.add("active");
+motiveModeLabel.textContent = "S/W 3,50 €";
+} else {
+swToggle.classList.remove("active");
+motiveModeLabel.textContent = "Farbe 5,50 €";
+}
 updatePrice();
-})
-);
+});
+
+// ---------- Motiv entfernen ----------
+removeMotive.addEventListener("click", () => {
+hasMotive = false;
+isBW = false;
+motiveImg.style.display = "none";
+uploadFilename.textContent = "Keine Datei ausgewählt";
+motiveRow.style.display = "none";
+uploadInput.value = "";
+swToggle.classList.remove("active");
+updatePrice();
+});
+
+// ---------- Kindergröße ----------
+isChildCheckbox.addEventListener("change", updatePrice);
+
+// ---------- Preislogik ----------
+function updatePrice() {
+const prod = PRODUCTS[currentKey];
+if (!prod) return;
+
+let textileNet = prod.baseNet;
+if (isChildCheckbox.checked) {
+textileNet = textileNet * 0.75; // −25 % Kinderrabatt auf Textil
+}
+
+let printNet = 0;
+if (hasMotive) {
+printNet = isBW ? 3.5 : 5.5;
+}
+
+const sumNet = textileNet + printNet;
+const sumGross = sumNet * 1.19;
+
+const netFmt = (v) => v.toFixed(2).replace(".", ",");
+totalPriceEl.textContent = `${netFmt(sumGross)} €`;
+priceBreakdownEl.textContent = `Textil: ${netFmt(
+textileNet
+)} € + Druck: ${netFmt(
+printNet
+)} € = Netto ${netFmt(sumNet)} € / Brutto ${netFmt(sumGross)} €`;
+}
 
 // Initial
-drawPreview();
-updatePrice();
+setProduct("tshirt");
 </script>
 </body>
 </html>
