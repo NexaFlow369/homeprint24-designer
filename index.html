@@ -1,11 +1,313 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>HomePrint24 – Designer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HomePrint24 – Designer v7.8</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+  }
+
+  #hpt24 {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  .hpt24-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 14px;
+    color: #111;
+  }
+
+  /* Produkt-Tabs */
+  #hpt24-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .ld-tab {
+    padding: 8px 14px;
+    background: #d9d9d9;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .ld-tab.active {
+    background: #111;
+    color: #fff;
+  }
+
+  .hpt24-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* Linke Seite – Canvas */
+  #product-preview {
+    width: 100%;
+    background: #e6e6e6;
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+  }
+
+  canvas {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Rechte Seite – Controls */
+  .right-panel {
+    background: #ffffff;
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .upload-box {
+    border: 2px dashed #888;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    background: #fafafa;
+    margin-bottom: 16px;
+  }
+
+  .upload-item {
+    padding: 10px;
+    background: #f6f6f6;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .price-box {
+    background: #fff3c4;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 16px;
+  }
+
+  .child-select {
+    margin-top: 12px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+</style>
 </head>
+
 <body>
-  <h1 style="text-align:center;">Designer Test läuft</h1>
+<div id="hpt24">
+  <h2 class="hpt24-title">PRINT YOUR LEGACY — HomePrint24</h2>
+
+  <!-- Produkt-Tabs -->
+  <div id="hpt24-tabs">
+    <button class="ld-tab active" data-prod="tshirt">T-Shirt</button>
+    <button class="ld-tab" data-prod="vneck">V-Ausschnitt</button>
+    <button class="ld-tab" data-prod="polo">Polo Shirt</button>
+    <button class="ld-tab" data-prod="hoodie">Hoodie</button>
+    <button class="ld-tab" data-prod="sweat">Sweatshirt</button>
+    <button class="ld-tab" data-prod="track">Trainingsjacke</button>
+    <button class="ld-tab" data-prod="jogger">Jogginghose</button>
+  </div>
+
+  <div class="hpt24-layout">
+    <!-- Linke Seite -->
+    <div id="product-preview">
+      <canvas id="previewCanvas" width="500" height="620"></canvas>
+    </div>
+
+    <!-- Rechte Seite -->
+    <div class="right-panel">
+
+      <div class="upload-box">
+        <label for="upload"><b>Motiv hochladen</b></label><br><br>
+        <input type="file" id="upload" accept="image/*" multiple />
+      </div>
+
+      <div id="uploadList"></div>
+
+      <div class="child-select">
+        <label>
+          <input type="checkbox" id="isChild" />
+          Kindergröße (–25% auf Textilpreis)
+        </label>
+      </div>
+
+      <div class="price-box">
+        Gesamtpreis: <span id="totalPrice">0.00</span> €
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* Produktbilder (Front+Back) – austauschbar */
+const productImages = {
+  tshirt: {
+    front: "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/24676B3E-AD3C-41A4-8CA3-995D466FC6ED.png/:/rs=w:1440,h:1440",
+    back:  "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/3EA67E0B-ACEF-472D-9073-0B3846AE900D.png/:/rs=w:1440,h:1440"
+  },
+
+  vneck: {
+    front: "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/B9B49545-8EED-4A80-AC88-30EA45A3448A.png/:/rs=w:1440,h:1440",
+    back:  "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/2D68D46E-B30A-4217-B539-4F96998CDCF5.png/:/rs=w:1440,h:1440"
+  },
+
+  polo: {
+    front: "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8858.jpeg/:/rs=w:1440,h:1440",
+    back:  "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8859.jpeg/:/rs=w:1440,h:1440"
+  },
+
+  hoodie: {
+    front: "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8853-a6c6bdf.jpeg/:/rs=w:1440,h:1440",
+    back:  "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8854.jpeg/:/rs=w:1440,h:1440"
+  },
+
+  sweat: {
+    front: "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8855.jpeg/:/rs=w:1440,h:1440",
+    back:  "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8856.jpeg/:/rs=w:1440,h:1440"
+  },
+
+  track: {
+    front: "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8857.jpeg/:/rs=w:1440,h:1440",
+    back:  "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8858.jpeg/:/rs=w:1440,h:1440"
+  },
+
+  jogger: {
+    front: "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8861-93371b9.jpeg/:/rs=w:1440,h:1440",
+    back:  "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8862.jpeg/:/rs=w:1440,h:1440"
+  }
+};
+
+let currentProduct = "tshirt";
+let motives = [];
+let basePrice = {
+  tshirt: 14.99,
+  vneck: 15.99,
+  polo: 19.99,
+  hoodie: 34.99,
+  sweat: 24.99,
+  track: 39.99,
+  jogger: 29.99
+};
+
+const canvas = document.getElementById("previewCanvas");
+const ctx = canvas.getContext("2d");
+
+function loadProduct(prod) {
+  currentProduct = prod;
+  drawCanvas();
+  updatePrice();
+}
+
+document.querySelectorAll(".ld-tab").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".ld-tab").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    loadProduct(btn.dataset.prod);
+  });
+});
+
+function drawCanvas() {
+  const img = new Image();
+  img.src = productImages[currentProduct].front;
+  img.onload = () => {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.drawImage(img,0,0,canvas.width,canvas.height);
+
+    motives.forEach(m => {
+      const mImg = new Image();
+      mImg.src = m.img;
+      mImg.onload = () => {
+        ctx.drawImage(mImg, 160, 150, 180, 180);
+      };
+    });
+  };
+}
+
+document.getElementById("upload").addEventListener("change", function() {
+  [...this.files].forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      motives.push({
+        img: e.target.result,
+        sw: false,
+        price: 5.50
+      });
+      renderMotives();
+      updatePrice();
+      drawCanvas();
+    };
+    reader.readAsDataURL(file);
+  });
+});
+
+
+function renderMotives() {
+  const list = document.getElementById("uploadList");
+  list.innerHTML = "";
+
+  motives.forEach((m, index) => {
+    const div = document.createElement("div");
+    div.className = "upload-item";
+
+    div.innerHTML = `
+      Motiv ${index+1} – ${m.sw ? "S/W 3,50€" : "Farbe 5,50€"}
+      <div>
+        <button onclick="toggleSW(${index})">S/W</button>
+        <button onclick="removeMotiv(${index})">X</button>
+      </div>
+    `;
+
+    list.appendChild(div);
+  });
+}
+
+function toggleSW(i) {
+  motives[i].sw = !motives[i].sw;
+  motives[i].price = motives[i].sw ? 3.50 : 5.50;
+  renderMotives();
+  updatePrice();
+}
+
+function removeMotiv(i) {
+  motives.splice(i,1);
+  renderMotives();
+  updatePrice();
+  drawCanvas();
+}
+
+function updatePrice() {
+  let price = basePrice[currentProduct];
+
+  if (document.getElementById("isChild").checked)
+    price *= 0.75;
+
+  motives.forEach(m => price += m.price);
+
+  document.getElementById("totalPrice").innerText = price.toFixed(2);
+}
+
+</script>
+
 </body>
 </html>
