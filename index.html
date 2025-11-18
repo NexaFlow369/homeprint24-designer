@@ -72,7 +72,7 @@
   .hpt24-kid-note{margin-top:6px;font-size:11px;color:#f97316;}
   .hpt24-print-hint{font-size:11px;color:#4b5563;margin-top:4px;line-height:1.5;}
 
-  /* PRESET INLINE: "Preset: Center Back-Tag" */
+  /* PRESET INLINE: "Preset: Center  Back-Tag" */
   .hpt24-preset-wrap{
     display:flex;
     align-items:center;
@@ -153,7 +153,8 @@
   }
 
   /* Zubehör-Select */
-  #acc-select-wrap select {
+  #acc-select-wrap select,
+  #acc-select-wrap input {
     background:#fff;
   }
 
@@ -208,7 +209,7 @@
     <button data-prod="sweat"  class="ld-tab">Sweatshirt</button>
     <button data-prod="track"  class="ld-tab">Trainingsjacke</button>
     <button data-prod="jogger" class="ld-tab">Jogginghose</button>
-    <!-- NEU: Zubehör als eigener Tab -->
+    <!-- Zubehör als eigener Tab -->
     <button data-prod="accessory" class="ld-tab">Zubehör</button>
   </div>
 
@@ -287,19 +288,16 @@
       <div class="ld-card">
         <label class="ld-label">Bestellangaben</label>
 
-        <!-- NEU: Zubehör-Auswahl (nur sichtbar im Zubehör-Tab) -->
+        <!-- Zubehör-Auswahl (nur sichtbar im Zubehör-Tab) -->
         <div id="acc-select-wrap" class="hpt24-grid-2 hpt24-gap-top" style="display:none;">
           <select id="acc-type" class="ld-input">
             <option value="">Zubehör wählen</option>
-            <option value="toploader">Toploader</option>
-            <option value="binder">Binder</option>
+            <option value="toploaderBinder">Toploader Binder</option>
+            <option value="stofftasche">Stoff Tasche</option>
+            <option value="basecap">Base Cap</option>
+            <option value="bauchtasche">Bauchtasche</option>
           </select>
-
-          <select id="acc-quality" class="ld-input">
-            <option value="basic">Qualität: Basic</option>
-            <option value="standard">Qualität: Standard</option>
-            <option value="premium">Qualität: Premium</option>
-          </select>
+          <input id="acc-price-info" class="ld-input" type="text" value="Preis wird automatisch berechnet" readonly>
         </div>
 
         <div class="hpt24-grid-2 hpt24-gap-top">
@@ -350,8 +348,7 @@
 
         <div class="hpt24-gap-top">
           <label class="ld-sublabel"></label>
-          <p class="hpt24-print-hint">
-          </p>
+          <p class="hpt24-print-hint"></p>
         </div>
 
         <div class="hpt24-grid-2 hpt24-gap-top">
@@ -433,10 +430,10 @@
     hoodie:'sweat',
     jogger:'bottom',
     track:'bottom',
-    accessory:'accessory'   // NEU: Zubehör-Gruppe
+    accessory:'accessory'   // Zubehör-Gruppe
   };
 
-  /* PREISE nach Matrix (NETTO) – Zubehör: Platzhalter */
+  /* PREISE nach Matrix (NETTO) – Textilien */
   const BASE_PRICE = {
     // T-Shirt, V-Neck, Polo
     shirt: {
@@ -455,13 +452,15 @@
       basic:   29.99,
       standard:35.99,
       premium: 45.99
-    },
-    // Zubehör (Toploader / Binder) – PLATZHALTER
-    accessory: {
-      basic:   2.49,
-      standard:4.99,
-      premium: 9.99
     }
+  };
+
+  /* Zubehör-Preise (blanko) – NETTO */
+  const ACCESSORY_PRICE = {
+    toploaderBinder: 59.99,
+    stofftasche: 9.99,
+    basecap: 14.99,
+    bauchtasche: 14.99
   };
 
   const MOTIF_PRICE={bw:3.50,color:5.50};
@@ -522,12 +521,24 @@
       r:mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/4964EDDF-73AB-4CF0-B917-CDF8F6626036.PNG'))
     },
 
-    /* Zubehör – PLATZHALTER-Bilder */
+    /* Zubehör – Platzhalter-Bilder */
     toploader:{
       w: mk8(L('https://via.placeholder.com/750x900?text=Toploader+Preview'))
     },
     binder:{
       w: mk8(L('https://via.placeholder.com/750x900?text=Binder+Preview'))
+    },
+    toploaderBinder:{
+      w: mk8(L('https://via.placeholder.com/750x900?text=Toploader+Binder'))
+    },
+    stofftasche:{
+      w: mk8(L('https://via.placeholder.com/750x900?text=Stoff+Tasche'))
+    },
+    basecap:{
+      w: mk8(L('https://via.placeholder.com/750x900?text=Base+Cap'))
+    },
+    bauchtasche:{
+      w: mk8(L('https://via.placeholder.com/750x900?text=Bauchtasche'))
     }
   };
 
@@ -616,7 +627,7 @@
 
   const accWrap=document.getElementById('acc-select-wrap');
   const accTypeEl=document.getElementById('acc-type');
-  const accQualityEl=document.getElementById('acc-quality');
+  const accPriceInfoEl=document.getElementById('acc-price-info');
 
   const modalEl=document.getElementById('ld-suggest-modal');
   const modalCloseBtn=document.getElementById('ld-modal-close');
@@ -642,7 +653,7 @@
 
   function effectiveProdForPreview(){
     if(prod==='accessory' && accTypeEl && accTypeEl.value){
-      return accTypeEl.value; // toploader / binder
+      return accTypeEl.value; // toploaderBinder / stofftasche / basecap / bauchtasche
     }
     return prod;
   }
@@ -702,6 +713,22 @@
     return s.bw*MOTIF_PRICE.bw + s.color*MOTIF_PRICE.color;
   }
 
+  function accessoryBasePrice(){
+    if(!isAccessory || !accTypeEl) return 0;
+    const t = accTypeEl.value || '';
+    return ACCESSORY_PRICE[t] || 0;
+  }
+
+  function updateAccessoryPriceInfo(){
+    if(!accPriceInfoEl) return;
+    const base = accessoryBasePrice();
+    if(base>0){
+      accPriceInfoEl.value = 'Blanko: ' + fmt(base) + ' (zzgl. Druck)';
+    }else{
+      accPriceInfoEl.value = 'Preis wird automatisch berechnet';
+    }
+  }
+
   /* Zubehör-Modus an/aus */
   function toggleAccessoryMode(on){
     isAccessory = !!on;
@@ -711,12 +738,16 @@
     // Textil-Controls deaktivieren bei Zubehör
     sizeEl.disabled   = on;
     genderEl.disabled = on;
+    qualityEl.disabled = on;
 
     if(on){
       sizeEl.value = '';
       genderEl.value = '';
       if(kidNoteEl) kidNoteEl.style.display='none';
+      updateAccessoryPriceInfo();
     }else{
+      qualityEl.disabled = false;
+      if(accPriceInfoEl) accPriceInfoEl.value='Preis wird automatisch berechnet';
       // Normaler Textilmodus – Größen-/Kindlogik wieder anwenden
       applyKidSizeLock();
     }
@@ -727,10 +758,9 @@
 
   /* PREISLOGIK: Blanko + Motive, Kinder-Rabatt nur auf Blanko (25 %) */
   function computeUnitPrice(){
-    // Zubehör: eigene Logik (keine Kinder-Rabatte, aber Motive möglich)
+    // Zubehör: feste Preise pro Produkt, Kinder/Qualität ignoriert
     if(isAccessory){
-      const q = (accQualityEl && accQualityEl.value) || 'basic';
-      const baseAcc = (BASE_PRICE.accessory && BASE_PRICE.accessory[q]) ? BASE_PRICE.accessory[q] : 0;
+      const baseAcc = accessoryBasePrice();
       const motifCost = computeMotifCost();
       return baseAcc + motifCost;
     }
@@ -1051,20 +1081,34 @@
   document.getElementById('ld-add').onclick=()=>{
     const size=isAccessory ? 'One Size' : (sizeEl.value||'-');
     const qty=Math.max(1,parseInt(qtyEl.value||'1',10));
-    const quality = isAccessory
-      ? ((accQualityEl && accQualityEl.value) || 'basic')
-      : (qualityEl.value||'basic');
-    const gender = isAccessory ? '' : (genderEl.value||'');
+
+    let quality = '';
+    let gender = '';
+
+    if(isAccessory){
+      quality = 'accessory';
+      gender = '';
+    }else{
+      quality = (qualityEl.value||'basic');
+      gender = (genderEl.value||'');
+    }
 
     let finalProd = prod;
     let finalName = '';
 
     if(isAccessory){
       const t = (accTypeEl && accTypeEl.value) || '';
+      if(!t){
+        alert('Bitte ein Zubehör-Produkt wählen.');
+        return;
+      }
       finalProd = t || 'accessory';
-      finalName = (t==='toploader') ? 'Toploader'
-                : (t==='binder')    ? 'Binder'
-                : 'Zubehör';
+      finalName = ({
+        toploaderBinder:'Toploader Binder',
+        stofftasche:'Stoff Tasche',
+        basecap:'Base Cap',
+        bauchtasche:'Bauchtasche'
+      })[t] || 'Zubehör';
     }else{
       finalName = ({
         tshirt:'T-Shirt',
@@ -1098,8 +1142,7 @@
   qtyEl.addEventListener('input',updatePrice);
   qualityEl.addEventListener('change',updatePrice);
   genderEl.addEventListener('change',()=>{applyKidSizeLock();updatePrice();});
-  if(accQualityEl) accQualityEl.addEventListener('change',updatePrice);
-  if(accTypeEl) accTypeEl.addEventListener('change',()=>{loadFrames();});
+  if(accTypeEl) accTypeEl.addEventListener('change',()=>{updateAccessoryPriceInfo();loadFrames();updatePrice();});
 
   /* Placement im Modal pro Produkttyp */
   const MODAL_PLACEMENT={
@@ -1111,7 +1154,11 @@
     track:{w:0.34,x:0.5,y:0.33},
     jogger:{w:0.30,x:0.55,y:0.62},
     toploader:{w:0.45,x:0.5,y:0.5},
-    binder:{w:0.45,x:0.5,y:0.5}
+    binder:{w:0.45,x:0.5,y:0.5},
+    toploaderBinder:{w:0.45,x:0.5,y:0.5},
+    stofftasche:{w:0.45,x:0.5,y:0.5},
+    basecap:{w:0.45,x:0.5,y:0.5},
+    bauchtasche:{w:0.45,x:0.5,y:0.5}
   };
 
   function getFirstMotifLayer(){
