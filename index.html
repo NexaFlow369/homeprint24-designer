@@ -1,4 +1,4 @@
-<!-- HomePrint24 – PRINT YOUR LEGACY: Designer v7.8 (Preset inline, Preview links, Fjalla One, Front/Back getrennt) -->
+<!-- HomePrint24 – PRINT YOUR LEGACY: Designer v7.9 (Back getrennt, Kids 25 %, Preset inline, Preview links, Fjalla One) -->
 <div id="hpt24">
   <h2 class="hpt24-title">PRINT YOUR LEGACY — HomePrint24</h2>
 
@@ -631,7 +631,7 @@
     let base=(BASE_PRICE[group]&&BASE_PRICE[group][quality])?BASE_PRICE[group][quality]:0;
 
     if(genderEl && genderEl.value==='kid'){
-      base*=0.75; // 25% Rabatt nur auf Textil
+      base*=0.75; // 25 % Rabatt nur auf Textil
     }
 
     const motifCost=computeMotifCost();
@@ -731,10 +731,10 @@
 
   /* WICHTIG: Front & Back NICHT mehr automatisch kopieren */
   function setView(v){
-    view = (v==='back') ? 'back' : 'front';
-    layers = (view==='front') ? layersFront : layersBack;
-    badgeEl.textContent=view.toUpperCase();
-    active=0;
+    view = (v === 'back') ? 'back' : 'front';
+    layers = (view === 'front') ? layersFront : layersBack;
+    badgeEl.textContent = view.toUpperCase();
+    active = 0;
     renderUploadRows();
     syncUIFromLayer();
     loadFrames();
@@ -1022,15 +1022,6 @@
   init();
 })();
 </script>
-<!-- /Designer v7.8 Fix -->
+<!-- /Designer v7.9 -->
 
----
 
-Test für dich:
-
-1. Motiv auf **Front** hochladen, positionieren.  
-2. Auf **Back** klicken → Livebild wechselt, **Back ist leer**, Upload-Liste leer (für Back).  
-3. Separates Motiv für Back hochladen.  
-4. Preis: Motive von Front + Back werden korrekt zusammengezählt, aber nicht mehr “gratis” dupliziert.  
-
-Wenn du willst, baue ich dir als Nächstes eine kurze **Tooltip-Zeile** über dem Ansicht-Switch: „Front und Rückseite werden separat gestaltet“.
