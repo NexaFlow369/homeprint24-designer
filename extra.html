@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>HomePrint24 – Zubehör Auswahl</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+
+    body{
+      margin:0;
+      padding:0;
+      font-family:'Fjalla One',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      background:#0f172a;
+      color:#f9fafb;
+    }
+    .hp24-hero{
+      max-width:1080px;
+      margin:32px auto;
+      padding:16px;
+      border-radius:18px;
+      background:#e5e7eb;
+      box-shadow:0 14px 40px rgba(15,23,42,.45);
+    }
+    .hp24-hero-title{
+      text-align:center;
+      margin:0 0 8px;
+      font-size:26px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:#0f172a;
+    }
+    .hp24-hero-sub{
+      text-align:center;
+      margin:0 0 18px;
+      font-size:13px;
+      color:#4b5563;
+    }
+
+    .hp24-slider-wrap{
+      position:relative;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .hp24-btn{
+      border:none;
+      border-radius:999px;
+      width:34px;
+      height:34px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      cursor:pointer;
+      background:#0f172a;
+      color:#f9fafb;
+      box-shadow:0 6px 18px rgba(15,23,42,.5);
+      flex-shrink:0;
+    }
+    .hp24-btn:disabled{
+      opacity:.35;
+      cursor:default;
+      box-shadow:none;
+    }
+
+    .hp24-slider{
+      display:flex;
+      gap:14px;
+      overflow-x:auto;
+      scroll-behavior:smooth;
+      padding:6px 4px 4px;
+    }
+    .hp24-slider::-webkit-scrollbar{
+      height:6px;
+    }
+    .hp24-slider::-webkit-scrollbar-track{
+      background:#cbd5e1;
+      border-radius:999px;
+    }
+    .hp24-slider::-webkit-scrollbar-thumb{
+      background:#475569;
+      border-radius:999px;
+    }
+
+    .hp24-card{
+      flex:0 0 210px;
+      background:#0f172a;
+      border-radius:18px;
+      text-decoration:none;
+      color:#f9fafb;
+      overflow:hidden;
+      box-shadow:0 10px 26px rgba(15,23,42,.7);
+      transform:translateY(0);
+      transition:transform .18s ease,box-shadow .18s ease;
+    }
+    .hp24-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 18px 40px rgba(15,23,42,.8);
+    }
+    .hp24-card-img-wrap{
+      position:relative;
+      aspect-ratio:1/1;
+      background:#020617;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .hp24-card-img-wrap img{
+      max-width:100%;
+      max-height:100%;
+      display:block;
+      object-fit:contain;
+    }
+    .hp24-tag{
+      position:absolute;
+      left:8px;
+      top:8px;
+      background:rgba(15,23,42,.88);
+      color:#e5e7eb;
+      font-size:10px;
+      padding:4px 7px;
+      border-radius:999px;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+    }
+    .hp24-card-body{
+      padding:10px 11px 11px;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .hp24-card-title{
+      margin:0;
+      font-size:14px;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+    }
+    .hp24-card-sub{
+      margin:0;
+      font-size:11px;
+      color:#cbd5e1;
+    }
+    .hp24-chip-row{
+      margin-top:4px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:4px;
+    }
+    .hp24-chip{
+      font-size:10px;
+      border-radius:999px;
+      border:1px solid #1e293b;
+      padding:2px 7px;
+      background:#020617;
+    }
+
+    @media(max-width:700px){
+      .hp24-hero{
+        margin:16px;
+      }
+      .hp24-hero-title{
+        font-size:20px;
+      }
+      .hp24-card{
+        flex:0 0 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<section class="hp24-hero">
+  <h2 class="hp24-hero-title"> Print Your Legacy</h2>
+  <p class="hp24-hero-sub">
+    Caps, Taschen & Binder – wähle dein Produkt, dann direkt in den Editor.
+  </p>
+
+  <div class="hp24-slider-wrap">
+    <button class="hp24-btn" id="hp24-left">‹</button>
+
+    <div class="hp24-slider" id="hp24-slider">
+
+      <!-- Base Cap -->
+      <a class="hp24-card" href="https://nexaflow369.github.io/homeprint24-designer/basecap.html">
+        <div class="hp24-card-img-wrap">
+          <span class="hp24-tag">Cap</span>
+          <!-- TODO: Bild-URL für Base Cap einsetzen -->
+          <img src="https://via.placeholder.com/600x600?text=Base+Cap" alt="Base Cap">
+        </div>
+        <div class="hp24-card-body">
+          <h3 class="hp24-card-title">Base Cap</h3>
+          <p class="hp24-card-sub">5 Farben • Front-Logo • Street-Ready</p>
+          <div class="hp24-chip-row">
+            <span class="hp24-chip">Custom Logo</span>
+            <span class="hp24-chip">One Size</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Snapback -->
+      <a class="hp24-card" href="https://nexaflow369.github.io/homeprint24-designer/snapback.html">
+        <div class="hp24-card-img-wrap">
+          <span class="hp24-tag">Cap</span>
+          <!-- TODO: Bild-URL für Snapback einsetzen -->
+          <img src="https://via.placeholder.com/600x600?text=Snapback" alt="Snapback Cap">
+        </div>
+        <div class="hp24-card-body">
+          <h3 class="hp24-card-title">Snapback</h3>
+          <p class="hp24-card-sub">Flat Brim • Front/Side-Print</p>
+          <div class="hp24-chip-row">
+            <span class="hp24-chip">Street Style</span>
+            <span class="hp24-chip">Custom Patch</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Flexfit -->
+      <a class="hp24-card" href="https://nexaflow369.github.io/homeprint24-designer/flexfit.html">
+        <div class="hp24-card-img-wrap">
+          <span class="hp24-tag">Cap</span>
+          <!-- TODO: Bild-URL für Flexfit einsetzen -->
+          <img src="https://via.placeholder.com/600x600?text=Flexfit" alt="Flexfit Cap">
+        </div>
+        <div class="hp24-card-body">
+          <h3 class="hp24-card-title">Flexfit Cap</h3>
+          <p class="hp24-card-sub">Stretch-Fit • Premium Fit</p>
+          <div class="hp24-chip-row">
+            <span class="hp24-chip">Comfort Fit</span>
+            <span class="hp24-chip">Logo vorne</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Bauchtasche -->
+      <a class="hp24-card" href="https://nexaflow369.github.io/homeprint24-designer/bauchtasche.html">
+        <div class="hp24-card-img-wrap">
+          <span class="hp24-tag">Bag</span>
+          <!-- TODO: Bild-URL für Bauchtasche einsetzen -->
+          <img src="https://via.placeholder.com/600x600?text=Bauchtasche" alt="Bauchtasche">
+        </div>
+        <div class="hp24-card-body">
+          <h3 class="hp24-card-title">Bauchtasche</h3>
+          <p class="hp24-card-sub">Festival • Street • Hands free</p>
+          <div class="hp24-chip-row">
+            <span class="hp24-chip">Logo Front</span>
+            <span class="hp24-chip">Adjust Strap</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Tragetasche -->
+      <a class="hp24-card" href="https://nexaflow369.github.io/homeprint24-designer/tragetasche.html">
+        <div class="hp24-card-img-wrap">
+          <span class="hp24-tag">Bag</span>
+          <!-- TODO: Bild-URL für Tragetasche einsetzen -->
+          <img src="https://via.placeholder.com/600x600?text=Tragetasche" alt="Tragetasche">
+        </div>
+        <div class="hp24-card-body">
+          <h3 class="hp24-card-title">Trage Tasche</h3>
+          <p class="hp24-card-sub">Stofftasche • Daily Use</p>
+          <div class="hp24-chip-row">
+            <span class="hp24-chip">Eco Style</span>
+            <span class="hp24-chip">Frontprint</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Sporttasche -->
+      <a class="hp24-card" href="https://nexaflow369.github.io/homeprint24-designer/sporttasche.html">
+        <div class="hp24-card-img-wrap">
+          <span class="hp24-tag">Bag</span>
+          <!-- TODO: Bild-URL für Sporttasche einsetzen -->
+          <img src="https://via.placeholder.com/600x600?text=Sporttasche" alt="Sporttasche">
+        </div>
+        <div class="hp24-card-body">
+          <h3 class="hp24-card-title">Sport Tasche</h3>
+          <p class="hp24-card-sub">Gym • Travel • Team Gear</p>
+          <div class="hp24-chip-row">
+            <span class="hp24-chip">Logo Seite</span>
+            <span class="hp24-chip">Team Edition</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Binder -->
+      <a class="hp24-card" href="https://nexaflow369.github.io/homeprint24-designer/binder.html">
+        <div class="hp24-card-img-wrap">
+          <span class="hp24-tag">Binder</span>
+          <!-- TODO: Bild-URL für Binder (schwarz/grau) einsetzen -->
+          <img src="https://via.placeholder.com/600x600?text=Toploader+Binder" alt="Toploader Binder">
+        </div>
+        <div class="hp24-card-body">
+          <h3 class="hp24-card-title">Toploader Binder</h3>
+          <p class="hp24-card-sub">Schwarz & Grau • Karten-Protection</p>
+          <div class="hp24-chip-row">
+            <span class="hp24-chip">Blanko: 34,49 €</span>
+            <span class="hp24-chip">Motiv Magic</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <button class="hp24-btn" id="hp24-right">›</button>
+  </div>
+</section>
+
+<script>
+  (function(){
+    const slider = document.getElementById('hp24-slider');
+    const btnL   = document.getElementById('hp24-left');
+    const btnR   = document.getElementById('hp24-right');
+
+    function updateButtons(){
+      const maxScroll = slider.scrollWidth - slider.clientWidth;
+      btnL.disabled = slider.scrollLeft <= 0;
+      btnR.disabled = slider.scrollLeft >= maxScroll - 2;
+    }
+
+    function scrollByCards(dir){
+      const card = slider.querySelector('.hp24-card');
+      const step = card ? card.clientWidth + 14 : 220;
+      slider.scrollBy({ left: dir * step * 2, behavior: 'smooth' });
+    }
+
+    btnL.addEventListener('click',()=>scrollByCards(-1));
+    btnR.addEventListener('click',()=>scrollByCards(1));
+    slider.addEventListener('scroll',updateButtons);
+    window.addEventListener('resize',updateButtons);
+
+    updateButtons();
+  })();
+</script>
+
+</body>
+</html>
