@@ -1,0 +1,293 @@
+<!-- HOMEPRINT24 – Produkt Slider (7 Produkte, mit GitHub-Links zu jedem Editor) -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>HomePrint24 – Produkt-Auswahl</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+
+    :root{
+      font-family:'Fjalla One',system-ui;
+      box-sizing:border-box;
+    }
+    *,*::before,*::after{
+      box-sizing:inherit;
+    }
+
+    body{
+      margin:0;padding:0;
+      background:#f3f4f6;
+      color:#0f172a;
+    }
+
+    #hp24-start{
+      max-width:1200px;
+      margin:24px auto;
+      padding:20px 16px 28px;
+      background:#e5e7eb;
+      border-radius:18px;
+    }
+
+    .hp24-title{
+      text-align:center;
+      font-size:26px;
+      margin:0 0 6px;
+      letter-spacing:.08em;
+    }
+    .hp24-sub{
+      text-align:center;
+      font-size:13px;
+      color:#4b5563;
+      margin:0 0 18px;
+    }
+
+    .hp24-slider-wrap{
+      position:relative;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .hp24-btn{
+      border:none;
+      border-radius:999px;
+      width:34px;height:34px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#0f172a;color:#fff;
+      cursor:pointer;
+    }
+
+    .hp24-slider{
+      overflow-x:auto;
+      scroll-behavior:smooth;
+      display:flex;
+      gap:16px;
+      padding:6px 4px;
+    }
+
+    .hp24-card{
+      flex:0 0 210px;
+      background:#f9fafb;
+      border-radius:16px;
+      padding:10px;
+      text-decoration:none;
+      color:inherit;
+      border:1px solid #d1d5db;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      transition:all .2s;
+    }
+    .hp24-card:hover{
+      transform:translateY(-3px);
+      border-color:#0f172a;
+    }
+
+    .hp24-img-wrap{
+      width:100%;
+      aspect-ratio:3/4;
+      border-radius:12px;
+      overflow:hidden;
+      background:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .hp24-img-wrap img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .hp24-card-title{
+      font-size:15px;margin:0;
+      letter-spacing:.04em;
+    }
+
+    .hp24-card-meta{
+      display:flex;
+      justify-content:space-between;
+      font-size:12px;color:#4b5563;
+    }
+
+    .hp24-pill{
+      padding:2px 8px;
+      border-radius:999px;
+      font-size:11px;
+      background:#fff;
+      border:1px solid #cbd5e1;
+    }
+
+    .hp24-price{font-weight:900;font-size:13px;}
+
+    .hp24-card-footer{
+      display:flex;justify-content:space-between;
+      align-items:center;
+    }
+
+    .hp24-cta{
+      padding:7px 10px;
+      border-radius:999px;
+      background:#0f172a;
+      color:#fff;
+      border:none;
+      cursor:pointer;
+      font-size:12px;
+      font-weight:800;
+      flex:1;text-align:center;
+    }
+
+    .hp24-cta-sec{
+      font-size:10px;color:#4b5563;
+    }
+  </style>
+</head>
+<body>
+
+<section id="hp24-start">
+  <h2 class="hp24-title">Wähle dein Produkt</h2>
+  <p class="hp24-sub">Klicke auf ein Produkt & starte direkt im Editor.</p>
+
+  <div class="hp24-slider-wrap">
+
+    <button class="hp24-btn" id="hp24-left">‹</button>
+
+    <div class="hp24-slider" id="hp24-slider">
+
+      <!-- T-SHIRT -->
+      <a href="https://nexaflow369.github.io/homeprint24-designer/tshirt.html" class="hp24-card">
+        <div class="hp24-img-wrap">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_39A4FE77-F206-4838-BD1C-CB77DEB7-4d95b85.jpeg/:/rs=w:1440,h:1440">
+        </div>
+        <h3 class="hp24-card-title">T-Shirt</h3>
+        <div class="hp24-card-meta">
+          <span class="hp24-pill">Casual</span>
+          <span class="hp24-price">ab 19,99 €</span>
+        </div>
+        <div class="hp24-card-footer">
+          <span class="hp24-cta">Design starten</span>
+          <span class="hp24-cta-sec">Front & Back</span>
+        </div>
+      </a>
+
+      <!-- VNECK -->
+      <a href="https://nexaflow369.github.io/homeprint24-designer/vneck.html" class="hp24-card">
+        <div class="hp24-img-wrap">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_13A4C3DF-6F22-485E-866A-9796679D-15ae9bc.jpeg/:/rs=w:1440,h:1440">
+        </div>
+        <h3 class="hp24-card-title">V-Neck Shirt</h3>
+        <div class="hp24-card-meta">
+          <span class="hp24-pill">Slim Fit</span>
+          <span class="hp24-price">ab 19,99 €</span>
+        </div>
+        <div class="hp24-card-footer">
+          <span class="hp24-cta">Design starten</span>
+          <span class="hp24-cta-sec">V-Ausschnitt</span>
+        </div>
+      </a>
+
+      <!-- POLO -->
+      <a href="https://nexaflow369.github.io/homeprint24-designer/polo.html" class="hp24-card">
+        <div class="hp24-img-wrap">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_F2280821-1845-4CD9-ACEE-F252A3AF-348b007.jpeg/:/rs=w:1440,h:1440">
+        </div>
+        <h3 class="hp24-card-title">Polo Shirt</h3>
+        <div class="hp24-card-meta">
+          <span class="hp24-pill">Elegant</span>
+          <span class="hp24-price">ab 24,99 €</span>
+        </div>
+        <div class="hp24-card-footer">
+          <span class="hp24-cta">Design starten</span>
+          <span class="hp24-cta-sec">Brustlogo</span>
+        </div>
+      </a>
+
+      <!-- HOODIE -->
+      <a href="https://nexaflow369.github.io/homeprint24-designer/hoodie.html" class="hp24-card">
+        <div class="hp24-img-wrap">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_2C06C545-468C-41A1-AD84-4487C484-e074e75.jpeg/:/rs=w:1440,h:1440">
+        </div>
+        <h3 class="hp24-card-title">HHoodie</h3>
+        <div class="hp24-card-meta">
+          <span class="hp24-pill">Streetwear</span>
+          <span class="hp24-price">ab 29,99 €</span>
+        </div>
+        <div class="hp24-card-footer">
+          <span class="hp24-cta">Design starten</span>
+          <span class="hp24-cta-sec">Kapuze & Backprint</span>
+        </div>
+      </a>
+
+      <!-- SWEAT -->
+      <a href="https://nexaflow369.github.io/homeprint24-designer/sweat.html" class="hp24-card">
+        <div class="hp24-img-wrap">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_18E0CA15-00B7-4DF7-924B-F9C78694-4871c4a.jpeg/:/rs=w:1440,h:1440">
+        </div>
+        <h3 class="hp24-card-title">Sweatshirt</h3>
+        <div class="hp24-card-meta">
+          <span class="hp24-pill">Unisex</span>
+          <span class="hp24-price">ab 29,99 €</span>
+        </div>
+        <div class="hp24-card-footer">
+          <span class="hp24-cta">Design starten</span>
+          <span class="hp24-cta-sec">Crewneck</span>
+        </div>
+      </a>
+
+      <!-- TRACK -->
+      <a href="https://nexaflow369.github.io/homeprint24-designer/track.html" class="hp24-card">
+        <div class="hp24-img-wrap">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_752DCC1C-A663-4066-A9B0-1581BF7B-e914983.jpeg/:/rs=w:1440,h:1440">
+        </div>
+        <h3 class="hp24-card-title">Trainingsjacke</h3>
+        <div class="hp24-card-meta">
+          <span class="hp24-pill">Teamwear</span>
+          <span class="hp24-price">ab 29,99 €</span>
+        </div>
+        <div class="hp24-card-footer">
+          <span class="hp24-cta">Design starten</span>
+          <span class="hp24-cta-sec">Sportclub</span>
+        </div>
+      </a>
+
+      <!-- JOGGER -->
+      <a href="https://nexaflow369.github.io/homeprint24-designer/jogger.html" class="hp24-card">
+        <div class="hp24-img-wrap">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_40C1501A-C5B6-43ED-9712-69A34E5D-85c052c.jpeg/:/rs=w:1440,h:1440">
+        </div>
+        <h3 class="hp24-card-title">Jogger</h3>
+        <div class="hp24-card-meta">
+          <span class="hp24-pill">Street Fit</span>
+          <span class="hp24-price">ab 29,99 €</span>
+        </div>
+        <div class="hp24-card-footer">
+          <span class="hp24-cta">Design starten</span>
+          <span class="hp24-cta-sec">Seite & Bein</span>
+        </div>
+      </a>
+
+    </div>
+
+    <button class="hp24-btn" id="hp24-right">›</button>
+
+  </div>
+</section>
+
+<script>
+  (function(){
+    const slider=document.getElementById('hp24-slider');
+    const left=document.getElementById('hp24-left');
+    const right=document.getElementById('hp24-right');
+    const step=()=>220;
+
+    left.onclick = () => slider.scrollBy({left:-step(),behavior:'smooth'});
+    right.onclick = () => slider.scrollBy({left:step(),behavior:'smooth'});
+  })();
+</script>
+
+</body>
+</html>
