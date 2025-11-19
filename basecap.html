@@ -204,32 +204,17 @@
       box-shadow:0 6px 18px rgba(0,0,0,.4);
       z-index:9999;
       letter-spacing:.4px;
+      border:none;
+      cursor:pointer;
     }
   </style>
 </head>
-</head>
 <body>
 
-  <!-- BACK BUTTON (Browser History) -->
-  <div style="padding:12px;">
-    <button onclick="history.back()"
-      style="
-        padding:10px 18px;
-        background:#1f2937;
-        color:white;
-        border:none;
-        border-radius:8px;
-        font-family:'Fjalla One', sans-serif;
-        font-size:16px;
-        cursor:pointer;
-      ">
-      ← zurück
-    </button>
-  </div>
+  <!-- Browser-Back Button -->
+  <button class="back-btn" onclick="history.back()">← Zurück</button>
 
-  <div id="hpt24">
-    ...
-
+<div id="hpt24">
   <h2 class="hpt24-title">HOMEPRINT24 — PRINT YOUR LEGACY</h2>
   <p class="hpt24-sub">Produkt: Base Cap · Einzelseite · Front-Print · 3 Upload-Slots</p>
 
@@ -335,17 +320,18 @@
 (function(){
   // 🔧 CONFIG: HIER pro Datei anpassen
   const CONFIG = {
-    productId: 'basecap',
-    productName: 'Base Cap',
-    basePrice: 14.99, // blanko
-    colors: [
-      { code:'w', label:'Weiß',  hex:'#ffffff', img:'https://via.placeholder.com/750x900?text=Base+Cap+Weiss' },
-      { code:'s', label:'Schwarz',hex:'#111827', img:'https://via.placeholder.com/750x900/111827/ffffff?text=Base+Cap+Schwarz' },
-      { code:'r', label:'Rot',   hex:'#b91c1c', img:'https://via.placeholder.com/750x900/b91c1c/ffffff?text=Base+Cap+Rot' },
-      { code:'b', label:'Blau',  hex:'#1d4ed8', img:'https://via.placeholder.com/750x900/1d4ed8/ffffff?text=Base+Cap+Blau' },
-      { code:'g', label:'Gelb',  hex:'#facc15', img:'https://via.placeholder.com/750x900/facc15/111827?text=Base+Cap+Gelb' }
-    ]
-  };
+  productId: 'bauchtasche',
+  productName: 'Bauchtasche',
+  basePrice: 14.99,
+  colors: [
+    { code:'w', label:'Weiß',  hex:'#ffffff', img:'https://via.placeholder.com/750x900?text=Bauchtasche+Weiss' },
+    { code:'s', label:'Schwarz',hex:'#111827', img:'https://via.placeholder.com/750x900/111827/ffffff?text=Bauchtasche+Schwarz' },
+    { code:'r', label:'Rot',   hex:'#b91c1c', img:'https://via.placeholder.com/750x900/b91c1c/ffffff?text=Bauchtasche+Rot' },
+    { code:'b', label:'Blau',  hex:'#1d4ed8', img:'https://via.placeholder.com/750x900/1d4ed8/ffffff?text=Bauchtasche+Blau' },
+    { code:'g', label:'Gelb',  hex:'#facc15', img:'https://via.placeholder.com/750x900/facc15/111827?text=Bauchtasche+Gelb' }
+  ]
+};
+
 
   const MOTIF_PRICE = { bw:3.50, color:5.50 };
 
