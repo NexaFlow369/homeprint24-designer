@@ -1271,28 +1271,9 @@
     applyKidSizeLock();
     updatePrice();
   }
-    updatePrice();
-  }
   init();
 })();
 </script>
-
-
-<!-- URL AUTO PRODUCT SWITCH -->
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  const params = new URLSearchParams(window.location.search);
-  const prodFromUrl = params.get('prod');
-
-  if (prodFromUrl) {
-    const btn = document.querySelector('[data-prod="' + prodFromUrl + '"]');
-    if (btn) {
-      btn.click();
-    }
-  }
-});
-</script>
-
 
 </body>
 </html>
