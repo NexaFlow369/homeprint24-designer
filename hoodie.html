@@ -192,7 +192,7 @@
 <body>
 
 <div id="hpt24">
-  <h2 class="hpt24-title">HOMEPRINT24 — PRINT YOUR LEGACY</h2>
+  <h2 class="hpt24-title">HomePrint24 — Print Your Legacy</h2>
 
   <div class="hpt24-layout">
     <!-- LINKE SPALTE: Livebild + Layer-Controls -->
@@ -310,15 +310,15 @@
           </select>
         </div>
 
-        <!-- NEU: Schnitt & Promocode -->
+        <!-- NEU: Schnitt + Promocode -->
         <div class="hpt24-grid-2 hpt24-gap-top">
           <select id="ld-fit" class="ld-input">
             <option value="">Schnitt wählen</option>
-            <option value="slim">Slim</option>
+            <option value="slim">Slim Fit</option>
             <option value="regular">Regular</option>
             <option value="oversize">Oversize</option>
           </select>
-          <input id="ld-promocode" type="text" class="ld-input" placeholder="Promocode (optional)">
+          <input id="ld-promo" class="ld-input" placeholder="Promocode (optional)">
         </div>
 
         <p id="ld-kid-note" class="hpt24-kid-note" style="display:none;">
@@ -402,8 +402,11 @@
 (function(){
   /* =====================================================
      SINGLE PRODUCT CONFIG – HIER NUR PROD_KEY ÄNDERN
+     -----------------------------------------------------
+     Mögliche Werte:
+       'tshirt', 'vneck', 'polo', 'hoodie', 'sweat', 'track', 'jogger'
   ====================================================== */
-  const PROD_KEY  = 'hoodie'; // <--- HIER ändern pro Datei
+  const PROD_KEY  = 'hoodie'; // <--- HIER pro Datei anpassen
 
   const PRODUCT_META = {
     tshirt:{ name:'T-Shirt',      group:'shirt'  },
@@ -444,7 +447,9 @@
   const L = u => u;
   const mk8 = url => [url,url,url,url,url,url,url,url];
 
-  /* FRONT-BILDER */
+  /* =========================
+     FRONT-BILDER ALLE PRODUKTE
+     ========================= */
   const SPIN = {
     tshirt:{
       w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_39A4FE77-F206-4838-BD1C-CB77DEB7234C.jpeg/:/rs=w:1440,h:1440')),
@@ -497,7 +502,9 @@
     }
   };
 
-  /* BACK-BILDER */
+  /* =========================
+     BACK-BILDER ALLE PRODUKTE
+     ========================= */
   const SPIN_BACK={
     tshirt:{
       w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_E683668C-A4CC-41A3-9E22-F9CC10E258E6.jpeg/:/rs=w:1440,h:1440')),
@@ -568,8 +575,6 @@
   const genderEl=document.getElementById('ld-gender');
   const sizeEl=document.getElementById('ld-size');
   const kidNoteEl=document.getElementById('ld-kid-note');
-  const fitEl = document.getElementById('ld-fit');           // NEU
-  const promoEl = document.getElementById('ld-promocode');   // NEU
   const scaleEl=document.getElementById('ld-scale');
   const scaleVal=document.getElementById('ld-scale-val');
   const rotLayerEl=document.getElementById('ld-rot-layer');
@@ -581,6 +586,9 @@
   const toggleBackBtn=document.getElementById('ld-toggle-back');
   const checkoutBtn=document.getElementById('ld-checkout');
   const totalEl=document.getElementById('ld-total');
+
+  const fitEl=document.getElementById('ld-fit');     // NEU
+  const promoEl=document.getElementById('ld-promo'); // NEU
 
   const modalEl=document.getElementById('ld-suggest-modal');
   const modalCloseBtn=document.getElementById('ld-modal-close');
@@ -697,12 +705,16 @@
       let enable = false;
 
       if(isKid){
+        // Nur Kindergrößen
         enable = isChildOpt;
       }else if(genderVal === 'woman'){
+        // Alle Erwachsenengrößen, inkl. XXS/XS
         enable = !isChildOpt;
       }else if(genderVal === 'man'){
+        // Erwachsene, aber ohne Frau-only (XXS/XS)
         enable = !isChildOpt && !isWomanOnly;
       }else{
+        // Noch keine Passform gewählt: alles deaktiviert außer Placeholder
         enable = false;
       }
 
@@ -859,7 +871,7 @@
   function syncUIFromLayer(){
     const L=layers[active]||{};
     const scalePct=Math.round((L.scale||1)*100);
-    scaleEl.value=Math.min(400)Math.max(5,scalePct||100));
+    scaleEl.value=Math.min(400,Math.max(5,scalePct||100));
     scaleVal.textContent=`(${scaleEl.value}%)`;
     rotLayerEl.value=Math.round(L.rot||0);
     rotLayerVal.textContent=`(${rotLayerEl.value}°)`;
@@ -906,6 +918,14 @@
   });
 
   const cartBox=document.getElementById('ld-cart');
+
+  function labelFit(code){
+    if(code==='slim') return 'Slim';
+    if(code==='regular') return 'Regular';
+    if(code==='oversize') return 'Oversize';
+    return '-';
+  }
+
   function addToCart(it){cart.push(it);renderCart();}
   function renderCart(){
     cartBox.innerHTML='';
@@ -916,20 +936,17 @@
       row.className='ld-cart-row';
       const qualLabel=(it.quality||'basic').charAt(0).toUpperCase()+(it.quality||'basic').slice(1);
       const motifsText=(it.motifs||0)+' Motiv'+(it.motifs===1?'':'e');
-
-      const fitMap = {slim:'Slim',regular:'Regular',oversize:'Oversize'};
-      const fitChip = it.fit ? `<span class="ld-chip">${fitMap[it.fit] || it.fit}</span>` : '';
-      const promoChip = it.promo ? `<span class="ld-chip">Code: ${it.promo}</span>` : '';
-
+      const fitLabel = labelFit(it.fit);
+      const promoLabel = (it.promo && it.promo.trim()!=='') ? it.promo.trim() : '-';
       row.innerHTML=`
         <div>
           <strong>${it.name}</strong>
           <span class="ld-chip">${COLOR_NAME[it.color]||it.color}</span>
           <span class="ld-chip">${it.size||'-'}</span>
+          <span class="ld-chip">Schnitt: ${fitLabel}</span>
           <span class="ld-chip">${qualLabel}</span>
           <span class="ld-chip">${motifsText}</span>
-          ${fitChip}
-          ${promoChip}
+          <span class="ld-chip">Promo: ${promoLabel}</span>
         </div>
         <div class="ld-cart-price">${fmt(it.price)}</div>
         <div class="ld-cart-qty">
@@ -952,9 +969,8 @@
     const qty=Math.max(1,parseInt(qtyEl.value||'1',10));
     const quality=(qualityEl.value||'basic');
     const gender=(genderEl.value||'');
-
-    const fit  = (fitEl && fitEl.value) || '';
-    const promo = (promoEl && promoEl.value.trim()) || '';
+    const fit=(fitEl && fitEl.value)||'';
+    const promo=(promoEl && promoEl.value)||'';
 
     const stats = motifStats();
     const motifsCount = stats.bw + stats.color;
@@ -969,9 +985,9 @@
       price:unitPrice,
       quality,
       gender,
+      motifs:motifsCount,
       fit,
-      promo,
-      motifs:motifsCount
+      promo
     });
     updatePrice();
   };
