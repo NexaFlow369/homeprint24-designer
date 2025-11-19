@@ -68,7 +68,6 @@
   .hpt24-small-btn{padding:5px 8px;font-size:11px;}
   .hpt24-row-between{display:flex;justify-content:space-between;align-items:center;}
   .hpt24-view-switch{display:flex;gap:8px;align-items:center;}
-  .hpt24-radio-col{margin-top:4px;font-size:12px;display:flex;flex-direction:column;gap:2px;}
   .hpt24-notes{height:84px;margin-top:8px;}
   .hpt24-kid-note{margin-top:6px;font-size:11px;color:#f97316;}
   .hpt24-print-hint{font-size:11px;color:#4b5563;margin-top:4px;line-height:1.5;}
@@ -193,7 +192,7 @@
 <body>
 
 <div id="hpt24">
-  <h2 class="hpt24-title">HomePrint24 — Print Your Legacy (T-Shirt)</h2>
+  <h2 class="hpt24-title">HomePrint24 — Print Your Legacy</h2>
 
   <div class="hpt24-layout">
     <!-- LINKE SPALTE: Livebild + Layer-Controls -->
@@ -358,7 +357,7 @@
       <div class="ld-modal-logo">HP</div>
       <div>
         <h3>Dein Motiv – weitere Farbvarianten</h3>
-        <p>So könnte dein Motiv auf deinem T-Shirt in anderen Farben aussehen.</p>
+        <p>So könnte dein Motiv auf deinem gewählten Produkt in anderen Farben aussehen.</p>
       </div>
     </div>
 
@@ -390,17 +389,43 @@
 
 <script>
 (function(){
-  /* ==== SINGLE PRODUCT CONFIG ==== */
-  const PROD_KEY  = 'tshirt';
-  const PROD_NAME = 'T-Shirt';
-  const PROD_GROUP = 'shirt'; // für Preismatrix
+  /* =====================================================
+     SINGLE PRODUCT CONFIG – HIER NUR PROD_KEY ÄNDERN
+     -----------------------------------------------------
+     Mögliche Werte:
+       'tshirt', 'vneck', 'polo', 'hoodie', 'sweat', 'track', 'jogger'
+  ====================================================== */
+  const PROD_KEY  = 'tshirt'; // <--- HIER ändern pro Datei
 
-  /* PREISE nach Matrix (NETTO) – nur Gruppe "shirt" wird genutzt */
+  const PRODUCT_META = {
+    tshirt:{ name:'T-Shirt',      group:'shirt'  },
+    vneck:{ name:'V-Ausschnitt',  group:'shirt'  },
+    polo: { name:'Polo Shirt',    group:'shirt'  },
+    hoodie:{name:'Hoodie',        group:'sweat'  },
+    sweat:{ name:'Sweatshirt',    group:'sweat'  },
+    track:{ name:'Trainingsjacke',group:'bottom' },
+    jogger:{name:'Jogginghose',   group:'bottom' }
+  };
+
+  const PROD_NAME  = PRODUCT_META[PROD_KEY].name;
+  const PROD_GROUP = PRODUCT_META[PROD_KEY].group;
+
+  /* PREISE nach Matrix (NETTO) */
   const BASE_PRICE = {
     shirt: {
       basic:   19.99,
       standard:25.99,
       premium: 35.99
+    },
+    sweat: {
+      basic:   29.99,
+      standard:35.99,
+      premium: 45.99
+    },
+    bottom: {
+      basic:   29.99,
+      standard:35.99,
+      premium: 45.99
     }
   };
 
@@ -411,25 +436,113 @@
   const L = u => u;
   const mk8 = url => [url,url,url,url,url,url,url,url];
 
-  /* FRONT-Bilder nur für T-Shirt */
+  /* =========================
+     FRONT-BILDER ALLE PRODUKTE
+     ========================= */
   const SPIN = {
-    [PROD_KEY]:{
+    tshirt:{
       w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_39A4FE77-F206-4838-BD1C-CB77DEB7234C.jpeg/:/rs=w:1440,h:1440')),
       s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9138.jpeg/:/rs=w:1440,h:1440')),
       g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9139.jpeg/:/rs=w:1440,h:1440')),
       b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9137.jpeg/:/rs=w:1440,h:1440')),
       r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9136.jpeg/:/rs=w:1440,h:1440'))
+    },
+    vneck:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_13A4C3DF-6F22-485E-866A-9796679D4EEA.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9130.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9131.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9129.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9128.jpeg/:/rs=w:1440,h:1440'))
+    },
+    polo:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_F2280821-1845-4CD9-ACEE-F252A3AF1597.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9147.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9148.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9146.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9145.jpeg/:/rs=w:1440,h:1440'))
+    },
+    sweat:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_0C93F68F-D399-4270-9110-1A00EE841614.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9072.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9073.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9075.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9074.jpeg/:/rs=w:1440,h:1440'))
+    },
+    hoodie:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_2C06C545-468C-41A1-AD84-4487C4845387.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9156.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9157.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9155.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9154.jpeg/:/rs=w:1440,h:1440'))
+    },
+    track:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_752DCC1C-A663-4066-A9B0-1581BF7BCE1C.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/F12B652D-DA9B-4723-89EC-DCA4A832DA5A.PNG')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0-40e3-8f17-c80a8147cdc6/ols/IMG_9082.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8707.JPG')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/B467D182-0751-4F2D-A446-8AD9BD5D2A22.PNG'))
+    },
+    jogger:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_40C1501A-C5B6-43ED-9712-69A34E5D0FD9.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0-40e3-8f17-c80a8147cdc6/ols/IMG_9159.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0-40e3-8f17-c80a8147cdc6/ols/IMG_9158.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0-40e3-8f17-c80a8147cdc6/ols/IMG_9160.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0-40e3-8f17-c80a8147cdc6/ols/IMG_9057.jpeg/:/rs=w:1440,h:1440'))
     }
   };
 
-  /* BACK-Bilder nur für T-Shirt */
-  const SPIN_BACK = {
-    [PROD_KEY]:{
+  /* =========================
+     BACK-BILDER ALLE PRODUKTE
+     ========================= */
+  const SPIN_BACK={
+    tshirt:{
       w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_E683668C-A4CC-41A3-9E22-F9CC10E258E6.jpeg/:/rs=w:1440,h:1440')),
       b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/DB6435C5-9AF3-4FB8-A7B6-39F9DC638153.png')),
       r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9132.jpeg/:/rs=w:1440,h:1440')),
       g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9135.jpeg/:/rs=w:1440,h:1440')),
       s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9134.jpeg/:/rs=w:1440,h:1440'))
+    },
+    vneck:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_E683668C-A4CC-41A3-9E22-F9CC10E258E6.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9133.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9132.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9135.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9134.jpeg/:/rs=w:1440,h:1440'))
+    },
+    polo:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_0C93F68F-D399-4270-9110-1A00EE841614.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9151.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9149.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/3F884F7F-1B58-43E7-8887-F95BF12FC227.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9151.jpeg/:/rs=w:1440,h:1440'))
+    },
+    sweat:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_53778E2C-B455-4920-81E6-E686FD9E962C.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9078.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9076.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9077.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9078.jpeg/:/rs=w:1440,h:1440'))
+    },
+    hoodie:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_FF41A819-3DD9-42FF-9520-C010BACA2F95.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9126.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9127.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9124.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9126.jpeg/:/rs=w:1440,h:1440'))
+    },
+    track:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_76786625-8A7E-4321-8731-B010914096F5.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/E4559EF7-479B-40C4-A541-BCE82C453F70.png')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/D562B05D-392B-4A80-A0B0-C7F7703AA965.png')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/A707EC48-6F41-408F-A726-745443635383.png')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/D386B573-20F6-44EA-A931-C78B79CEDD4D.png'))
+    },
+    jogger:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_7955E58F-97DF-4C4C-AB0E-46DB746F76CC.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0-40e3-8f17-c80a8147cdc6/ols/IMG_9063.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0-40e3-8f17-c80a8147cdc6/ols/IMG_9061.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0-40e3-8f17-c80a8147cdc6/ols/IMG_9062.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0-40e3-8f17-c80a8147cdc6/ols/IMG_9063.jpeg/:/rs=w:1440,h:1440'))
     }
   };
 
@@ -620,7 +733,7 @@
     if(base.complete) ctx.drawImage(base,sx,sy,W,H);
 
     const cx=canvas.width/2;
-    const centerFactor=0.46;
+    const centerFactor=(PROD_KEY==='jogger')?0.62:0.46;
     const cy=sy+H*centerFactor;
 
     layers.forEach(L=>{
@@ -855,7 +968,13 @@
 
   /* Placement im Modal */
   const MODAL_PLACEMENT={
-    [PROD_KEY]:{w:0.34,x:0.5,y:0.33}
+    tshirt:{w:0.34,x:0.5,y:0.33},
+    vneck:{w:0.34,x:0.5,y:0.33},
+    polo:{w:0.34,x:0.5,y:0.33},
+    sweat:{w:0.34,x:0.5,y:0.33},
+    hoodie:{w:0.36,x:0.5,y:0.32},
+    track:{w:0.34,x:0.5,y:0.33},
+    jogger:{w:0.30,x:0.55,y:0.62}
   };
 
   function getFirstMotifLayer(){
