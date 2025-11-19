@@ -310,6 +310,17 @@
           </select>
         </div>
 
+        <!-- NEU: Schnitt + Promocode -->
+        <div class="hpt24-grid-2 hpt24-gap-top">
+          <select id="ld-fit" class="ld-input">
+            <option value="">Schnitt wählen</option>
+            <option value="slim">Slim Fit</option>
+            <option value="regular">Regular</option>
+            <option value="oversize">Oversize</option>
+          </select>
+          <input id="ld-promo" class="ld-input" placeholder="Promocode (optional)">
+        </div>
+
         <p id="ld-kid-note" class="hpt24-kid-note" style="display:none;">
           Hinweis: Bei „Kind“ wird der Textilpreis rabattiert (25 %), die Druckkosten pro Motiv bleiben unverändert.
         </p>
@@ -395,7 +406,7 @@
      Mögliche Werte:
        'tshirt', 'vneck', 'polo', 'hoodie', 'sweat', 'track', 'jogger'
   ====================================================== */
-  const PROD_KEY  = 'track'; // <--- HIER ändern pro Datei
+  const PROD_KEY  = 'track'; // <--- HIER pro Datei anpassen
 
   const PRODUCT_META = {
     tshirt:{ name:'T-Shirt',      group:'shirt'  },
@@ -575,6 +586,9 @@
   const toggleBackBtn=document.getElementById('ld-toggle-back');
   const checkoutBtn=document.getElementById('ld-checkout');
   const totalEl=document.getElementById('ld-total');
+
+  const fitEl=document.getElementById('ld-fit');     // NEU
+  const promoEl=document.getElementById('ld-promo'); // NEU
 
   const modalEl=document.getElementById('ld-suggest-modal');
   const modalCloseBtn=document.getElementById('ld-modal-close');
@@ -904,6 +918,14 @@
   });
 
   const cartBox=document.getElementById('ld-cart');
+
+  function labelFit(code){
+    if(code==='slim') return 'Slim';
+    if(code==='regular') return 'Regular';
+    if(code==='oversize') return 'Oversize';
+    return '-';
+  }
+
   function addToCart(it){cart.push(it);renderCart();}
   function renderCart(){
     cartBox.innerHTML='';
@@ -914,13 +936,17 @@
       row.className='ld-cart-row';
       const qualLabel=(it.quality||'basic').charAt(0).toUpperCase()+(it.quality||'basic').slice(1);
       const motifsText=(it.motifs||0)+' Motiv'+(it.motifs===1?'':'e');
+      const fitLabel = labelFit(it.fit);
+      const promoLabel = (it.promo && it.promo.trim()!=='') ? it.promo.trim() : '-';
       row.innerHTML=`
         <div>
           <strong>${it.name}</strong>
           <span class="ld-chip">${COLOR_NAME[it.color]||it.color}</span>
           <span class="ld-chip">${it.size||'-'}</span>
+          <span class="ld-chip">Schnitt: ${fitLabel}</span>
           <span class="ld-chip">${qualLabel}</span>
           <span class="ld-chip">${motifsText}</span>
+          <span class="ld-chip">Promo: ${promoLabel}</span>
         </div>
         <div class="ld-cart-price">${fmt(it.price)}</div>
         <div class="ld-cart-qty">
@@ -943,6 +969,8 @@
     const qty=Math.max(1,parseInt(qtyEl.value||'1',10));
     const quality=(qualityEl.value||'basic');
     const gender=(genderEl.value||'');
+    const fit=(fitEl && fitEl.value)||'';
+    const promo=(promoEl && promoEl.value)||'';
 
     const stats = motifStats();
     const motifsCount = stats.bw + stats.color;
@@ -957,7 +985,9 @@
       price:unitPrice,
       quality,
       gender,
-      motifs:motifsCount
+      motifs:motifsCount,
+      fit,
+      promo
     });
     updatePrice();
   };
