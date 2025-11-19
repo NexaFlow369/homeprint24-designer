@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>HomePrint24 – Base Cap Editor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      font-family:'Fjalla One',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      color:#0f172a;
+      background:#0b1120;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      padding:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    #hpt24{
+      max-width:1080px;
+      width:100%;
+      margin:24px auto;
+      background:#e5e7eb;
+      padding:16px;
+      border-radius:18px;
+      box-shadow:0 18px 40px rgba(15,23,42,.35);
+    }
+    #hpt24 *{
+      font-family:'Fjalla One',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    }
+    .hpt24-title{text-align:center;margin:8px 0 2px;font-weight:900;letter-spacing:.2em;font-size:20px;text-transform:uppercase;}
+    .hpt24-sub{text-align:center;margin:0 0 14px;font-size:12px;color:#4b5563;}
+
+    .hpt24-layout{
+      display:grid;
+      grid-template-columns:minmax(0,1.1fr) minmax(0,1.1fr);
+      gap:18px;
+      align-items:stretch;
+    }
+    @media(max-width:900px){
+      .hpt24-layout{grid-template-columns:1fr;}
+    }
+
+    .hpt24-left,.hpt24-right{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .hpt24-right{
+      border-left:1px solid #d1d5db;
+      padding-left:14px;
+    }
+    @media(max-width:900px){
+      .hpt24-right{
+        border-left:none;
+        padding-left:0;
+      }
+    }
+
+    .ld-card{
+      background:#f9fafb;
+      border-radius:12px;
+      padding:12px;
+      border:1px solid #e5e7eb;
+    }
+    .ld-label{font-weight:800;font-size:14px;margin-bottom:4px;color:#0f172a;}
+    .ld-sublabel{font-weight:600;font-size:12px;color:#0f172a;}
+    .ld-input{
+      width:100%;
+      padding:9px 10px;
+      border-radius:8px;
+      border:1px solid #cbd5e1;
+      background:#fff;
+      font-size:12px;
+    }
+    .hpt24-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .hpt24-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+
+    .ld-btn{
+      border:none;
+      border-radius:8px;
+      padding:6px 10px;
+      font-size:11px;
+      font-weight:700;
+      background:#e2e8f0;
+      cursor:pointer;
+    }
+    .ld-btn.primary{background:#0f172a;color:#f9fafb;}
+    .ld-btn.accent{background:#0ea5e9;color:#f9fafb;}
+    .ld-chip{
+      padding:2px 8px;
+      border-radius:999px;
+      border:1px solid #cbd5e1;
+      font-size:11px;
+      background:#fff;
+      margin-right:4px;
+    }
+
+    .ld-preview-shell{
+      position:relative;
+      background:#fff;
+      border-radius:14px;
+      padding:8px 8px 12px;
+      box-shadow:0 10px 32px rgba(15,23,42,.15);
+    }
+    #canvas{
+      width:100%;
+      max-width:520px;
+      display:block;
+      margin:0 auto;
+      border-radius:12px;
+      background:#ffffff;
+    }
+    .ld-preview-hint{
+      position:absolute;
+      left:16px;
+      bottom:12px;
+      background:rgba(15,23,42,.86);
+      color:#fff;
+      padding:6px 10px;
+      border-radius:8px;
+      font-size:11px;
+    }
+    .ld-color-bar{
+      margin-top:8px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding:6px 8px;
+      border-radius:10px;
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+    }
+    .ld-swatches-row{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .hpt24-range{width:100%;}
+    .hpt24-subval{font-size:11px;color:#64748b;}
+    .hpt24-layer-buttons{display:flex;gap:6px;justify-content:flex-end;align-items:flex-end;}
+    .hpt24-small-btn{padding:4px 8px;font-size:10px;}
+
+    .hpt24-upload-list{display:flex;flex-direction:column;gap:8px;margin-top:8px;}
+    .ld-upload-row{
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) auto auto auto;
+      gap:6px;
+      align-items:center;
+    }
+    .hpt24-sw-toggle{
+      font-size:10px;
+      display:flex;
+      align-items:center;
+      gap:4px;
+    }
+    .hpt24-sw-toggle input{margin:0;}
+
+    .ld-cart-row{
+      display:grid;
+      grid-template-columns:minmax(0,1.5fr) auto auto auto;
+      gap:8px;
+      align-items:center;
+      background:#e5e7eb;
+      border-radius:10px;
+      padding:8px;
+      border:1px solid #cbd5e1;
+    }
+    .hpt24-cart-list{display:flex;flex-direction:column;gap:6px;margin-top:6px;}
+    .hpt24-row-between{display:flex;justify-content:space-between;align-items:center;}
+    .hpt24-total{font-weight:900;}
+    .hpt24-checkout-btn{width:100%;margin-top:8px;}
+    .hpt24-footer{text-align:center;font-size:11px;color:#6b7280;margin-top:10px;}
+
+    @media(max-width:700px){
+      .ld-upload-row{
+        grid-template-columns:1fr 1fr;
+        grid-auto-rows:auto;
+      }
+      .ld-cart-row{
+        grid-template-columns:1fr 1fr;
+        grid-auto-rows:auto;
+      }
+    }
+
+    /* Back Button */
+    .back-btn{
+      position:fixed;
+      top:16px;
+      left:16px;
+      background:#0f172a;
+      color:#fff;
+      padding:8px 14px;
+      border-radius:12px;
+      font-size:14px;
+      font-weight:900;
+      text-decoration:none;
+      box-shadow:0 6px 18px rgba(0,0,0,.4);
+      z-index:9999;
+      letter-spacing:.4px;
+    }
+  </style>
+</head>
+<body>
+
+<a href="index.html" class="back-btn">← Zurück</a>
+
+<div id="hpt24">
+  <h2 class="hpt24-title">HOMEPRINT24 — PRINT YOUR LEGACY</h2>
+  <p class="hpt24-sub">Produkt: Base Cap · Einzelseite · Front-Print · 3 Upload-Slots</p>
+
+  <div class="hpt24-layout">
+    <!-- LINKER BEREICH: Preview + Layer-Controls -->
+    <div class="hpt24-left">
+      <div class="ld-preview-shell">
+        <canvas id="canvas" width="760" height="900"></canvas>
+        <div class="ld-preview-hint">
+          Ziehen = Position · Mausrad = Zoom · Slider = Rotation / Deckkraft
+        </div>
+        <div class="ld-color-bar">
+          <span class="ld-sublabel">Farbe (Vorschau)</span>
+          <div id="swatches" class="ld-swatches-row"></div>
+        </div>
+      </div>
+
+      <div class="ld-card">
+        <div class="hpt24-grid-2">
+          <div>
+            <label class="ld-sublabel">Preset</label>
+            <div style="display:flex;gap:6px;margin-top:4px;">
+              <button class="ld-btn" data-preset="center">Center</button>
+              <button class="ld-btn" data-preset="top">Klein oben</button>
+            </div>
+          </div>
+          <div>
+            <label class="ld-sublabel">Skalierung <span id="scale-val" class="hpt24-subval">(100%)</span></label>
+            <input id="scale" type="range" min="5" max="300" value="100" class="hpt24-range">
+          </div>
+        </div>
+
+        <div class="hpt24-grid-3" style="margin-top:6px;">
+          <div>
+            <label class="ld-sublabel">Rotation <span id="rot-val" class="hpt24-subval">(0°)</span></label>
+            <input id="rot" type="range" min="-180" max="180" value="0" class="hpt24-range">
+          </div>
+          <div>
+            <label class="ld-sublabel">Deckkraft <span id="opa-val" class="hpt24-subval">(100%)</span></label>
+            <input id="opa" type="range" min="10" max="100" value="100" class="hpt24-range">
+          </div>
+          <div class="hpt24-layer-buttons">
+            <button id="layer-vis" class="ld-btn hpt24-small-btn">Sichtbar: AN</button>
+            <button id="layer-del" class="ld-btn hpt24-small-btn">Entfernen</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECHTS: Upload, Angaben, Warenkorb -->
+    <div class="hpt24-right">
+      <div class="ld-card">
+        <label class="ld-label">Dein Motiv hochladen (3 Ebenen)</label>
+        <div id="upload-list" class="hpt24-upload-list"></div>
+      </div>
+
+      <div class="ld-card">
+        <label class="ld-label">Bestellangaben</label>
+
+        <div class="hpt24-grid-2" style="margin-top:6px;">
+          <input id="prod-name" class="ld-input" type="text" value="Base Cap" readonly>
+          <input id="size" class="ld-input" type="text" value="One Size" readonly>
+        </div>
+
+        <div class="hpt24-grid-2" style="margin-top:6px;">
+          <select id="color-select" class="ld-input"></select>
+          <select id="quality" class="ld-input" disabled>
+            <option>Standard Qualität</option>
+          </select>
+        </div>
+
+        <div class="hpt24-grid-2" style="margin-top:6px;">
+          <input id="qty" type="number" class="ld-input" min="1" value="1" />
+          <input id="price" type="text" class="ld-input" value="0,00 €" readonly />
+        </div>
+
+        <textarea id="notes" class="ld-input" style="margin-top:6px;height:80px;" placeholder="Wünsche / Anmerkungen (z. B. Logo 8 cm breit, mittig vorne …)"></textarea>
+
+        <div class="hpt24-grid-2" style="margin-top:6px;">
+          <button id="add" class="ld-btn primary">In den Warenkorb</button>
+          <button id="download" class="ld-btn">Mockup herunterladen</button>
+        </div>
+      </div>
+
+      <div class="ld-card">
+        <div class="hpt24-row-between">
+          <span class="ld-label" style="margin:0;">Warenkorb</span>
+          <span id="total" class="hpt24-total">0,00 €</span>
+        </div>
+        <div id="cart" class="hpt24-cart-list"></div>
+        <button id="checkout" class="ld-btn accent hpt24-checkout-btn">Zur Kasse</button>
+        <p style="font-size:11px;color:#6b7280;margin-top:6px;">
+          Preis = Blanko-Preis + Druck (3,50 € S/W · 5,50 € Farbe pro Motiv). Mockup bitte vor Checkout sichern.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <p class="hpt24-footer">© HomePrint24 — Print Your Legacy</p>
+</div>
+
+<script>
+(function(){
+  // 🔧 CONFIG: HIER pro Datei anpassen
+ const CONFIG = {
+  productId: 'stofftasche',
+  productName: 'Stoff Tasche',
+  basePrice: 9.99,
+  colors: [
+    { code:'w', label:'Weiß',  hex:'#ffffff', img:'https://via.placeholder.com/750x900?text=Stoff+Tasche+Weiss' },
+    { code:'s', label:'Schwarz',hex:'#111827', img:'https://via.placeholder.com/750x900/111827/ffffff?text=Stoff+Tasche+Schwarz' },
+    { code:'r', label:'Rot',   hex:'#b91c1c', img:'https://via.placeholder.com/750x900/b91c1c/ffffff?text=Stoff+Tasche+Rot' },
+    { code:'b', label:'Blau',  hex:'#1d4ed8', img:'https://via.placeholder.com/750x900/1d4ed8/ffffff?text=Stoff+Tasche+Blau' },
+    { code:'g', label:'Gelb',  hex:'#facc15', img:'https://via.placeholder.com/750x900/facc15/111827?text=Stoff+Tasche+Gelb' }
+  ]
+};
+
+
+  const MOTIF_PRICE = { bw:3.50, color:5.50 };
+
+  const canvas = document.getElementById('canvas');
+  const ctx    = canvas.getContext('2d');
+
+  const colorSelect = document.getElementById('color-select');
+  const swatchHost  = document.getElementById('swatches');
+  const qtyEl       = document.getElementById('qty');
+  const priceEl     = document.getElementById('price');
+  const totalEl     = document.getElementById('total');
+  const cartBox     = document.getElementById('cart');
+  const uploadList  = document.getElementById('upload-list');
+
+  const scaleEl = document.getElementById('scale');
+  const rotEl   = document.getElementById('rot');
+  const opaEl   = document.getElementById('opa');
+  const scaleVal= document.getElementById('scale-val');
+  const rotVal  = document.getElementById('rot-val');
+  const opaVal  = document.getElementById('opa-val');
+  const layerVisBtn = document.getElementById('layer-vis');
+  const layerDelBtn = document.getElementById('layer-del');
+
+  const downloadBtn = document.getElementById('download');
+  const addBtn      = document.getElementById('add');
+  const checkoutBtn = document.getElementById('checkout');
+
+  const cart = [];
+  const LAYER_COUNT = 3;
+
+  const IMAGE_CACHE = {};
+  function loadImage(src){
+    if(IMAGE_CACHE[src]) return IMAGE_CACHE[src];
+    const im = new Image();
+    im.crossOrigin = 'anonymous';
+    im.onload = draw;
+    im.src = src;
+    IMAGE_CACHE[src] = im;
+    return im;
+  }
+
+  let currentColor = CONFIG.colors[0].code;
+  let baseImg      = loadImage(CONFIG.colors[0].img);
+
+  function baseOverlayWidth(){ return Math.round(canvas.width * 0.45); }
+
+  function makeLayer(){
+    return { img:null, x:0, y:0, scale:1, rot:0, op:1, vis:true, bw:false, name:'' };
+  }
+  const layers = Array.from({length:LAYER_COUNT}, makeLayer);
+  let active = 0;
+
+  function fmt(n){
+    return n.toLocaleString('de-DE',{style:'currency',currency:'EUR'});
+  }
+
+  function renderColorSelect(){
+    colorSelect.innerHTML='';
+    CONFIG.colors.forEach(c=>{
+      const opt = document.createElement('option');
+      opt.value = c.code;
+      opt.textContent = c.label;
+      colorSelect.appendChild(opt);
+    });
+    colorSelect.value = currentColor;
+  }
+
+  function renderSwatches(){
+    swatchHost.innerHTML='';
+    CONFIG.colors.forEach(c=>{
+      const el = document.createElement('div');
+      el.style.width='24px';
+      el.style.height='24px';
+      el.style.borderRadius='50%';
+      el.style.border='2px solid #cbd5e1';
+      el.style.background=c.hex;
+      el.title=c.label;
+      el.style.cursor='pointer';
+      el.onclick = () => {
+        currentColor = c.code;
+        colorSelect.value = currentColor;
+        baseImg = loadImage(c.img);
+        draw();
+      };
+      swatchHost.appendChild(el);
+    });
+  }
+
+  colorSelect.addEventListener('change',e=>{
+    const val = e.target.value;
+    const cfg = CONFIG.colors.find(x=>x.code===val) || CONFIG.colors[0];
+    currentColor = cfg.code;
+    baseImg = loadImage(cfg.img);
+    draw();
+  });
+
+  function motifStats(){
+    let bw=0,color=0;
+    layers.forEach(L=>{
+      if(!L.img || !L.vis) return;
+      if(L.bw) bw++; else color++;
+    });
+    return {bw,color};
+  }
+
+  function computeUnitPrice(){
+    const base = CONFIG.basePrice;
+    const ms   = motifStats();
+    const motifsCost = ms.bw*MOTIF_PRICE.bw + ms.color*MOTIF_PRICE.color;
+    return base + motifsCost;
+  }
+
+  function updatePrice(){
+    const qty = Math.max(1,parseInt(qtyEl.value||'1',10));
+    const unit = computeUnitPrice();
+    priceEl.value = fmt(qty*unit);
+  }
+
+  function renderUploadRows(){
+    uploadList.innerHTML='';
+    for(let i=0;i<LAYER_COUNT;i++){
+      const L = layers[i];
+      const row = document.createElement('div');
+      row.className='ld-upload-row';
+      row.innerHTML = `
+        <div>
+          <input type="file" accept=".png,.jpg,.jpeg,.svg" class="ld-input" id="file-${i}">
+        </div>
+        <label class="hpt24-sw-toggle">
+          <input type="checkbox" data-bw="${i}">
+          S/W (3,50 €)
+        </label>
+        <button class="ld-btn" data-act="${i}">${i===active?'Aktiv':'Layer'}</button>
+        <button class="ld-btn" data-del="${i}">✖</button>
+      `;
+      uploadList.appendChild(row);
+
+      const fileInp = row.querySelector(`#file-${i}`);
+      fileInp.addEventListener('change',e=>{
+        const f = e.target.files && e.target.files[0];
+        if(!f) return;
+        const url = URL.createObjectURL(f);
+        const im  = new Image();
+        im.onload = ()=>{
+          layers[i] = {
+            img:im,
+            x:0,
+            y:0,
+            scale:1,
+            rot:0,
+            op:1,
+            vis:true,
+            bw:layers[i].bw || false,
+            name:f.name || `Layer ${i+1}`
+          };
+          active=i;
+          syncUIFromLayer();
+          renderUploadRows();
+          draw();
+          updatePrice();
+        };
+        im.src=url;
+      });
+
+      const bwCb = row.querySelector(`[data-bw="${i}"]`);
+      bwCb.checked = !!L.bw;
+      bwCb.addEventListener('change',()=>{
+        layers[i].bw = bwCb.checked;
+        updatePrice();
+      });
+
+      row.querySelector(`[data-act="${i}"]`).onclick=()=>{
+        active=i;
+        syncUIFromLayer();
+        renderUploadRows();
+      };
+
+      row.querySelector(`[data-del="${i}"]`).onclick=()=>{
+        layers[i]=makeLayer();
+        if(active===i) active=Math.max(0,active-1);
+        syncUIFromLayer();
+        renderUploadRows();
+        draw();
+        updatePrice();
+      };
+    }
+  }
+
+  function syncUIFromLayer(){
+    const L = layers[active] || {};
+    const sPct = Math.round((L.scale||1)*100);
+    scaleEl.value = Math.min(300,Math.max(5,sPct||100));
+    scaleVal.textContent = `(${scaleEl.value}%)`;
+
+    rotEl.value = Math.round(L.rot||0);
+    rotVal.textContent = `(${rotEl.value}°)`;
+
+    opaEl.value = Math.round((L.op||1)*100);
+    opaVal.textContent = `(${opaEl.value}%)`;
+
+    layerVisBtn.textContent = 'Sichtbar: ' + ((L.img && L.vis) ? 'AN' : 'AUS');
+  }
+
+  scaleEl.addEventListener('input',()=>{
+    const L = layers[active]; if(!L || !L.img) return;
+    L.scale = Number(scaleEl.value)/100;
+    scaleVal.textContent = `(${scaleEl.value}%)`;
+    draw();
+  });
+  rotEl.addEventListener('input',()=>{
+    const L = layers[active]; if(!L || !L.img) return;
+    L.rot = Number(rotEl.value);
+    rotVal.textContent = `(${rotEl.value}°)`;
+    draw();
+  });
+  opaEl.addEventListener('input',()=>{
+    const L = layers[active]; if(!L || !L.img) return;
+    L.op = Number(opaEl.value)/100;
+    opaVal.textContent = `(${opaEl.value}%)`;
+    draw();
+  });
+  layerVisBtn.addEventListener('click',()=>{
+    const L = layers[active]; if(!L || !L.img) return;
+    L.vis = !L.vis;
+    syncUIFromLayer();
+    renderUploadRows();
+    draw();
+    updatePrice();
+  });
+  layerDelBtn.addEventListener('click',()=>{
+    layers[active]=makeLayer();
+    syncUIFromLayer();
+    renderUploadRows();
+    draw();
+    updatePrice();
+  });
+
+  // Presets
+  function applyPreset(name){
+    const L = layers[active]; if(!L || !L.img) return;
+    const H = canvas.height;
+    if(name==='center'){
+      L.x = 0; L.y=0; L.scale=1;
+      scaleEl.value=100; scaleVal.textContent='(100%)';
+    }else if(name==='top'){
+      L.x = 0; L.y = H * -0.18;
+      L.scale = 0.7;
+      scaleEl.value=70; scaleVal.textContent='(70%)';
+    }
+    draw();
+  }
+  document.querySelectorAll('[data-preset]').forEach(b=>{
+    b.addEventListener('click',()=>applyPreset(b.dataset.preset));
+  });
+
+  // Canvas Interaktion
+  let dragging=false,last={x:0,y:0};
+  function getPos(e){
+    const r = canvas.getBoundingClientRect();
+    return {
+      x:(e.clientX-r.left)*(canvas.width/r.width),
+      y:(e.clientY-r.top)*(canvas.height/r.height)
+    };
+  }
+  canvas.addEventListener('mousedown',e=>{
+    dragging=true;
+    last=getPos(e);
+  });
+  window.addEventListener('mouseup',()=>dragging=false);
+  canvas.addEventListener('mousemove',e=>{
+    if(!dragging) return;
+    const p = getPos(e);
+    const dx = p.x-last.x,dy=p.y-last.y;
+    const L = layers[active];
+    if(L && L.img){
+      L.x += dx;
+      L.y += dy;
+      draw();
+    }
+    last=p;
+  });
+  canvas.addEventListener('wheel',e=>{
+    const L = layers[active]; if(!L || !L.img) return;
+    e.preventDefault();
+    const cur = Number(scaleEl.value);
+    const next = Math.max(5,Math.min(300,cur - Math.sign(e.deltaY)*6));
+    scaleEl.value = next;
+    scaleVal.textContent = `(${next}%)`;
+    L.scale = next/100;
+    draw();
+  });
+
+  // Zeichnen
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const bg = baseImg;
+    if(bg && bg.complete){
+      const marginX = canvas.width*0.07;
+      const marginY = canvas.height*0.06;
+      const maxW = canvas.width-marginX*2;
+      const maxH = canvas.height-marginY*2;
+      const ratio = bg.height/bg.width;
+      let W=maxW,H=W*ratio;
+      if(H>maxH){H=maxH;W=H/ratio;}
+      const sx=(canvas.width-W)/2;
+      const sy=(canvas.height-H)/2;
+      ctx.drawImage(bg,sx,sy,W,H);
+
+      const cx = canvas.width/2;
+      const cy = sy + H*0.38;
+
+      layers.forEach(L=>{
+        if(!L.img || !L.vis) return;
+        const iw = baseOverlayWidth();
+        const r  = L.img.naturalHeight/Math.max(1,L.img.naturalWidth);
+        const ih = iw*r;
+        ctx.save();
+        ctx.translate(cx+L.x,cy+L.y);
+        ctx.rotate((L.rot||0)*Math.PI/180);
+        ctx.scale(L.scale||1,L.scale||1);
+        ctx.globalAlpha = L.op||1;
+        ctx.drawImage(L.img,-iw/2,-ih/2,iw,ih);
+        ctx.restore();
+      });
+    }
+  }
+
+  // Warenkorb
+  function renderCart(){
+    cartBox.innerHTML='';
+    let sum=0;
+    cart.forEach((it,idx)=>{
+      sum += it.total;
+      const row=document.createElement('div');
+      row.className='ld-cart-row';
+      const motifsText = it.motifs + ' Motiv' + (it.motifs===1?'':'e');
+      row.innerHTML = `
+        <div>
+          <strong>${it.productName}</strong>
+          <span class="ld-chip">${it.colorLabel}</span>
+          <span class="ld-chip">${it.qty} Stk.</span>
+          <span class="ld-chip">${motifsText}</span>
+        </div>
+        <div>${fmt(it.unit)}</div>
+        <div>
+          <button class="ld-btn" data-minus="${idx}">−</button>
+          <span>${it.qty}</span>
+          <button class="ld-btn" data-plus="${idx}">+</button>
+        </div>
+        <button class="ld-btn" data-del="${idx}">Entfernen</button>
+      `;
+      cartBox.appendChild(row);
+    });
+    totalEl.textContent = fmt(sum);
+
+    cartBox.querySelectorAll('[data-minus]').forEach(b=>{
+      b.onclick=()=>{
+        const i=+b.dataset.minus;
+        cart[i].qty = Math.max(1,cart[i].qty-1);
+        cart[i].total = cart[i].qty * cart[i].unit;
+        renderCart();
+      };
+    });
+    cartBox.querySelectorAll('[data-plus]').forEach(b=>{
+      b.onclick=()=>{
+        const i=+b.dataset.plus;
+        cart[i].qty++;
+        cart[i].total = cart[i].qty * cart[i].unit;
+        renderCart();
+      };
+    });
+    cartBox.querySelectorAll('[data-del]').forEach(b=>{
+      b.onclick=()=>{
+        cart.splice(+b.dataset.del,1);
+        renderCart();
+      };
+    });
+  }
+
+  document.getElementById('prod-name').value = CONFIG.productName;
+
+  addBtn.addEventListener('click',()=>{
+    const qty = Math.max(1,parseInt(qtyEl.value||'1',10));
+    const unit = computeUnitPrice();
+    const cfgColor = CONFIG.colors.find(c=>c.code===currentColor) || CONFIG.colors[0];
+    const ms = motifStats();
+    const motifsCount = ms.bw + ms.color;
+
+    cart.push({
+      productId:CONFIG.productId,
+      productName:CONFIG.productName,
+      color:currentColor,
+      colorLabel:cfgColor.label,
+      qty,
+      unit,
+      total: unit*qty,
+      motifs: motifsCount
+    });
+    renderCart();
+    updatePrice();
+  });
+
+  downloadBtn.addEventListener('click',()=>{
+    const a=document.createElement('a');
+    a.download=`HomePrint24_${CONFIG.productId}_${currentColor}.png`;
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+  });
+
+  checkoutBtn.addEventListener('click',()=>{
+    // Einfach auf deine Shop-Seite leiten
+    window.location.href = 'https://www.homeprint24.com/';
+  });
+
+  qtyEl.addEventListener('input',updatePrice);
+
+  // INIT
+  function init(){
+    renderColorSelect();
+    renderSwatches();
+    renderUploadRows();
+    syncUIFromLayer();
+    updatePrice();
+    draw();
+  }
+  init();
+})();
+</script>
+
+</body>
+</html>
