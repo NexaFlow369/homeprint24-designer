@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>HomePrint24 – Farbtest T-Shirt</title>
+  <style>
+    body{
+      margin:0;
+      padding:20px;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      background:#e5e7eb;
+      color:#0f172a;
+    }
+    .wrap{
+      max-width:900px;
+      margin:0 auto;
+      background:#f9fafb;
+      border-radius:16px;
+      padding:16px;
+      box-shadow:0 10px 30px rgba(15,23,42,.15);
+    }
+    h1{
+      margin-top:0;
+      font-size:20px;
+      text-align:center;
+    }
+    .layout{
+      display:flex;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+    .left{
+      flex:1 1 320px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+    .right{
+      flex:1 1 220px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    canvas{
+      background:#ffffff;
+      border-radius:12px;
+      box-shadow:0 8px 24px rgba(15,23,42,.25);
+      max-width:100%;
+    }
+    .controls label{
+      font-weight:600;
+      font-size:14px;
+      display:block;
+      margin-bottom:4px;
+    }
+    select{
+      width:100%;
+      padding:8px 10px;
+      border-radius:8px;
+      border:1px solid #cbd5e1;
+      background:#fff;
+      font-size:14px;
+    }
+    .swatches{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+    .swatch{
+      width:26px;
+      height:26px;
+      border-radius:50%;
+      border:2px solid #cbd5e1;
+      cursor:pointer;
+    }
+    .swatch.active{
+      box-shadow:0 0 0 3px rgba(37,99,235,.5);
+    }
+    .view-btns{
+      display:flex;
+      gap:8px;
+      margin-top:4px;
+    }
+    button{
+      padding:8px 12px;
+      border-radius:8px;
+      border:none;
+      cursor:pointer;
+      font-size:13px;
+      font-weight:600;
+    }
+    .primary{
+      background:#1d3557;
+      color:#fff;
+    }
+    .ghost{
+      background:#e5e7eb;
+      color:#111827;
+    }
+    .hint{
+      font-size:12px;
+      color:#6b7280;
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+  <h1>HomePrint24 – Farbtest nur mit 3 Bildern (Front/Back/Side Weiß)</h1>
+  <div class="layout">
+    <div class="left">
+      <canvas id="mockupCanvas" width="700" height="840"></canvas>
+    </div>
+    <div class="right">
+      <div class="controls">
+        <label>Ansicht</label>
+        <div class="view-btns">
+          <button id="btnFront" class="primary">Front</button>
+          <button id="btnBack" class="ghost">Back</button>
+          <button id="btnSide" class="ghost">Side</button>
+        </div>
+      </div>
+
+      <div class="controls">
+        <label>Farbe (Vorschau)</label>
+        <select id="colorSelect">
+          <option value="w">Weiß</option>
+          <option value="s">Schwarz</option>
+          <option value="r">Rot</option>
+          <option value="g">Gelb</option>
+          <option value="b">Blau</option>
+        </select>
+        <div class="swatches" id="swatches"></div>
+      </div>
+
+      <p class="hint">
+        Dieser Test nutzt nur deine 3 weißen Bilder:<br>
+        Front, Back, Side. Alle Farben kommen per HTML-Farboverlay.<br>
+        Wenn das gut aussieht ⇒ wir brauchen später nur Front+Back in Weiß pro Produkt.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // Deine 3 Bilder
+  const IMG_FRONT = 'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9230.jpeg/:/rs=w:1440,h:1440';
+  const IMG_BACK  = 'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/C9E813D3-77ED-4891-9CED-F91082A6B7F1.jpeg/:/rs=w:1440,h:1440';
+  const IMG_SIDE  = 'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/ABC6522D-7162-43C9-BF53-2256C0E93950.jpeg/:/rs=w:1440,h:1440';
+
+  const COLOR_HEX = {
+    w:'#ffffff',
+    s:'#111827',
+    r:'#ef4444',
+    g:'#fbbf24',
+    b:'#2563eb'
+  };
+
+  const COLOR_LABEL = {
+    w:'Weiß',
+    s:'Schwarz',
+    r:'Rot',
+    g:'Gelb',
+    b:'Blau'
+  };
+
+  const canvas = document.getElementById('mockupCanvas');
+  const ctx = canvas.getContext('2d');
+
+  const colorSelect = document.getElementById('colorSelect');
+  const swatchesBox = document.getElementById('swatches');
+
+  const btnFront = document.getElementById('btnFront');
+  const btnBack  = document.getElementById('btnBack');
+  const btnSide  = document.getElementById('btnSide');
+
+  const IMAGE_CACHE = {};
+  let currentView = 'front';   // 'front' | 'back' | 'side'
+  let currentColor = 'w';      // w/s/r/g/b
+
+  function loadImage(src, cb){
+    if(IMAGE_CACHE[src] && IMAGE_CACHE[src].complete){
+      cb(IMAGE_CACHE[src]);
+      return;
+    }
+    const im = new Image();
+    im.crossOrigin = 'anonymous';
+    im.onload = ()=>{ IMAGE_CACHE[src] = im; cb(im); };
+    im.onerror = ()=>{ console.error('Bild konnte nicht geladen werden:', src); };
+    im.src = src;
+  }
+
+  function getCurrentBaseUrl(){
+    if(currentView === 'front') return IMG_FRONT;
+    if(currentView === 'back')  return IMG_BACK;
+    return IMG_SIDE;
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    const src = getCurrentBaseUrl();
+    loadImage(src, base => {
+      const marginX = canvas.width * 0.07;
+      const marginY = canvas.height * 0.06;
+      const maxW = canvas.width - marginX * 2;
+      const maxH = canvas.height - marginY * 2;
+
+      const ratio = base.height / base.width;
+      let W = maxW;
+      let H = W * ratio;
+      if(H > maxH){
+        H = maxH;
+        W = H / ratio;
+      }
+      const sx = (canvas.width - W) / 2;
+      const sy = (canvas.height - H) / 2;
+
+      // Weißes T-Shirt zeichnen
+      ctx.drawImage(base, sx, sy, W, H);
+
+      // Farboverlay (nur wenn nicht Weiß)
+      if(currentColor !== 'w'){
+        ctx.save();
+        ctx.globalCompositeOperation = 'source-atop';
+        ctx.fillStyle = COLOR_HEX[currentColor] || '#ffffff';
+        ctx.globalAlpha = 0.45; // Stärke der Färbung – hier kannst du später tweaken
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.restore();
+      }
+    });
+  }
+
+  function renderSwatches(){
+    swatchesBox.innerHTML = '';
+    ['w','s','r','g','b'].forEach(key=>{
+      const div = document.createElement('div');
+      div.className = 'swatch' + (key === currentColor ? ' active' : '');
+      div.style.background = COLOR_HEX[key];
+      div.title = COLOR_LABEL[key];
+      div.addEventListener('click', ()=>{
+        currentColor = key;
+        colorSelect.value = key;
+        renderSwatches();
+        draw();
+      });
+      swatchesBox.appendChild(div);
+    });
+  }
+
+  function setView(view){
+    currentView = view;
+    btnFront.className = (view === 'front') ? 'primary' : 'ghost';
+    btnBack.className  = (view === 'back')  ? 'primary' : 'ghost';
+    btnSide.className  = (view === 'side')  ? 'primary' : 'ghost';
+    draw();
+  }
+
+  // Events
+  colorSelect.addEventListener('change', e=>{
+    currentColor = e.target.value;
+    renderSwatches();
+    draw();
+  });
+
+  btnFront.addEventListener('click', ()=>setView('front'));
+  btnBack.addEventListener('click',  ()=>setView('back'));
+  btnSide.addEventListener('click',  ()=>setView('side'));
+
+  // Init
+  renderSwatches();
+  setView('front'); // ruft auch draw()
+})();
+</script>
+
+</body>
+</html>
