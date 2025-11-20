@@ -107,7 +107,7 @@
 <body>
 
 <div class="wrap">
-  <h1>HomePrint24 – Farbtest nur mit 3 Bildern (Front/Back/Side Weiß)</h1>
+  <h1>HomePrint24 – Farbtest nur mit 3 weißen Bildern (Front / Back / Side)</h1>
   <div class="layout">
     <div class="left">
       <canvas id="mockupCanvas" width="700" height="840"></canvas>
@@ -135,78 +135,85 @@
       </div>
 
       <p class="hint">
-        Dieser Test nutzt nur deine 3 weißen Bilder:<br>
-        Front, Back, Side. Alle Farben kommen per HTML-Farboverlay.<br>
-        Wenn das gut aussieht ⇒ wir brauchen später nur Front+Back in Weiß pro Produkt.
+        Test: nur deine 3 weißen Originalbilder.<br>
+        Wir färben nur die hellen (T-Shirt-)Pixel, Hintergrund bleibt wie er ist.<br>
+        Wenn das passt → später pro Produkt nur Front+Back in Weiß nötig.
       </p>
     </div>
   </div>
 </div>
 
 <script>
-(function(){
-  // Deine 3 Bilder
-  const IMG_FRONT = 'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9230.jpeg/:/rs=w:1440,h:1440';
-  const IMG_BACK  = 'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/C9E813D3-77ED-4891-9CED-F91082A6B7F1.jpeg/:/rs=w:1440,h:1440';
-  const IMG_SIDE  = 'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/ABC6522D-7162-43C9-BF53-2256C0E93950.jpeg/:/rs=w:1440,h:1440';
+window.addEventListener('load', function(){
+  // Deine 3 weißen Bilder
+  const IMG_FRONT = "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9230.jpeg/:/rs=w:1440,h:1440";
+  const IMG_BACK  = "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/C9E813D3-77ED-4891-9CED-F91082A6B7F1.jpeg/:/rs=w:1440,h:1440";
+  const IMG_SIDE  = "https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/ABC6522D-7162-43C9-BF53-2256C0E93950.jpeg/:/rs=w:1440,h:1440";
 
   const COLOR_HEX = {
-    w:'#ffffff',
-    s:'#111827',
-    r:'#ef4444',
-    g:'#fbbf24',
-    b:'#2563eb'
+    w:"#ffffff",
+    s:"#111827",
+    r:"#ef4444",
+    g:"#fbbf24",
+    b:"#2563eb"
   };
 
-  const COLOR_LABEL = {
-    w:'Weiß',
-    s:'Schwarz',
-    r:'Rot',
-    g:'Gelb',
-    b:'Blau'
-  };
+  const canvas = document.getElementById("mockupCanvas");
+  const ctx = canvas.getContext("2d");
 
-  const canvas = document.getElementById('mockupCanvas');
-  const ctx = canvas.getContext('2d');
+  const btnFront = document.getElementById("btnFront");
+  const btnBack  = document.getElementById("btnBack");
+  const btnSide  = document.getElementById("btnSide");
+  const colorSelect = document.getElementById("colorSelect");
+  const swatchesBox = document.getElementById("swatches");
 
-  const colorSelect = document.getElementById('colorSelect');
-  const swatchesBox = document.getElementById('swatches');
+  let currentView  = "front"; // front | back | side
+  let currentColor = "w";     // w | s | r | g | b
 
-  const btnFront = document.getElementById('btnFront');
-  const btnBack  = document.getElementById('btnBack');
-  const btnSide  = document.getElementById('btnSide');
+  const CACHE = {};
 
-  const IMAGE_CACHE = {};
-  let currentView = 'front';   // 'front' | 'back' | 'side'
-  let currentColor = 'w';      // w/s/r/g/b
-
-  function loadImage(src, cb){
-    if(IMAGE_CACHE[src] && IMAGE_CACHE[src].complete){
-      cb(IMAGE_CACHE[src]);
+  function loadImage(url, cb){
+    if(CACHE[url] && CACHE[url].complete){
+      cb(CACHE[url]);
       return;
     }
-    const im = new Image();
-    im.crossOrigin = 'anonymous';
-    im.onload = ()=>{ IMAGE_CACHE[src] = im; cb(im); };
-    im.onerror = ()=>{ console.error('Bild konnte nicht geladen werden:', src); };
-    im.src = src;
+    const img = new Image();
+    img.onload = function(){
+      CACHE[url] = img;
+      cb(img);
+    };
+    img.src = url; // kein crossOrigin – Anzeige reicht
   }
 
-  function getCurrentBaseUrl(){
-    if(currentView === 'front') return IMG_FRONT;
-    if(currentView === 'back')  return IMG_BACK;
+  function hexToRgb(hex){
+    hex = hex.replace("#","");
+    if(hex.length === 3){
+      hex = hex.split("").map(c=>c+c).join("");
+    }
+    const num = parseInt(hex,16);
+    return{
+      r:(num>>16)&255,
+      g:(num>>8)&255,
+      b:num&255
+    };
+  }
+
+  function getImageForView(){
+    if(currentView === "front") return IMG_FRONT;
+    if(currentView === "back")  return IMG_BACK;
     return IMG_SIDE;
   }
 
   function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    const src = getCurrentBaseUrl();
-    loadImage(src, base => {
-      const marginX = canvas.width * 0.07;
-      const marginY = canvas.height * 0.06;
-      const maxW = canvas.width - marginX * 2;
-      const maxH = canvas.height - marginY * 2;
+    const url = getImageForView();
+    loadImage(url, function(base){
+      // Bild auf Canvas zentrieren
+      const marginX = canvas.width*0.08;
+      const marginY = canvas.height*0.06;
+      const maxW = canvas.width - marginX*2;
+      const maxH = canvas.height - marginY*2;
 
       const ratio = base.height / base.width;
       let W = maxW;
@@ -215,32 +222,60 @@
         H = maxH;
         W = H / ratio;
       }
-      const sx = (canvas.width - W) / 2;
-      const sy = (canvas.height - H) / 2;
+      const sx = (canvas.width - W)/2;
+      const sy = (canvas.height - H)/2;
 
-      // Weißes T-Shirt zeichnen
       ctx.drawImage(base, sx, sy, W, H);
 
-      // Farboverlay (nur wenn nicht Weiß)
-      if(currentColor !== 'w'){
-        ctx.save();
-        ctx.globalCompositeOperation = 'source-atop';
-        ctx.fillStyle = COLOR_HEX[currentColor] || '#ffffff';
-        ctx.globalAlpha = 0.45; // Stärke der Färbung – hier kannst du später tweaken
-        ctx.fillRect(0,0,canvas.width,canvas.height);
-        ctx.restore();
+      // Weiß lassen = keine Färbung
+      if(currentColor === "w") return;
+
+      // Pixel holen nur aus dem Bereich des Shirts (Bildfläche)
+      const imgData = ctx.getImageData(sx, sy, W, H);
+      const data = imgData.data;
+
+      const target = hexToRgb(COLOR_HEX[currentColor]);
+      const strength = 0.9; // wie stark die neue Farbe reindrückt (0–1)
+
+      for(let i=0;i<data.length;i+=4){
+        const r = data[i];
+        const g = data[i+1];
+        const b = data[i+2];
+
+        // "nahe weiß" erkennen: Shirt
+        const max = Math.max(r,g,b);
+        const min = Math.min(r,g,b);
+        const isBright = max > 210;          // hell
+        const lowContrast = (max-min) < 25;  // wenig Farbe → eher weiß/grau
+
+        if(isBright && lowContrast){
+          // nur diese Pixel in Ziel-Farbe ziehen
+          data[i]   = r*(1-strength) + target.r*strength;
+          data[i+1] = g*(1-strength) + target.g*strength;
+          data[i+2] = b*(1-strength) + target.b*strength;
+        }
       }
+
+      ctx.putImageData(imgData, sx, sy);
     });
   }
 
+  function setView(v){
+    currentView = v;
+    btnFront.className = (v==="front") ? "primary" : "ghost";
+    btnBack.className  = (v==="back")  ? "primary" : "ghost";
+    btnSide.className  = (v==="side")  ? "primary" : "ghost";
+    draw();
+  }
+
   function renderSwatches(){
-    swatchesBox.innerHTML = '';
-    ['w','s','r','g','b'].forEach(key=>{
-      const div = document.createElement('div');
-      div.className = 'swatch' + (key === currentColor ? ' active' : '');
+    swatchesBox.innerHTML = "";
+    ["w","s","r","g","b"].forEach(key=>{
+      const div = document.createElement("div");
+      div.className = "swatch" + (key===currentColor ? " active" : "");
       div.style.background = COLOR_HEX[key];
-      div.title = COLOR_LABEL[key];
-      div.addEventListener('click', ()=>{
+      div.title = key.toUpperCase();
+      div.addEventListener("click", function(){
         currentColor = key;
         colorSelect.value = key;
         renderSwatches();
@@ -250,29 +285,21 @@
     });
   }
 
-  function setView(view){
-    currentView = view;
-    btnFront.className = (view === 'front') ? 'primary' : 'ghost';
-    btnBack.className  = (view === 'back')  ? 'primary' : 'ghost';
-    btnSide.className  = (view === 'side')  ? 'primary' : 'ghost';
-    draw();
-  }
-
   // Events
-  colorSelect.addEventListener('change', e=>{
+  btnFront.addEventListener("click", ()=>setView("front"));
+  btnBack.addEventListener("click",  ()=>setView("back"));
+  btnSide.addEventListener("click",  ()=>setView("side"));
+
+  colorSelect.addEventListener("change", function(e){
     currentColor = e.target.value;
     renderSwatches();
     draw();
   });
 
-  btnFront.addEventListener('click', ()=>setView('front'));
-  btnBack.addEventListener('click',  ()=>setView('back'));
-  btnSide.addEventListener('click',  ()=>setView('side'));
-
   // Init
   renderSwatches();
-  setView('front'); // ruft auch draw()
-})();
+  setView("front");
+});
 </script>
 
 </body>
