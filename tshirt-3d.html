@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>HomePrint24 – 3D T-Shirt Editor (Prototype)</title>
+  <style>
+    body{
+      margin:0;
+      background:#0f172a;
+      color:#e5e7eb;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    }
+    #hp24-wrap{
+      max-width:1080px;
+      margin:24px auto;
+      padding:16px;
+      background:#e5e7eb;
+      border-radius:18px;
+      color:#0f172a;
+    }
+    #hp24-3d{
+      width:100%;
+      height:480px;
+      border-radius:16px;
+      overflow:hidden;
+      background:#0b1120;
+    }
+    .hp24-colors{
+      margin-top:12px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .hp24-swatch{
+      width:28px;
+      height:28px;
+      border-radius:999px;
+      border:2px solid #0f172a;
+      cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+<div id="hp24-wrap">
+  <h2>HomePrint24 – 3D T-Shirt Editor (Demo)</h2>
+  <div id="hp24-3d"></div>
+
+  <!-- Farb-Auswahl -->
+  <div class="hp24-colors">
+    <div class="hp24-swatch" data-color="#ffffff" style="background:#ffffff"></div>
+    <div class="hp24-swatch" data-color="#111827" style="background:#111827"></div>
+    <div class="hp24-swatch" data-color="#dc2626" style="background:#dc2626"></div>
+    <div class="hp24-swatch" data-color="#2563eb" style="background:#2563eb"></div>
+    <div class="hp24-swatch" data-color="#facc15" style="background:#facc15"></div>
+  </div>
+</div>
+
+<!-- Three.js Modul-Code -->
+<script type="module">
+  import * as THREE from 'https://unpkg.com/three@0.165.0/build/three.module.js';
+  import { OrbitControls } from 'https://unpkg.com/three@0.165.0/examples/jsm/controls/OrbitControls.js';
+  import { GLTFLoader } from 'https://unpkg.com/three@0.165.0/examples/jsm/loaders/GLTFLoader.js';
+
+  const container = document.getElementById('hp24-3d');
+
+  // Szene
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x0b1120);
+
+  // Kamera
+  const camera = new THREE.PerspectiveCamera(
+    35,
+    container.clientWidth / container.clientHeight,
+    0.1,
+    100
+  );
+  camera.position.set(0, 1.6, 3);
+
+  // Renderer
+  const renderer = new THREE.WebGLRenderer({ antialias:true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  container.appendChild(renderer.domElement);
+
+  // Controls (Drehen, Zoomen)
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.target.set(0, 1.4, 0);
+
+  // Licht
+  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+  const keyLight = new THREE.DirectionalLight(0xffffff, 1.1);
+  keyLight.position.set(2, 4, 3);
+  scene.add(keyLight);
+  const rimLight = new THREE.DirectionalLight(0xffffff, 0.5);
+  rimLight.position.set(-2, 3, -3);
+  scene.add(rimLight);
+
+  let shirtMesh = null;
+
+  // GLB Modell laden (T-Shirt)
+  const loader = new GLTFLoader();
+  loader.load(
+    // TODO: Pfad zu deinem 3D-Tshirt-Modell anpassen
+    'models/tshirt.glb',
+    (gltf) => {
+      const root = gltf.scene;
+
+      root.traverse((child) => {
+        if (child.isMesh) {
+          // Optional: wenn dein Mesh einen Namen hat, hier filtern:
+          // if (child.name !== 'Tshirt') return;
+
+          child.castShadow = true;
+          child.receiveShadow = true;
+
+          // Neutrale Stoff-Textur laden (optional, aber empfehlenswert)
+          const texLoader = new THREE.TextureLoader();
+          const fabricMap = texLoader.load('textures/fabric-neutral.jpg');
+          fabricMap.colorSpace = THREE.SRGBColorSpace;
+
+          const mat = new THREE.MeshStandardMaterial({
+            map: fabricMap,           // Stoff-Textur
+            color: new THREE.Color('#ffffff'), // Grundfarbe (wird später geändert)
+            roughness: 0.8,
+            metalness: 0.0
+          });
+
+          child.material = mat;
+          shirtMesh = child;
+        }
+      });
+
+      root.position.set(0, 0, 0);
+      scene.add(root);
+    },
+    undefined,
+    (error) => {
+      console.error('Fehler beim Laden des 3D-Modells:', error);
+    }
+  );
+
+  // Nur das T-Shirt färben
+  function setShirtColor(hex) {
+    if (!shirtMesh) return;
+    const mat = shirtMesh.material;
+    mat.color.set(hex);     // Basisfarbe des Stoffs
+    mat.needsUpdate = true;
+  }
+
+  // Resize
+  function onWindowResize() {
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+  }
+  window.addEventListener('resize', onWindowResize);
+
+  // Render-Loop
+  function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // Farb-Switch Events
+  document.querySelectorAll('.hp24-swatch').forEach((el) => {
+    el.addEventListener('click', () => {
+      const hex = el.getAttribute('data-color');
+      setShirtColor(hex);
+    });
+  });
+</script>
+</body>
+</html>
