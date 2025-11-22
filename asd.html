@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>HomePrint24 – 3D Produkt-Editor (Codex-Fundament)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+
+    :root{
+      --bg-dark:#0f172a;
+      --bg-panel:#e5e7eb;
+      --text-dark:#0f172a;
+      --accent:#2563eb;
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      padding:0;
+      background:var(--bg-dark);
+      color:var(--bg-panel);
+      font-family:'Fjalla One',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    }
+
+    .hp24-shell{
+      max-width:1180px;
+      margin:24px auto;
+      padding:16px;
+      background:var(--bg-panel);
+      border-radius:18px;
+      color:var(--text-dark);
+      box-shadow:0 18px 50px rgba(15,23,42,.6);
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .hp24-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+    }
+    .hp24-title{
+      font-size:22px;
+      letter-spacing:.4px;
+      text-transform:uppercase;
+    }
+    .hp24-sub{
+      font-size:12px;
+      opacity:.7;
+    }
+
+    .hp24-badge{
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      padding:3px 8px;
+      border-radius:999px;
+      background:#020617;
+      color:#e5e7eb;
+      white-space:nowrap;
+    }
+
+    .hp24-layout{
+      display:grid;
+      grid-template-columns:minmax(0,2fr) minmax(0,1.3fr);
+      gap:16px;
+    }
+    @media(max-width:900px){
+      .hp24-layout{
+        grid-template-columns:1fr;
+      }
+    }
+
+    /* 3D Viewport */
+    #hp24-viewport{
+      width:100%;
+      height:520px;
+      border-radius:16px;
+      overflow:hidden;
+      background:#020617;
+      position:relative;
+    }
+    #hp24-viewport canvas{
+      display:block;
+      width:100%;
+      height:100%;
+    }
+    .hp24-view-buttons{
+      position:absolute;
+      top:12px;
+      right:12px;
+      display:flex;
+      gap:6px;
+      z-index:5;
+    }
+    .hp24-btn-sm{
+      padding:4px 8px;
+      font-size:10px;
+      text-transform:uppercase;
+      border-radius:999px;
+      border:none;
+      cursor:pointer;
+      background:rgba(15,23,42,.82);
+      color:#e5e7eb;
+    }
+    .hp24-btn-sm:hover{
+      background:rgba(37,99,235,.9);
+    }
+
+    /* Control Panel */
+    .hp24-panel{
+      background:#f3f4f6;
+      border-radius:16px;
+      padding:12px 14px 14px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .hp24-section-title{
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      opacity:.7;
+      margin-bottom:4px;
+    }
+
+    .hp24-field{
+      margin-bottom:8px;
+    }
+    .hp24-label{
+      font-size:11px;
+      margin-bottom:3px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      opacity:.8;
+      display:block;
+    }
+
+    select.hp24-select{
+      width:100%;
+      padding:6px 8px;
+      border-radius:8px;
+      border:1px solid #cbd5f5;
+      font-size:12px;
+      background:white;
+      font-family:inherit;
+    }
+
+    .hp24-color-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:4px;
+    }
+    .hp24-swatch{
+      width:26px;
+      height:26px;
+      border-radius:999px;
+      border:2px solid #111827;
+      cursor:pointer;
+      box-shadow:0 0 0 1px rgba(15,23,42,.18);
+    }
+    .hp24-swatch[data-color="#ffffff"]{
+      box-shadow:inset 0 0 0 1px rgba(15,23,42,.35);
+    }
+
+    .hp24-file{
+      width:100%;
+      font-size:11px;
+    }
+
+    .hp24-slider-row{
+      display:grid;
+      grid-template-columns:1fr 2fr;
+      gap:6px;
+      align-items:center;
+      font-size:11px;
+    }
+    .hp24-slider-row input[type="range"]{
+      width:100%;
+    }
+
+    .hp24-hint{
+      font-size:10px;
+      opacity:.7;
+      margin-top:4px;
+    }
+
+    .hp24-footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      font-size:11px;
+    }
+    .hp24-back-btn{
+      padding:6px 10px;
+      border-radius:999px;
+      border:none;
+      background:#0f172a;
+      color:#e5e7eb;
+      text-transform:uppercase;
+      letter-spacing:.1em;
+      font-size:10px;
+      cursor:pointer;
+    }
+    .hp24-back-btn:hover{
+      background:#111827;
+    }
+  </style>
+</head>
+<body>
+<div class="hp24-shell">
+  <header class="hp24-header">
+    <div>
+      <div class="hp24-title">HomePrint24 – 3D Produkt-Editor</div>
+      <div class="hp24-sub">
+        Eigenständiges Fundament: 3D-Produktwahl, Stofffärbung & Logo – strukturiert zum Lernen.
+      </div>
+    </div>
+    <div class="hp24-badge">PRINT YOUR LEGACY</div>
+  </header>
+
+  <main class="hp24-layout">
+    <!-- 3D VIEW -->
+    <section id="hp24-viewport">
+      <div class="hp24-view-buttons">
+        <button class="hp24-btn-sm" data-view="front">Front</button>
+        <button class="hp24-btn-sm" data-view="back">Back</button>
+        <button class="hp24-btn-sm" data-view="reset">Reset</button>
+      </div>
+    </section>
+
+    <!-- CONTROL PANEL -->
+    <aside class="hp24-panel">
+      <div class="hp24-field">
+        <span class="hp24-section-title">Produkt</span>
+        <label class="hp24-label" for="hp24-product">Modell wählen</label>
+        <select id="hp24-product" class="hp24-select">
+          <option value="tshirt">T-Shirt</option>
+          <option value="hoodie">Hoodie</option>
+          <option value="polo">Polo</option>
+          <option value="sweat">Sweatshirt</option>
+          <option value="vneck">V-Neck</option>
+          <option value="jogger">Jogginghose</option>
+          <option value="cap">Basecap</option>
+        </select>
+      </div>
+
+      <div class="hp24-field">
+        <span class="hp24-section-title">Farben</span>
+        <label class="hp24-label">Stofffarbe</label>
+        <div class="hp24-color-row" id="hp24-color-row"></div>
+        <div class="hp24-hint">Färbt nur das Material des Kleidungsstücks, nicht Hintergrund oder Logo.</div>
+      </div>
+
+      <div class="hp24-field">
+        <span class="hp24-section-title">Logo / Motiv</span>
+        <label class="hp24-label" for="hp24-logo-input">Logo hochladen (PNG empfohlen)</label>
+        <input id="hp24-logo-input" class="hp24-file" type="file" accept="image/*" />
+        <div class="hp24-hint">Logo wird als eigene Plane auf der Brust platziert und kann unten feinjustiert werden.</div>
+      </div>
+
+      <div class="hp24-field">
+        <span class="hp24-section-title">Logo-Position</span>
+        <div class="hp24-slider-row">
+          <span>X (links/rechts)</span>
+          <input id="hp24-logo-x" type="range" min="-0.4" max="0.4" step="0.01" value="0" />
+        </div>
+        <div class="hp24-slider-row">
+          <span>Y (hoch/runter)</span>
+          <input id="hp24-logo-y" type="range" min="1.1" max="1.8" step="0.01" value="1.4" />
+        </div>
+        <div class="hp24-slider-row">
+          <span>Scale</span>
+          <input id="hp24-logo-scale" type="range" min="0.2" max="0.9" step="0.01" value="0.45" />
+        </div>
+        <div class="hp24-hint">
+          Werte sind für ein Standard-T-Shirt kalibriert. Für Hoodie & Co kann später pro Produkt angepasst werden.
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="hp24-footer">
+    <button class="hp24-back-btn" id="hp24-back">Zurück</button>
+    <div>Fundament v1 – HP24Engine / LogoController / UI-Layer.</div>
+  </footer>
+</div>
+
+<!-- ========== JAVASCRIPT: 3D ENGINE (MEIN WEG) ========== -->
+<script type="module">
+  // =====================================================================
+  //  SECTION A – CONFIG: Produkte, Farben, Back-URL
+  //  -> Hier passt du NUR Daten an (Modelpfade, Standardfarben etc.)
+  // =====================================================================
+  import * as THREE from 'https://unpkg.com/three@0.165.0/build/three.module.js';
+  import { OrbitControls } from 'https://unpkg.com/three@0.165.0/examples/jsm/controls/OrbitControls.js';
+  import { GLTFLoader } from 'https://unpkg.com/three@0.165.0/examples/jsm/loaders/GLTFLoader.js';
+
+  const HP24_CONFIG = {
+    backUrl: 'index.html', // <- HIER die Zielseite für den Zurück-Button
+    colors: [
+      '#ffffff','#111827','#e11d48','#2563eb',
+      '#16a34a','#facc15','#f97316'
+    ],
+    // Jedes Produkt beschreibt NUR Daten, keine Logik:
+    products:{
+      tshirt:{
+        label:'T-Shirt',
+        modelUrl:'models/tshirt/scene.gltf', // <- Pfad zu DEINEM T-Shirt-GLTF
+        scale:1.0,
+        position:{x:0,y:0,z:0},
+        rotation:{x:0,y:Math.PI,z:0},
+        defaultColor:'#ffffff',
+        logoAnchor:{x:0,y:1.4,z:0.25}
+      },
+      hoodie:{
+        label:'Hoodie',
+        modelUrl:'models/hoodie/scene.gltf',
+        scale:1.0,
+        position:{x:0,y:0,z:0},
+        rotation:{x:0,y:Math.PI,z:0},
+        defaultColor:'#ffffff',
+        logoAnchor:{x:0,y:1.6,z:0.28}
+      },
+      polo:{
+        label:'Polo',
+        modelUrl:'models/polo/scene.gltf',
+        scale:1.0,
+        position:{x:0,y:0,z:0},
+        rotation:{x:0,y:Math.PI,z:0},
+        defaultColor:'#ffffff',
+        logoAnchor:{x:0,y:1.35,z:0.24}
+      },
+      sweat:{
+        label:'Sweatshirt',
+        modelUrl:'models/sweat/scene.gltf',
+        scale:1.0,
+        position:{x:0,y:0,z:0},
+        rotation:{x:0,y:Math.PI,z:0},
+        defaultColor:'#ffffff',
+        logoAnchor:{x:0,y:1.45,z:0.26}
+      },
+      vneck:{
+        label:'V-Neck',
+        modelUrl:'models/vneck/scene.gltf',
+        scale:1.0,
+        position:{x:0,y:0,z:0},
+        rotation:{x:0,y:Math.PI,z:0},
+        defaultColor:'#ffffff',
+        logoAnchor:{x:0,y:1.35,z:0.25}
+      },
+      jogger:{
+        label:'Jogginghose',
+        modelUrl:'models/jogger/scene.gltf',
+        scale:1.0,
+        position:{x:0,y:-0.3,z:0},
+        rotation:{x:0,y:Math.PI,z:0},
+        defaultColor:'#ffffff',
+        logoAnchor:{x:0,y:0.9,z:0.2}
+      },
+      cap:{
+        label:'Basecap',
+        modelUrl:'models/cap/scene.gltf',
+        scale:1.0,
+        position:{x:0,y:0,z:0},
+        rotation:{x:0,y:Math.PI,z:0},
+        defaultColor:'#ffffff',
+        logoAnchor:{x:0,y:1.5,z:0.15}
+      }
+    }
+  };
+
+  // =====================================================================
+  //  SECTION B – HP24Engine: Three.js Szene, Modelle, Farbe
+  // =====================================================================
+  class HP24Engine {
+    constructor(container){
+      this.container = container;
+      this.scene = new THREE.Scene();
+      this.scene.background = new THREE.Color(0x020617);
+
+      const {clientWidth:w, clientHeight:h} = this.container;
+      this.camera = new THREE.PerspectiveCamera(35, w/h, 0.1, 100);
+      this.camera.position.set(0,1.7,3.2);
+
+      this.renderer = new THREE.WebGLRenderer({antialias:true});
+      this.renderer.setPixelRatio(window.devicePixelRatio);
+      this.renderer.setSize(w,h);
+      this.renderer.outputEncoding = THREE.sRGBEncoding;
+      this.container.appendChild(this.renderer.domElement);
+
+      this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+      this.controls.enableDamping = true;
+      this.controls.target.set(0,1.5,0);
+
+      this._addLights();
+
+      this.loader = new GLTFLoader();
+      this.texLoader = new THREE.TextureLoader();
+
+      this.currentKey = null;
+      this.currentRoot = null;
+      this.currentMesh = null; // Referenz auf das Haupt-Mesh (für Farbe)
+      this.logoMesh = null;    // Referenz auf Logo-Plane
+
+      window.addEventListener('resize',()=>this._onResize());
+      this._animate();
+    }
+
+    _addLights(){
+      this.scene.add(new THREE.AmbientLight(0xffffff,0.7));
+      const keyLight = new THREE.DirectionalLight(0xffffff,1.1);
+      keyLight.position.set(2,4,3);
+      this.scene.add(keyLight);
+      const rimLight = new THREE.DirectionalLight(0xffffff,0.6);
+      rimLight.position.set(-2,3,-3);
+      this.scene.add(rimLight);
+    }
+
+    _onResize(){
+      const {clientWidth:w, clientHeight:h} = this.container;
+      this.camera.aspect = w/h;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(w,h);
+    }
+
+    _animate(){
+      requestAnimationFrame(()=>this._animate());
+      this.controls.update();
+      this.renderer.render(this.scene, this.camera);
+    }
+
+    _disposeObject(obj){
+      obj.traverse(child=>{
+        if(child.isMesh){
+          if(child.geometry) child.geometry.dispose();
+          if(child.material){
+            if(Array.isArray(child.material)){
+              child.material.forEach(m=>m.dispose());
+            } else {
+              child.material.dispose();
+            }
+          }
+        }
+      });
+    }
+
+    loadProduct(key){
+      const cfg = HP24_CONFIG.products[key];
+      if(!cfg){
+        console.warn('Unbekanntes Produkt:', key);
+        return;
+      }
+      this.currentKey = key;
+
+      if(this.currentRoot){
+        this.scene.remove(this.currentRoot);
+        this._disposeObject(this.currentRoot);
+        this.currentRoot = null;
+        this.currentMesh = null;
+        this.logoMesh = null;
+      }
+
+      this.loader.load(
+        cfg.modelUrl,
+        (gltf)=>{
+          const root = gltf.scene;
+          root.scale.setScalar(cfg.scale || 1);
+          root.position.set(cfg.position.x, cfg.position.y, cfg.position.z);
+          root.rotation.set(cfg.rotation.x, cfg.rotation.y, cfg.rotation.z);
+
+          let firstMesh = null;
+          root.traverse(child=>{
+            if(child.isMesh){
+              if(!firstMesh) firstMesh = child;
+              const mat = new THREE.MeshStandardMaterial({
+                color:new THREE.Color(cfg.defaultColor),
+                roughness:0.8,
+                metalness:0.0
+              });
+              child.material = mat;
+              child.castShadow = true;
+              child.receiveShadow = true;
+            }
+          });
+
+          this.currentRoot = root;
+          this.currentMesh = firstMesh;
+          this.scene.add(root);
+
+          // Logo-Plane direkt vorbereiten
+          this._createLogoPlane();
+        },
+        undefined,
+        (err)=>console.error('Fehler beim Laden von', cfg.modelUrl, err)
+      );
+    }
+
+    setColor(hex){
+      if(!this.currentRoot) return;
+      this.currentRoot.traverse(child=>{
+        if(child.isMesh && child.material && child.material.isMeshStandardMaterial){
+          child.material.color.set(hex);
+          child.material.needsUpdate = true;
+        }
+      });
+    }
+
+    _createLogoPlane(){
+      if(!this.currentRoot) return;
+      const cfg = HP24_CONFIG.products[this.currentKey];
+      const geo = new THREE.PlaneGeometry(1,1);
+      const mat = new THREE.MeshBasicMaterial({
+        color:0xffffff,
+        transparent:true,
+        opacity:1,
+        depthTest:true,
+        depthWrite:false
+      });
+      this.logoMesh = new THREE.Mesh(geo,mat);
+      this.logoMesh.scale.set(HP24_CONFIG.logoDefaults?.scale || 0.45,
+                              HP24_CONFIG.logoDefaults?.scale || 0.45,
+                              1);
+      this.logoMesh.position.set(cfg.logoAnchor.x, cfg.logoAnchor.y, cfg.logoAnchor.z);
+      this.logoMesh.rotation.set(0,0,0);
+      this.currentRoot.add(this.logoMesh);
+    }
+
+    setLogoTexture(file){
+      if(!this.logoMesh || !file) return;
+      const url = URL.createObjectURL(file);
+      this.texLoader.load(
+        url,
+        tex=>{
+          tex.colorSpace = THREE.SRGBColorSpace;
+          this.logoMesh.material.map = tex;
+          this.logoMesh.material.needsUpdate = true;
+        },
+        undefined,
+        err=>console.error('Logo-Texture Fehler:', err)
+      );
+    }
+
+    setLogoTransform(x,y,scale){
+      if(!this.logoMesh) return;
+      this.logoMesh.position.x = x;
+      this.logoMesh.position.y = y;
+      this.logoMesh.scale.set(scale,scale,1);
+    }
+
+    setViewFront(){
+      this.camera.position.set(0,1.7,3.2);
+      this.controls.target.set(0,1.5,0);
+      this.controls.update();
+    }
+    setViewBack(){
+      this.camera.position.set(0,1.7,-3.2);
+      this.controls.target.set(0,1.5,0);
+      this.controls.update();
+    }
+    setViewReset(){
+      this.setViewFront();
+    }
+  }
+
+  // =====================================================================
+  //  SECTION C – LogoController: verbindet Sliders + File mit Engine
+  // =====================================================================
+  class HP24LogoController {
+    constructor(engine){
+      this.engine = engine;
+      this.inputFile = document.getElementById('hp24-logo-input');
+      this.sliderX  = document.getElementById('hp24-logo-x');
+      this.sliderY  = document.getElementById('hp24-logo-y');
+      this.sliderS  = document.getElementById('hp24-logo-scale');
+
+      this._bindEvents();
+    }
+
+    _bindEvents(){
+      this.inputFile.addEventListener('change',e=>{
+        const file = e.target.files[0];
+        if(file) this.engine.setLogoTexture(file);
+      });
+
+      [this.sliderX, this.sliderY, this.sliderS].forEach(el=>{
+        el.addEventListener('input',()=>this.apply());
+      });
+    }
+
+    apply(){
+      const x = parseFloat(this.sliderX.value);
+      const y = parseFloat(this.sliderY.value);
+      const s = parseFloat(this.sliderS.value);
+      this.engine.setLogoTransform(x,y,s);
+    }
+
+    resetForProduct(key){
+      // Optional: per Produkt andere Startwerte setzen
+      const cfg = HP24_CONFIG.products[key];
+      if(!cfg) return;
+      this.sliderX.value = cfg.logoAnchor.x;
+      this.sliderY.value = cfg.logoAnchor.y;
+      this.sliderS.value = HP24_CONFIG.logoDefaults?.scale || 0.45;
+      this.apply();
+    }
+  }
+
+  // =====================================================================
+  //  SECTION D – UI-Layer: Dropdown, Farben, View-Buttons, Back
+  // =====================================================================
+  class HP24UI {
+    constructor(engine, logoCtrl){
+      this.engine = engine;
+      this.logoCtrl = logoCtrl;
+
+      this.productSelect = document.getElementById('hp24-product');
+      this.colorRow      = document.getElementById('hp24-color-row');
+      this.backBtn       = document.getElementById('hp24-back');
+
+      this._initProducts();
+      this._initColors();
+      this._bindViewButtons();
+      this._bindBack();
+    }
+
+    _initProducts(){
+      // Labels im Dropdown aus CONFIG aktualisieren
+      Object.entries(HP24_CONFIG.products).forEach(([key,cfg])=>{
+        const opt = this.productSelect.querySelector(`option[value="${key}"]`);
+        if(opt && cfg.label) opt.textContent = cfg.label;
+      });
+
+      this.productSelect.addEventListener('change',()=>{
+        const key = this.productSelect.value;
+        this.engine.loadProduct(key);
+        this.logoCtrl.resetForProduct(key);
+      });
+
+      // Startprodukt
+      const startKey = this.productSelect.value || 'tshirt';
+      this.engine.loadProduct(startKey);
+    }
+
+    _initColors(){
+      HP24_CONFIG.colors.forEach(hex=>{
+        const sw = document.createElement('div');
+        sw.className = 'hp24-swatch';
+        sw.dataset.color = hex;
+        sw.style.background = hex;
+        sw.addEventListener('click',()=>this.engine.setColor(hex));
+        this.colorRow.appendChild(sw);
+      });
+    }
+
+    _bindViewButtons(){
+      document.querySelectorAll('.hp24-btn-sm').forEach(btn=>{
+        btn.addEventListener('click',()=>{
+          const v = btn.dataset.view;
+          if(v==='front') this.engine.setViewFront();
+          if(v==='back')  this.engine.setViewBack();
+          if(v==='reset') this.engine.setViewReset();
+        });
+      });
+    }
+
+    _bindBack(){
+      this.backBtn.addEventListener('click',()=>{
+        // 1) Wenn Historie vorhanden → zurück
+        if(document.referrer){
+          window.history.back();
+          return;
+        }
+        // 2) Feste Back-URL, z.B. Shop-Startseite
+        if(HP24_CONFIG.backUrl){
+          window.location.href = HP24_CONFIG.backUrl;
+          return;
+        }
+        // 3) Falls im Popup geöffnet → schließen versuchen
+        if(window.opener && !window.opener.closed){
+          window.close();
+        }
+      });
+    }
+  }
+
+  // =====================================================================
+  //  SECTION E – Bootstrap: Engine + Controller + UI verbinden
+  // =====================================================================
+  const viewport = document.getElementById('hp24-viewport');
+  const engine   = new HP24Engine(viewport);
+  const logoCtrl = new HP24LogoController(engine);
+  const ui       = new HP24UI(engine, logoCtrl);
+  // (Variablen existieren nur, damit du im Code siehst, was was ist.)
+</script>
+</body>
+</html>
