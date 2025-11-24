@@ -1,0 +1,931 @@
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+
+    :root{
+      --bg-dark:#0f172a;
+      --bg-panel:#e5e7eb;
+      --card:#f9fafb;
+      --accent:#2563eb;
+      --accent-soft:#dbeafe;
+      --text-dark:#0f172a;
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      padding:0;
+      background:var(--bg-dark);
+      color:var(--bg-panel);
+      font-family:'Fjalla One',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    }
+
+    #hpt24{
+      max-width:1080px;
+      margin:24px auto;
+      background:var(--bg-panel);
+      padding:16px;
+      border-radius:18px;
+      box-shadow:0 16px 45px rgba(15,23,42,.45);
+    }
+
+    .hpt24-title{
+      text-align:center;
+      margin:8px 0 16px;
+      color:#0f172a;
+      font-weight:800;
+      letter-spacing:.3px;
+    }
+
+    #hpt24-tabs{
+      display:flex;
+      justify-content:center;
+      margin-bottom:12px;
+    }
+
+    .ld-tab{
+      padding:8px 14px;
+      border-radius:999px;
+      border:1px solid #cbd5e1;
+      background:#fff;
+      cursor:pointer;
+      font-size:12px;
+      font-weight:700;
+    }
+    .ld-tab.active{
+      background:#111827;
+      color:#fff;
+      border-color:#111827;
+    }
+
+    .hpt24-layout{
+      display:grid;
+      grid-template-columns:minmax(0,1.05fr) minmax(0,1.25fr);
+      gap:18px;
+      align-items:start;
+    }
+
+    .hpt24-left,
+    .hpt24-right{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .hpt24-right{
+      border-left:1px solid #d1d5db;
+      padding-left:14px;
+    }
+
+    .ld-card{
+      background:var(--card);
+      border-radius:14px;
+      padding:14px;
+      border:1px solid #e5e7eb;
+    }
+
+    .ld-label{
+      font-weight:800;
+      color:var(--text-dark);
+      margin-bottom:4px;
+    }
+    .ld-sublabel{
+      font-weight:600;
+      color:var(--text-dark);
+      font-size:13px;
+    }
+
+    .ld-input{
+      padding:10px;
+      border-radius:10px;
+      border:1px solid #cbd5e1;
+      width:100%;
+      background:#fff;
+      font-size:13px;
+    }
+
+    .ld-btn{
+      padding:7px 10px;
+      border:none;
+      border-radius:9px;
+      background:#e2e8f0;
+      font-size:12px;
+      font-weight:600;
+      cursor:pointer;
+    }
+    .ld-btn.primary{
+      background:#111827;
+      color:#fff;
+      font-weight:800;
+    }
+    .ld-btn.accent{
+      background:#0ea5e9;
+      color:#fff;
+      font-weight:800;
+    }
+
+    .hpt24-grid-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    .hpt24-gap-top{margin-top:8px;}
+
+    .ld-preview-shell{
+      position:relative;
+      background:#ffffff;
+      border-radius:18px;
+      box-shadow:0 12px 32px rgba(15,23,42,.18);
+      padding:10px 10px 14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    #ld-canvas{
+      width:100%;
+      display:block;
+      border-radius:16px;
+      background:#f9fafb;
+    }
+
+    .ld-preview-hint{
+      position:absolute;
+      left:16px;
+      bottom:18px;
+      background:rgba(15,23,42,.84);
+      color:#fff;
+      padding:6px 10px;
+      border-radius:8px;
+      font-size:11px;
+    }
+
+    .ld-color-bar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      background:#f9fafb;
+      border-radius:999px;
+      padding:6px 10px;
+      border:1px solid #e5e7eb;
+    }
+    .ld-swatches-row{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .ld-swatch{
+      width:22px;
+      height:22px;
+      border-radius:6px;
+      border:1px solid #d1d5db;
+      cursor:pointer;
+    }
+
+    .hpt24-notes{ height:84px; resize:vertical; }
+
+    .quality-row{ display:flex; gap:6px; }
+    .q-btn{
+      padding:6px 10px;
+      font-size:12px;
+      border-radius:999px;
+      border:1px solid #cbd5e1;
+      background:#fff;
+      cursor:pointer;
+      font-weight:700;
+    }
+    .q-btn.active{
+      background:#111827;
+      color:#fff;
+      border-color:#111827;
+    }
+
+    .ld-cart-card{
+      margin:6px auto 0;
+      border-top:2px solid #0f172a;
+      box-shadow:0 6px 18px rgba(15,23,42,.12);
+      padding-top:10px;
+    }
+    .ld-cart-row{
+      display:grid;
+      grid-template-columns:minmax(0,1.7fr) auto auto auto;
+      gap:8px;
+      align-items:center;
+      background:#e5e7eb;
+      border-radius:12px;
+      padding:8px;
+      border:1px solid #d1d5db;
+    }
+    .ld-chip{
+      padding:1px 8px;
+      border-radius:999px;
+      border:1px solid #cbd5e1;
+      background:#fff;
+      font-size:10px;
+      margin-left:4px;
+    }
+
+    .hpt24-footer{
+      text-align:center;
+      font-size:12px;
+      color:#64748b;
+      margin-top:10px;
+    }
+
+    @media(max-width:900px){
+      .hpt24-layout{
+        grid-template-columns:1fr;
+      }
+      .hpt24-right{
+        border-left:none;
+        padding-left:0;
+      }
+    }
+</style>
+
+<div id="hpt24">
+  <h2 class="hpt24-title">HomePrint24 – Print Your Legacy</h2>
+
+  <div id="hpt24-tabs">
+    <button class="ld-tab active" data-prod="polo">Polo</button>
+  </div>
+
+  <div class="hpt24-layout">
+
+    <!-- LEFT -->
+    <div class="hpt24-left">
+      <div class="ld-preview-shell">
+        <canvas id="ld-canvas" width="760" height="920"></canvas>
+        <div class="ld-preview-hint">Ziehen = Position • Mausrad = Größe • Shift + Scroll = Rotation</div>
+        <div class="ld-color-bar">
+          <span class="ld-sublabel">Farbe</span>
+          <div id="ld-swatches" class="ld-swatches-row"></div>
+        </div>
+      </div>
+
+      <div class="ld-card ld-layer-card">
+        <div class="hpt24-grid-2 hpt24-gap-top">
+          <div>
+            <span class="ld-sublabel">Preset:</span>
+            <div style="display:flex; gap:6px; margin-top:6px;">
+              <button class="ld-btn" data-preset="center">Center</button>
+              <button class="ld-btn" data-preset="back">Back-Tag</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="ld-sublabel">Skalierung <span id="ld-scale-val">(100%)</span></label>
+            <input id="ld-scale" type="range" min="5" max="400" value="100" style="width:100%;">
+          </div>
+        </div>
+
+        <div class="hpt24-grid-2 hpt24-gap-top">
+          <div>
+            <label class="ld-sublabel">Rotation <span id="ld-rot-layer-val">(0°)</span></label>
+            <input id="ld-rot-layer" type="range" min="-180" max="180" value="0" style="width:100%;">
+          </div>
+          <div>
+            <label class="ld-sublabel">Deckkraft <span id="ld-opa-val">(100%)</span></label>
+            <input id="ld-opa" type="range" min="5" max="100" value="100" style="width:100%;">
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:10px;">
+          <button id="ld-layer-vis" class="ld-btn">Sichtbar: AN</button>
+          <button id="ld-layer-del" class="ld-btn">Layer löschen</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="hpt24-right">
+
+      <div class="ld-card">
+        <div class="hpt24-row-between">
+          <label class="ld-label">Dein Motiv hochladen</label>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span class="ld-sublabel">Ansicht:</span>
+            <span id="ld-view-badge" class="ld-sublabel">FRONT</span>
+            <button id="ld-toggle-back" class="ld-btn">Back</button>
+          </div>
+        </div>
+
+        <div id="ld-uploader-list" style="margin-top:10px;"></div>
+      </div>
+
+      <div class="ld-card">
+        <label class="ld-label">Bestellangaben</label>
+
+        <div class="hpt24-grid-2 hpt24-gap-top">
+          <select id="ld-size" class="ld-input">
+            <option value="">Größe wählen</option>
+            <option>XS</option><option>S</option><option>M</option>
+            <option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
+          </select>
+
+          <select id="ld-color-select" class="ld-input"></select>
+        </div>
+
+        <div class="hpt24-grid-2 hpt24-gap-top">
+          <div>
+            <label class="ld-sublabel">Qualität</label>
+            <div class="quality-row">
+              <button class="q-btn active" data-q="premium">Premium</button>
+              <button class="q-btn" data-q="heavy">Heavy Stretch Premium</button>
+            </div>
+          </div>
+          <select id="ld-gender" class="ld-input">
+            <option value="">Passform wählen</option>
+            <option value="unisex">Unisex</option>
+            <option value="man">Mann</option>
+            <option value="woman">Frau</option>
+          </select>
+        </div>
+
+        <select id="ld-quality" style="display:none;">
+          <option value="premium" selected>premium</option>
+          <option value="heavy">heavy</option>
+        </select>
+
+        <div class="hpt24-gap-top">
+          <label class="ld-sublabel">Stück & Preis</label>
+          <div class="hpt24-grid-2 hpt24-gap-top">
+            <input id="ld-qty" type="number" min="1" value="1" class="ld-input">
+            <input id="ld-price" type="text" class="ld-input" value="0,00 €" readonly>
+          </div>
+        </div>
+
+        <div class="hpt24-gap-top">
+          <input id="ld-promocode" class="ld-input" placeholder="Promocode (z. B. HP24-10)">
+          <p id="promo-hint" style="display:none; color:#10b981;">Rabatt angewendet.</p>
+        </div>
+
+        <textarea id="ld-notes" class="ld-input hpt24-notes hpt24-gap-top"
+          placeholder="Wünsche/Anmerkungen"></textarea>
+
+        <div class="hpt24-grid-2 hpt24-gap-top">
+          <button id="ld-add" class="ld-btn primary">In den Warenkorb</button>
+          <button id="ld-download" class="ld-btn">Mockup herunterladen</button>
+        </div>
+      </div>
+
+       <div class="ld-card ld-cart-card">
+          <div class="hpt24-row-between">
+          <div class="ld-label">Warenkorb</div>
+          <div id="ld-total" class="hpt24-total">0,00 €</div>
+        </div>
+
+        <div id="ld-cart" class="hpt24-cart-list"></div>
+        <button id="ld-checkout" class="ld-btn accent hpt24-checkout-btn">Zur Kasse</button>
+        <p class="hpt24-hint-text">
+          Der Gesamtpreis basiert auf Qualität, Farbe, Motivanzahl und Druckart.
+          Bitte Mockup vor Checkout speichern.
+        </p>
+      </div>
+
+    </div>
+
+  <p class="hpt24-footer">© HomePrint24 – Print Your Legacy</p>
+</div>
+
+<script>
+(function(){
+
+  const BASE_PRICE = { premium:24.49, heavy:29.49 };
+  const MOTIF_PRICE = { bw:3.50, color:5.50 };
+
+  const COLORS = ['white','black','blue','darkgrey','red'];
+
+  const COLOR_NAME = {
+    white:'White',
+    black:'Black',
+    blue:'Blue',
+    darkgrey:'Dark Grey',
+    red:'Red'
+  };
+
+  const COLOR_HEX = {
+    white:'#ffffff',
+    black:'#020617',
+    blue:'#1d4ed8',
+    darkgrey:'#4b5563',
+    red:'#ef4444'
+  };
+
+  const FRONT_POLO = {
+    white:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/White%20Polo%20Front.jpg/:/rs=w:1440,h:1440',
+    black:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Black%20Polo%20Front.png/:/rs=w:1440,h:1440',
+    blue:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Blue%20Polo%20Front.jpg/:/rs=w:1440,h:1440',
+    darkgrey:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Dark%20Grey%20Polo%20Front.jpg/:/rs=w:1440,h:1440',
+    red:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Red%20Polo%20Front.jpg/:/rs=w:1440,h:1440'
+  };
+
+  const BACK_POLO = {
+    white:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/White%20Polo%20Back.jpg/:/rs=w:1440,h:1440',
+    black:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Black%20Polo%20Back.jpg/:/rs=w:1440,h:1440',
+    blue:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Blue%20Polo%20Back.jpg/:/rs=w:1440,h:1440',
+    darkgrey:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Dark%20Grey%20Polo%20Back.jpg/:/rs=w:1440,h:1440',
+    red:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Red%20Polo%20Back.jpg/:/rs=w:1440,h:1440'
+  };
+
+  const IMAGE_CACHE = {};
+  function loadImage(src){
+    if(IMAGE_CACHE[src]) return IMAGE_CACHE[src];
+    const im = new Image();
+    im.crossOrigin = 'anonymous';
+    im.src = src;
+    IMAGE_CACHE[src] = im;
+    im.onload = draw;
+    return im;
+  }
+
+  const canvas = document.getElementById('ld-canvas');
+  const ctx = canvas.getContext('2d');
+
+  let view='front';
+  let color='white';
+  let selectedQuality='premium';
+  let promoDiscount=0;
+
+  const LAYER_COUNT = 3;
+  const makeLayer=()=>({img:null,x:0,y:0,scale:1,rot:0,op:1,vis:true,bw:false});
+
+  const layersFront = Array.from({length:LAYER_COUNT},makeLayer);
+  const layersBack  = Array.from({length:LAYER_COUNT},makeLayer);
+  let layers = layersFront;
+  let active = 0;
+
+  const colorSel=document.getElementById('ld-color-select');
+  const sizeEl =document.getElementById('ld-size');
+  const qualityEl=document.getElementById('ld-quality');
+  const qtyEl=document.getElementById('ld-qty');
+  const priceEl=document.getElementById('ld-price');
+  const viewBadge=document.getElementById('ld-view-badge');
+  const toggleBack=document.getElementById('ld-toggle-back');
+  const uploadsBox=document.getElementById('ld-uploader-list');
+  const promoInput=document.getElementById('ld-promocode');
+  const promoHint=document.getElementById('promo-hint');
+
+  const scaleEl=document.getElementById('ld-scale');
+  const scaleVal=document.getElementById('ld-scale-val');
+  const rotEl=document.getElementById('ld-rot-layer');
+  const rotVal=document.getElementById('ld-rot-layer-val');
+  const opaEl=document.getElementById('ld-opa');
+  const opaVal=document.getElementById('ld-opa-val');
+  const visBtn=document.getElementById('ld-layer-vis');
+  const delBtn=document.getElementById('ld-layer-del');
+  const cartBox=document.getElementById('ld-cart');
+  const totalEl=document.getElementById('ld-total');
+
+  const cart=[];
+
+  function renderColorSelect(){
+    colorSel.innerHTML='';
+    COLORS.forEach(c=>{
+      const o=document.createElement('option');
+      o.value=c;
+      o.textContent=COLOR_NAME[c];
+      colorSel.appendChild(o);
+    });
+    colorSel.value=color;
+  }
+
+  function renderSwatches(){
+    const box=document.getElementById('ld-swatches');
+    box.innerHTML='';
+    COLORS.forEach(c=>{
+      const sw=document.createElement('div');
+      sw.className='ld-swatch';
+      sw.style.background=COLOR_HEX[c];
+      if(c===color){
+        sw.style.outline='2px solid #111827';
+        sw.style.outlineOffset='1px';
+      }
+      sw.onclick=()=>{
+        color=c;
+        renderColorSelect();
+        draw();
+      };
+      box.appendChild(sw);
+    });
+  }
+
+  colorSel.onchange=e=>{
+    color=e.target.value;
+    renderSwatches();
+    draw();
+  };
+
+  function setView(v){
+    view=v==='back'?'back':'front';
+    layers=view==='front'?layersFront:layersBack;
+    viewBadge.textContent=view.toUpperCase();
+    active=0;
+    renderUploadRows();
+    syncUIFromLayer();
+    draw();
+  }
+
+  toggleBack.onclick=()=>setView(view==='front'?'back':'front');
+
+  function getBaseImage(){
+    const src=view==='front'?FRONT_POLO[color]:BACK_POLO[color];
+    return loadImage(src);
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const base=getBaseImage();
+    if(!base||!base.width) return;
+
+    const marginX=canvas.width*0.08;
+    const marginY=canvas.height*0.06;
+
+    const maxW=canvas.width-marginX*2;
+    const maxH=canvas.height-marginY*2;
+    const ratio=base.height/base.width;
+
+    let W=maxW;
+    let H=W*ratio;
+    if(H>maxH){ H=maxH; W=H/ratio; }
+
+    const sx=(canvas.width-W)/2;
+    const sy=(canvas.height-H)/2;
+
+    if(base.complete) ctx.drawImage(base,sx,sy,W,H);
+
+    const cx=canvas.width/2;
+    const cy=sy+H*0.40;
+
+    layers.forEach(L=>{
+      if(!L.img||!L.vis) return;
+      const iw=canvas.width*0.38;
+      const ih=iw*(L.img.naturalHeight/L.img.naturalWidth);
+
+      ctx.save();
+      ctx.translate(cx+L.x,cy+L.y);
+      ctx.rotate(L.rot*Math.PI/180);
+      ctx.scale(L.scale,L.scale);
+      ctx.globalAlpha=L.op;
+      ctx.drawImage(L.img,-iw/2,-ih/2,iw,ih);
+      ctx.restore();
+    });
+  }
+
+  function renderUploadRows(){
+    uploadsBox.innerHTML='';
+    for(let i=0;i<LAYER_COUNT;i++){
+      const row=document.createElement('div');
+      row.className='ld-upload-row';
+      row.style.display='grid';
+      row.style.gridTemplateColumns='1.4fr auto auto auto auto';
+      row.style.gap='4px';
+      row.style.alignItems='center';
+
+      row.innerHTML=`
+        <input type="file" id="ld-file-${i}" accept=".png,.jpg,.jpeg,.svg" class="ld-input">
+        <label class="hpt24-sw-toggle"><input type="checkbox" data-bw="${i}"> S/W 3,50 €</label>
+        <button class="ld-btn" data-act="${i}">Aktiv</button>
+        <button class="ld-btn" data-vis="${i}">${layers[i].vis?'👁 AUS':'👁 AN'}</button>
+        <button class="ld-btn" data-del="${i}">✖</button>
+      `;
+
+      uploadsBox.appendChild(row);
+
+      row.querySelector(`#ld-file-${i}`).onchange=e=>{
+        const f=e.target.files[0];
+        if(!f) return;
+        const url=URL.createObjectURL(f);
+        const im=new Image();
+        im.onload=()=>{
+          layers[i]={img:im,x:0,y:0,scale:1,rot:0,op:1,vis:true,bw:false};
+          active=i;
+          syncUIFromLayer();
+          renderUploadRows();
+          draw();
+          updatePrice();
+        };
+        im.src=url;
+      };
+
+      const sw=row.querySelector(`[data-bw="${i}"]`);
+      sw.checked=layers[i].bw;
+      sw.onchange=()=>{
+        layers[i].bw=sw.checked;
+        updatePrice();
+      };
+
+      row.querySelector(`[data-act="${i}"]`).onclick=()=>{
+        active=i;
+        syncUIFromLayer();
+        renderUploadRows();
+      };
+
+      row.querySelector(`[data-vis="${i}"]`).onclick=()=>{
+        if(!layers[i].img) return;
+        layers[i].vis=!layers[i].vis;
+        draw();
+        updatePrice();
+        renderUploadRows();
+        syncUIFromLayer();
+      };
+
+      row.querySelector(`[data-del="${i}"]`).onclick=()=>{
+        layers[i]=makeLayer();
+        if(active===i) active=Math.max(0,active-1);
+        draw();
+        updatePrice();
+        renderUploadRows();
+        syncUIFromLayer();
+      };
+    }
+  }
+
+  function applyPreset(name){
+    const L=layers[active];
+    if(!L||!L.img) return;
+    if(name==='center'){
+      L.x=0; L.y=0; L.scale=1;
+    }
+    if(name==='back'){
+      L.x=0;
+      L.y=-canvas.height*0.18;
+      L.scale=0.8;
+    }
+    syncUIFromLayer();
+    draw();
+  }
+
+  document.querySelectorAll('[data-preset]').forEach(b=>{
+    b.onclick=()=>applyPreset(b.dataset.preset);
+  });
+
+  function syncUIFromLayer(){
+    const L=layers[active];
+    if(!L){
+      scaleVal.textContent='(100%)';
+      rotVal.textContent='(0°)';
+      opaVal.textContent='(100%)';
+      return;
+    }
+
+    scaleEl.value=Math.round(L.scale*100);
+    scaleVal.textContent=`(${scaleEl.value}%)`;
+
+    rotEl.value=L.rot;
+    rotVal.textContent=`(${L.rot}°)`;
+
+    opaEl.value=Math.round(L.op*100);
+    opaVal.textContent=`(${opaEl.value}%)`;
+
+    visBtn.textContent='Sichtbar: '+(L.vis?'AN':'AUS');
+  }
+
+  scaleEl.oninput=()=>{
+    const L=layers[active]; if(!L||!L.img) return;
+    L.scale=scaleEl.value/100;
+    scaleVal.textContent=`(${scaleEl.value}%)`;
+    draw();
+  };
+
+  rotEl.oninput=()=>{
+    const L=layers[active]; if(!L||!L.img) return;
+    L.rot=+rotEl.value;
+    rotVal.textContent=`(${rotEl.value}°)`;
+    draw();
+  };
+
+  opaEl.oninput=()=>{
+    const L=layers[active]; if(!L||!L.img) return;
+    L.op=opaEl.value/100;
+    opaVal.textContent=`(${opaEl.value}%)`;
+    draw();
+  };
+
+  visBtn.onclick=()=>{
+    const L=layers[active];
+    if(!L||!L.img) return;
+    L.vis=!L.vis;
+    syncUIFromLayer();
+    renderUploadRows();
+    draw();
+    updatePrice();
+  };
+
+  delBtn.onclick=()=>{
+    layers[active]=makeLayer();
+    syncUIFromLayer();
+    renderUploadRows();
+    draw();
+    updatePrice();
+  };
+
+  let dragging=false;
+  let last={x:0,y:0};
+
+  function getPos(e){
+    const r=canvas.getBoundingClientRect();
+    return {
+      x:(e.clientX-r.left)*(canvas.width/r.width),
+      y:(e.clientY-r.top)*(canvas.height/r.height)
+    };
+  }
+
+  canvas.onmousedown=e=>{
+    dragging=true;
+    last=getPos(e);
+  };
+  window.onmouseup=()=>dragging=false;
+
+  canvas.onmousemove=e=>{
+    if(!dragging) return;
+    const p=getPos(e);
+    const dx=p.x-last.x;
+    const dy=p.y-last.y;
+    const L=layers[active];
+    if(L&&L.img){
+      L.x+=dx; L.y+=dy;
+      draw();
+    }
+    last=p;
+  };
+
+  canvas.onwheel=e=>{
+    const L=layers[active]; if(!L||!L.img) return;
+    e.preventDefault();
+    if(e.shiftKey){
+      L.rot+=-Math.sign(e.deltaY)*4;
+    } else {
+      let s=L.scale*100;
+      s-=Math.sign(e.deltaY)*6;
+      s=Math.max(5,Math.min(400,s));
+      L.scale=s/100;
+    }
+    syncUIFromLayer();
+    draw();
+  };
+
+  function motifStats(){
+    let bw=0,colorCount=0;
+    for(let i=0;i<LAYER_COUNT;i++){
+      const F=layersFront[i], B=layersBack[i];
+      const exists=(F.img&&F.vis)||(B.img&&B.vis);
+      if(!exists) continue;
+
+      const isBw=(F.img&&F.vis&&F.bw)||(B.img&&B.vis&&B.bw);
+      if(isBw) bw++; else colorCount++;
+    }
+    return {bw,color:colorCount};
+  }
+
+  function computeUnitPrice(){
+    let base=BASE_PRICE[selectedQuality];
+    const stats=motifStats();
+    const motifCost=stats.bw*MOTIF_PRICE.bw + stats.color*MOTIF_PRICE.color;
+    let sum=base+motifCost;
+    if(promoDiscount>0) sum-=sum*promoDiscount;
+    return sum;
+  }
+
+  function fmt(n){ return n.toLocaleString('de-DE',{style:'currency',currency:'EUR'}); }
+
+  function updatePrice(){
+    const qty=Math.max(1,parseInt(qtyEl.value||'1'));
+    const unit=computeUnitPrice();
+    priceEl.value=fmt(unit*qty);
+  }
+
+  qtyEl.oninput=updatePrice;
+
+  document.querySelectorAll('.q-btn').forEach(btn=>{
+    btn.onclick=()=>{
+      document.querySelectorAll('.q-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedQuality=btn.dataset.q;
+      qualityEl.value=selectedQuality;
+      promoDiscount=0;
+      promoInput.value='';
+      promoHint.style.display='none';
+      updatePrice();
+      draw();
+    };
+  });
+
+  promoInput.oninput=()=>{
+    const c=promoInput.value.trim().toLowerCase();
+    promoDiscount=0;
+    promoHint.style.display='none';
+
+    if(c==='hp24-10') promoDiscount=0.10;
+    if(c==='hp24-20') promoDiscount=0.20;
+    if(c==='free') promoDiscount=1.0;
+
+    if(promoDiscount>0) promoHint.style.display='block';
+
+    updatePrice();
+  };
+
+  function renderCart(){
+    cartBox.innerHTML='';
+    let sum=0;
+    cart.forEach((it,i)=>{
+      sum+=it.unit*it.qty;
+      const row=document.createElement('div');
+      row.className='ld-cart-row';
+      row.innerHTML=`
+        <div>
+          <strong>${it.name}</strong>
+          <span class="ld-chip">${COLOR_NAME[it.color]}</span>
+          <span class="ld-chip">${it.size}</span>
+          <span class="ld-chip">${it.qualityLabel}</span>
+          <span class="ld-chip">${it.motifs} Motiv</span>
+        </div>
+        <div>${fmt(it.unit)}</div>
+        <div style="display:flex; gap:6px; align-items:center;">
+          <button class="ld-btn" data-a="${i}">−</button>
+          <span>${it.qty}</span>
+          <button class="ld-btn" data-b="${i}">+</button>
+        </div>
+        <button class="ld-btn" data-x="${i}">Entfernen</button>
+      `;
+      cartBox.appendChild(row);
+    });
+
+    totalEl.textContent=fmt(sum);
+
+    cartBox.querySelectorAll('[data-a]').forEach(b=>{
+      b.onclick=()=>{
+        const i=b.dataset.a;
+        cart[i].qty=Math.max(1,cart[i].qty-1);
+        renderCart();
+      };
+    });
+    cartBox.querySelectorAll('[data-b]').forEach(b=>{
+      b.onclick=()=>{
+        const i=b.dataset.b;
+        cart[i].qty++;
+        renderCart();
+      };
+    });
+    cartBox.querySelectorAll('[data-x]').forEach(b=>{
+      b.onclick=()=>{
+        cart.splice(+b.dataset.x,1);
+        renderCart();
+      };
+    });
+  }
+
+  document.getElementById('ld-add').onclick=()=>{
+    const size=sizeEl.value||'-';
+    const qty=Math.max(1,parseInt(qtyEl.value||'1'));
+    const stats=motifStats();
+    const motifsCount=stats.bw+stats.color;
+    const unitPrice=computeUnitPrice();
+
+    const qualityLabel=selectedQuality==='heavy'
+      ? 'Heavy Stretch Premium'
+      : 'Premium';
+
+    cart.push({
+      name:'Polo',
+      color,
+      size,
+      qty,
+      quality:selectedQuality,
+      qualityLabel,
+      motifs:motifsCount,
+      unit:unitPrice
+    });
+
+    renderCart();
+    updatePrice();
+  };
+
+  document.getElementById('ld-download').onclick=()=>{
+    const a=document.createElement('a');
+    a.download=`HomePrint24_Polo_${COLOR_NAME[color]}_${view}.png`;
+    a.href=canvas.toDataURL('image/png');
+    a.click();
+  };
+
+  document.getElementById('ld-checkout').onclick=()=>{
+    window.location.href='https://www.homeprint24.com/';
+  };
+
+  function init(){
+    selectedQuality='premium';
+    qualityEl.value=selectedQuality;
+    renderColorSelect();
+    renderSwatches();
+    renderUploadRows();
+    syncUIFromLayer();
+    updatePrice();
+    draw();
+    setView('front');
+  }
+  init();
+
+})();
+</script>
