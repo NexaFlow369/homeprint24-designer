@@ -1,1 +1,1279 @@
-.
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>HomePrint24 – 3D Textil- & Zubehör-Editor</title>
+  <style>
+  /* Google Font: Fjalla One */
+  @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+
+  /* Designer-Block hellgrau */
+  #hpt24{
+    max-width:1080px;
+    margin:24px auto;
+    font-family:'Fjalla One',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:#e5e7eb;
+    padding:16px;
+    border-radius:18px;
+  }
+  #hpt24 *,#ld-suggest-modal *{
+    box-sizing:border-box;
+    font-family:'Fjalla One',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  }
+  .hpt24-title{text-align:center;margin:8px 0 16px;color:#0f172a;font-weight:800;letter-spacing:.3px;}
+  #hpt24-tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:12px;}
+  .hpt24-layout{
+    display:grid;
+    grid-template-columns:minmax(0,1.05fr) minmax(0,1.25fr);
+    gap:18px;
+    align-items:stretch;
+  }
+  .hpt24-left,
+  .hpt24-right{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .hpt24-right{
+    border-left:1px solid #e5e7eb;
+    padding-left:14px;
+  }
+  .ld-card{background:#f9fafb;border-radius:12px;padding:14px;border:1px solid #e5e7eb;}
+  .ld-label{font-weight:800;color:#0f172a;margin-bottom:4px;}
+  .ld-sublabel{font-weight:600;color:#0f172a;font-size:13px;}
+  .ld-input{padding:10px;border:1px solid #cbd5e1;border-radius:8px;width:100%;background:#fff;font-size:13px;}
+  .ld-tab{padding:8px 12px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;cursor:pointer;font-weight:700;font-size:12px;}
+  .ld-tab.active{background:#1D3557;color:#fff;border-color:#1D3557;}
+  .ld-btn{padding:6px 9px;border:none;border-radius:8px;background:#e2e8f0;font-weight:600;font-size:11px;cursor:pointer;}
+  .ld-btn.primary,.ld-btn.accent{padding:9px 14px;font-size:13px;font-weight:800;}
+  .ld-btn.primary{background:#1D3557;color:#fff;}
+  .ld-btn.accent{background:#0ea5e9;color:#fff;}
+  .ld-badge{font-size:12px;color:#64748b;}
+  .ld-chip{padding:2px 8px;border-radius:999px;border:1px solid #cbd5e1;background:#fff;font-size:11px;}
+  .hpt24-upload-list{display:flex;flex-direction:column;gap:8px;margin-top:10px;}
+  .ld-upload-row{
+    display:grid;
+    grid-template-columns:minmax(0,1.6fr) auto auto auto auto;
+    gap:5px;
+    align-items:center;
+  }
+  .ld-upload-row .ld-btn{padding:4px 7px;font-size:10px;}
+  .hpt24-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .hpt24-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px;}
+  .hpt24-gap-top{margin-top:8px;}
+  .hpt24-range{width:100%;}
+  .hpt24-subval{font-size:12px;color:#64748b;}
+  .hpt24-layer-buttons{display:flex;gap:6px;align-items:flex-end;justify-content:flex-end;}
+  .hpt24-small-btn{padding:5px 8px;font-size:11px;}
+  .hpt24-row-between{display:flex;justify-content:space-between;align-items:center;}
+  .hpt24-view-switch{display:flex;gap:8px;align-items:center;}
+  .hpt24-radio-col{margin-top:4px;font-size:12px;display:flex;flex-direction:column;gap:2px;}
+  .hpt24-notes{height:84px;margin-top:8px;}
+  .hpt24-kid-note{margin-top:6px;font-size:11px;color:#f97316;}
+  .hpt24-print-hint{font-size:11px;color:#4b5563;margin-top:4px;line-height:1.5;}
+
+  /* PRESET INLINE: "Preset: Center  Back-Tag" */
+  .hpt24-preset-wrap{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:4px;
+  }
+  .hpt24-preset-row{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+
+  /* CART – Einträge hellgrau & sauber angeordnet */
+  .ld-cart-row{
+    display:grid;
+    grid-template-columns:minmax(0,1.6fr) auto auto auto;
+    gap:10px;
+    align-items:center;
+    background:#e5e7eb;
+    border:1px solid #cbd5e1;
+    border-radius:12px;
+    padding:10px;
+  }
+  .ld-cart-card{
+    margin:4px auto 0;
+    border-top:2px solid #0f172a;
+    box-shadow:0 6px 18px rgba(15,23,42,.1);
+    padding-top:10px;
+    max-width:520px;
+    width:100%;
+  }
+  .hpt24-total{font-weight:800;color:#0f172a;}
+  .hpt24-cart-list{margin-top:8px;display:flex;flex-direction:column;gap:8px;}
+  .hpt24-checkout-btn{margin-top:12px;width:100%;}
+  .hpt24-hint-text{font-size:11px;color:#64748b;margin-top:6px;}
+
+  .ld-preview-shell{
+    position:relative;
+    background:#fff;
+    border-radius:14px;
+    box-shadow:0 10px 32px rgba(15,23,42,.12);
+    padding:8px 8px 12px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    max-width:520px;
+    width:100%;
+    margin:0 auto;
+  }
+  #ld-canvas{
+    width:92%;
+    display:block;
+    margin:0 auto;
+    border-radius:12px;
+    background:#ffffff;
+  }
+  .ld-preview-hint{position:absolute;left:16px;bottom:60px;background:rgba(15,23,42,.78);color:#fff;padding:6px 10px;border-radius:8px;font-size:12px;}
+  .ld-color-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border-radius:10px;background:#f9fafb;border:1px solid #e5e7eb;}
+  .ld-swatches-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;}
+  .hpt24-footer{text-align:center;font-size:12px;color:#64748b;margin-top:10px;}
+
+  .hpt24-sw-toggle{
+    font-size:10px;
+    display:flex;
+    align-items:center;
+    gap:4px;
+    color:#111827;
+    white-space:nowrap;
+  }
+  .hpt24-sw-toggle input{
+    margin:0;
+  }
+
+  /* Layer-Card unter Canvas */
+  .ld-layer-card{
+    max-width:520px;
+    margin:0 auto;
+  }
+
+  /* Zubehör-Select */
+  #acc-select-wrap select,
+  #acc-select-wrap input {
+    background:#fff;
+  }
+
+  @media(max-width:900px){
+    .hpt24-layout{grid-template-columns:1fr;}
+    .hpt24-right{
+      border-left:none;
+      padding-left:0;
+    }
+    .ld-preview-shell{max-width:100%;}
+    .ld-layer-card{max-width:100%;}
+    .ld-cart-card{max-width:100%;}
+    .ld-preview-hint{bottom:56px;}
+    .ld-color-bar{flex-direction:column;align-items:flex-start;}
+    .ld-swatches-row{justify-content:flex-start;}
+  }
+
+  @media(max-width:600px){
+    .ld-cart-row{
+      grid-template-columns:1fr 1fr;
+      grid-auto-rows:auto;
+    }
+  }
+
+  /* Modal */
+  #ld-suggest-modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.72);z-index:9999;align-items:center;justify-content:center;padding:16px;}
+  .ld-modal-inner{background:#f9fafb;border-radius:18px;max-width:780px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.35);padding:18px 20px 16px;position:relative;}
+  .ld-modal-close{position:absolute;top:10px;right:10px;border:none;border-radius:999px;width:28px;height:28px;cursor:pointer;background:#e5e7eb;font-weight:800;font-size:16px;line-height:1;}
+  .ld-modal-header{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+  .ld-modal-logo{width:32px;height:32px;border-radius:999px;background:#0f172a;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;}
+  .ld-modal-header h3{margin:0;font-size:18px;font-weight:800;color:#0f172a;}
+  .ld-modal-header p{margin:2px 0 0;font-size:12px;color:#64748b;}
+  .ld-modal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:10px;}
+  .ld-modal-item{text-align:center;}
+  .ld-modal-item canvas{width:100%;border-radius:10px;background:#f3f4f6;}
+  .ld-modal-label{font-size:12px;margin-top:4px;font-weight:600;color:#0f172a;}
+  .ld-modal-hint{font-size:11px;color:#64748b;margin-top:8px;}
+  .ld-modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px;}
+  </style>
+</head>
+<body>
+
+<div id="hpt24">
+  <h2 class="hpt24-title">HomePrint24 — Print Your Legacy</h2>
+
+  <!-- Produkt-Tabs -->
+  <div id="hpt24-tabs">
+    <button data-prod="tshirt" class="ld-tab active">T-Shirt</button>
+    <button data-prod="vneck"  class="ld-tab">V-Ausschnitt</button>
+    <button data-prod="polo"   class="ld-tab">Polo Shirt</button>
+    <button data-prod="hoodie" class="ld-tab">Hoodie</button>
+    <button data-prod="sweat"  class="ld-tab">Sweatshirt</button>
+    <button data-prod="track"  class="ld-tab">Trainingsjacke</button>
+    <button data-prod="jogger" class="ld-tab">Jogginghose</button>
+    <!-- Zubehör als eigener Tab -->
+    <button data-prod="accessory" class="ld-tab">Zubehör</button>
+  </div>
+
+  <div class="hpt24-layout">
+    <!-- LINKE SPALTE: Livebild + Layer-Controls -->
+    <div class="hpt24-left">
+      <div class="ld-preview-shell">
+        <canvas id="ld-canvas" width="760" height="920"></canvas>
+        <div class="ld-preview-hint">
+          Tipp: Ziehen = Position • Mausrad/Pinch = Skalierung (aktiver Layer)
+        </div>
+        <div class="ld-color-bar">
+          <span class="ld-sublabel">Farbe (Vorschau)</span>
+          <div id="ld-swatches" class="ld-swatches-row"></div>
+        </div>
+      </div>
+
+      <!-- Layer- und Motiv-Controls unter dem Livebild -->
+      <div class="ld-card ld-layer-card">
+        <div class="hpt24-grid-2 hpt24-gap-top">
+          <div>
+            <!-- PRESET IN EINER REIHE: "Preset: Center  Back-Tag" -->
+            <div class="hpt24-preset-wrap">
+              <span class="ld-sublabel">Preset:</span>
+              <div class="hpt24-preset-row">
+                <button data-preset="center" class="ld-btn">Center</button>
+                <button data-preset="back"   class="ld-btn">Back-Tag</button>
+              </div>
+            </div>
+          </div>
+          <div>
+            <label class="ld-sublabel">
+              Skalierung <span id="ld-scale-val" class="hpt24-subval">(100%)</span>
+            </label>
+            <input id="ld-scale" type="range" min="5" max="400" value="100" class="hpt24-range">
+          </div>
+        </div>
+
+        <div class="hpt24-grid-3">
+          <div>
+            <label class="ld-sublabel">
+              Rotation <span id="ld-rot-layer-val" class="hpt24-subval">(0°)</span>
+            </label>
+            <input id="ld-rot-layer" type="range" min="-180" max="180" value="0" class="hpt24-range">
+          </div>
+          <div>
+            <label class="ld-sublabel">
+              Deckkraft <span id="ld-opa-val" class="hpt24-subval">(100%)</span>
+            </label>
+            <input id="ld-opa" type="range" min="5" max="100" value="100" class="hpt24-range">
+          </div>
+          <div class="hpt24-layer-buttons">
+            <button id="ld-layer-vis" class="ld-btn hpt24-small-btn">Sichtbar: AN</button>
+            <button id="ld-layer-del" class="ld-btn hpt24-small-btn" title="Layer entfernen">Entf.</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECHTE SPALTE: Upload, Bestellangaben, Warenkorb -->
+    <div class="hpt24-right">
+      <!-- Upload-Card -->
+      <div class="ld-card">
+        <div class="hpt24-row-between">
+          <label class="ld-label" style="margin:0;">Dein Motiv hochladen:</label>
+          <div class="hpt24-view-switch">
+            <span class="ld-sublabel">Ansicht:</span>
+            <span id="ld-view-badge" class="ld-badge">FRONT</span>
+            <button id="ld-toggle-back" class="ld-btn">Back</button>
+          </div>
+        </div>
+        <div id="ld-uploader-list" class="hpt24-upload-list"></div>
+      </div>
+
+      <!-- Bestellangaben -->
+      <div class="ld-card">
+        <label class="ld-label">Bestellangaben</label>
+
+        <!-- Zubehör-Auswahl (nur sichtbar im Zubehör-Tab) -->
+        <div id="acc-select-wrap" class="hpt24-grid-2 hpt24-gap-top" style="display:none;">
+          <select id="acc-type" class="ld-input">
+            <option value="">Zubehör wählen</option>
+            <option value="toploaderBinder">Toploader Binder</option>
+            <option value="stofftasche">Stoff Tasche</option>
+            <option value="basecap">Base Cap</option>
+            <option value="bauchtasche">Bauchtasche</option>
+          </select>
+          <input id="acc-price-info" class="ld-input" type="text" value="Preis wird automatisch berechnet" readonly>
+        </div>
+
+        <div class="hpt24-grid-2 hpt24-gap-top">
+          <select id="ld-size" class="ld-input">
+            <option value="">Größe wählen</option>
+            <!-- Kindergrößen -->
+            <option value="110-116" data-kid="1">110–116</option>
+            <option value="122-128" data-kid="1">122–128</option>
+            <option value="134-140" data-kid="1">134–140</option>
+            <option value="146-152" data-kid="1">146–152</option>
+            <option value="158-164" data-kid="1">158–164</option>
+            <!-- Erwachsenengrößen – Frau bekommt zusätzlich XXS/XS -->
+            <option value="XXS" data-kid="0" data-woman="1">XXS</option>
+            <option value="XS"  data-kid="0" data-woman="1">XS</option>
+            <option value="S"   data-kid="0">S</option>
+            <option value="M"   data-kid="0">M</option>
+            <option value="L"   data-kid="0">L</option>
+            <option value="XL"  data-kid="0">XL</option>
+            <option value="XXL" data-kid="0">XXL</option>
+            <option value="3XL" data-kid="0">3XL</option>
+          </select>
+          <select id="ld-color-select" class="ld-input">
+            <option value="w">Weiß</option>
+            <option value="s">Schwarz</option>
+            <option value="g">Gelb</option>
+            <option value="b">Blau</option>
+            <option value="r">Rot</option>
+          </select>
+        </div>
+
+        <div class="hpt24-grid-2 hpt24-gap-top">
+          <select id="ld-quality" class="ld-input">
+            <option value="basic">Qualität: Basic</option>
+            <option value="standard">Qualität: Standard</option>
+            <option value="premium">Qualität: Premium</option>
+          </select>
+          <select id="ld-gender" class="ld-input">
+            <option value="">Passform wählen</option>
+            <option value="man">Mann</option>
+            <option value="woman">Frau</option>
+            <option value="kid">Kind</option>
+          </select>
+        </div>
+
+        <p id="ld-kid-note" class="hpt24-kid-note" style="display:none;">
+          Hinweis: Bei „Kind“ wird der Textilpreis rabattiert (25 %), die Druckkosten pro Motiv bleiben unverändert.
+        </p>
+
+        <div class="hpt24-gap-top">
+          <label class="ld-sublabel"></label>
+          <p class="hpt24-print-hint"></p>
+        </div>
+
+        <div class="hpt24-grid-2 hpt24-gap-top">
+          <input id="ld-qty" type="number" min="1" value="1" class="ld-input" placeholder="Stückzahl">
+          <input id="ld-price" type="text" class="ld-input" value="0,00 €" readonly>
+        </div>
+
+        <textarea id="ld-notes" class="ld-input hpt24-notes" placeholder="Wünsche/Anmerkungen (z. B. 25 cm Breite, Ärmel rechts …)"></textarea>
+
+        <div class="hpt24-grid-2 hpt24-gap-top">
+          <button id="ld-add" class="ld-btn primary">In den Warenkorb</button>
+          <button id="ld-download" class="ld-btn">Mockup herunterladen</button>
+        </div>
+      </div>
+
+      <!-- Warenkorb unter Bestellangaben -->
+      <div class="ld-card ld-cart-card">
+        <div class="hpt24-row-between">
+          <div class="ld-label" style="margin:0;">Warenkorb</div>
+          <div id="ld-total" class="hpt24-total">0,00 €</div>
+        </div>
+        <div id="ld-cart" class="hpt24-cart-list"></div>
+        <button id="ld-checkout" class="ld-btn accent hpt24-checkout-btn">Zur Kasse</button>
+        <p class="hpt24-hint-text">
+          Hinweis: Der Gesamtpreis basiert auf Produkt, Qualität, Motivanzahl und Druckart. Mockup bitte vor dem Checkout herunterladen.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <p class="hpt24-footer">© HomePrint24 — Print Your Legacy</p>
+</div>
+
+<!-- Checkout-Suggest-Modal -->
+<div id="ld-suggest-modal">
+  <div class="ld-modal-inner">
+    <button id="ld-modal-close" class="ld-modal-close">×</button>
+    <div class="ld-modal-header">
+      <div class="ld-modal-logo">HP</div>
+      <div>
+        <h3>Dein Motiv – weitere Farbvarianten</h3>
+        <p>So könnte dein Motiv auf deinem gewählten Produkt in anderen Farben aussehen.</p>
+      </div>
+    </div>
+
+    <div class="ld-modal-grid">
+      <div class="ld-modal-item">
+        <canvas id="ld-modal-variant-1" width="180" height="220"></canvas>
+        <div class="ld-modal-label">Variante 1 – andere Farbe</div>
+      </div>
+      <div class="ld-modal-item">
+        <canvas id="ld-modal-variant-2" width="180" height="220"></canvas>
+        <div class="ld-modal-label">Variante 2 – andere Farbe</div>
+      </div>
+      <div class="ld-modal-item">
+        <canvas id="ld-modal-variant-3" width="180" height="220"></canvas>
+        <div class="ld-modal-label">Variante 3 – andere Farbe</div>
+      </div>
+    </div>
+
+    <p class="ld-modal-hint">
+      Hinweis: Das Motiv ist eine Vorschau. Du kannst später weitere Produkte mit deinem Logo anfragen.
+    </p>
+
+    <div class="ld-modal-actions">
+      <button id="ld-modal-skip" class="ld-btn">Später entscheiden</button>
+      <button id="ld-modal-checkout" class="ld-btn primary">Direkt zur Kasse</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const PRODUCT_GROUP={
+    tshirt:'shirt',
+    vneck:'shirt',
+    polo:'shirt',
+    sweat:'sweat',
+    hoodie:'sweat',
+    jogger:'bottom',
+    track:'bottom',
+    accessory:'accessory'   // Zubehör-Gruppe
+  };
+
+  /* PREISE nach Matrix (NETTO) – Textilien */
+  const BASE_PRICE = {
+    // T-Shirt, V-Neck, Polo
+    shirt: {
+      basic:   19.99,
+      standard:25.99,
+      premium: 35.99
+    },
+    // Hoodie, Sweatshirt
+    sweat: {
+      basic:   29.99,
+      standard:35.99,
+      premium: 45.99
+    },
+    // Trainingsjacke, Jogginghose
+    bottom: {
+      basic:   29.99,
+      standard:35.99,
+      premium: 45.99
+    }
+  };
+
+  /* Zubehör-Preise (blanko) – NETTO */
+  const ACCESSORY_PRICE = {
+    toploaderBinder: 59.99,
+    stofftasche: 9.99,
+    basecap: 14.99,
+    bauchtasche: 14.99
+  };
+
+  const MOTIF_PRICE={bw:3.50,color:5.50};
+  const COLOR_NAME={w:'Weiß',s:'Schwarz',g:'Gelb',b:'Blau',r:'Rot'};
+  const COLORS=['w','s','g','b','r'];
+
+  const L = u => u;
+  const mk8 = url => [url,url,url,url,url,url,url,url];
+
+  /* FRONT-Bilder */
+  const SPIN = {
+    tshirt:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_39A4FE77-F206-4838-BD1C-CB77DEB7234C.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9138.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9139.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9137.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9136.jpeg/:/rs=w:1440,h:1440'))
+    },
+    vneck:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_13A4C3DF-6F22-485E-866A-9796679D4EEA.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9130.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9131.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9129.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9128.jpeg/:/rs=w:1440,h:1440'))
+    },
+    polo:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_F2280821-1845-4CD9-ACEE-F252A3AF1597.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9147.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9148.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9146.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9145.jpeg/:/rs=w:1440,h:1440'))
+    },
+    sweat:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_0C93F68F-D399-4270-9110-1A00EE841614.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9072.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9073.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9075.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9074.jpeg/:/rs=w:1440,h:1440'))
+    },
+    hoodie:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_2C06C545-468C-41A1-AD84-4487C4845387.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9156.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9157.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9155.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9154.jpeg/:/rs=w:1440,h:1440'))
+    },
+    track:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_752DCC1C-A663-4066-A9B0-1581BF7BCE1C.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/F12B652D-DA9B-4723-89EC-DCA4A832DA5A.PNG')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0-40e3-8f17-c80a8147cdc6/ols/IMG_9082.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_8707.JPG')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/B467D182-0751-4F2D-A446-8AD9BD5D2A22.PNG'))
+    },
+    jogger:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_40C1501A-C5B6-43ED-9712-69A34E5D0FD9.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0-40e3-8f17-c80a8147cdc6/ols/IMG_9159.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0-40e3-8f17-c80a8147cdc6/ols/IMG_9158.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0-40e3-8f17-c80a8147cdc6/ols/IMG_9160.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0-40e3-8f17-c80a8147cdc6/ols/IMG_9057.jpeg/:/rs=w:1440,h:1440'))
+    },
+
+    /* Zubehör – Toploader Binder mit echtem Bild */
+    toploader:{
+      w: mk8(L('https://via.placeholder.com/750x900?text=Toploader+Preview'))
+    },
+    binder:{
+      w: mk8(L('https://via.placeholder.com/750x900?text=Binder+Preview'))
+    },
+    toploaderBinder:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0-40e3-8f17-c80a8147cdc6/ols/copy_9C4CB6AA-54E4-4CE5-9456-7CC413B0DDC7.jpeg/:/rs=w:1440,h:1440'))
+    },
+    stofftasche:{
+      w: mk8(L('https://via.placeholder.com/750x900?text=Stoff+Tasche'))
+    },
+    basecap:{
+      w: mk8(L('https://via.placeholder.com/750x900?text=Base+Cap'))
+    },
+    bauchtasche:{
+      w: mk8(L('https://via.placeholder.com/750x900?text=Bauchtasche'))
+    }
+  };
+
+  /* BACK-Bilder */
+  const SPIN_BACK={
+    tshirt:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_E683668C-A4CC-41A3-9E22-F9CC10E258E6.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/DB6435C5-9AF3-4FB8-A7B6-39F9DC638153.png')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9132.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9135.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9134.jpeg/:/rs=w:1440,h:1440'))
+    },
+    vneck:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_E683668C-A4CC-41A3-9E22-F9CC10E258E6.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9133.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9132.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9135.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9134.jpeg/:/rs=w:1440,h:1440'))
+    },
+    polo:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_0C93F68F-D399-4270-9110-1A00EE841614.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9151.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9149.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/3F884F7F-1B58-43E7-8887-F95BF12FC227.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9151.jpeg/:/rs=w:1440,h:1440'))
+    },
+    sweat:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_53778E2C-B455-4920-81E6-E686FD9E962C.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9078.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9076.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9077.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9078.jpeg/:/rs=w:1440,h:1440'))
+    },
+    hoodie:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_FF41A819-3DD9-42FF-9520-C010BACA2F95.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9126.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9127.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9124.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9126.jpeg/:/rs=w:1440,h:1440'))
+    },
+    track:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_76786625-8A7E-4321-8731-B010914096F5.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/E4559EF7-479B-40C4-A541-BCE82C453F70.png')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/D562B05D-392B-4A80-A0B0-C7F7703AA965.png')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/A707EC48-6F41-408F-A726-745443635383.png')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/D386B573-20F6-44EA-A931-C78B79CEDD4D.png'))
+    },
+    jogger:{
+      w: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_7955E58F-97DF-4C4C-AB0E-46DB746F76CC.jpeg/:/rs=w:1440,h:1440')),
+      b: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0-40e3-8f17-c80a8147cdc6/ols/IMG_9063.jpeg/:/rs=w:1440,h:1440')),
+      r: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0-40e3-8f17-c80a8147cdc6/ols/IMG_9061.jpeg/:/rs=w:1440,h:1440')),
+      g: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0-40e3-8f17-c80a8147cdc6/ols/IMG_9062.jpeg/:/rs=w:1440,h:1440')),
+      s: mk8(L('https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0-40e3-8f17-c80a8147cdc6/ols/IMG_9063.jpeg/:/rs=w:1440,h:1440'))
+    }
+    // Zubehör nutzt Front-Map
+  };
+
+  const canvas=document.getElementById('ld-canvas');
+  const ctx=canvas.getContext('2d');
+  let prod='tshirt',color='w',frame=0,frames=[];
+  let view='front';
+
+  const LAYER_COUNT=3;
+  const makeLayer=()=>({img:null,x:0,y:0,w:0,rot:0,scale:1,op:1,vis:true,bw:false,name:''});
+  const layersFront=Array.from({length:LAYER_COUNT},makeLayer);
+  const layersBack=Array.from({length:LAYER_COUNT},makeLayer);
+  let layers=layersFront,active=0;
+
+  const priceEl=document.getElementById('ld-price');
+  const qtyEl=document.getElementById('ld-qty');
+  const colorSel=document.getElementById('ld-color-select');
+  const qualityEl=document.getElementById('ld-quality');
+  const genderEl=document.getElementById('ld-gender');
+  const sizeEl=document.getElementById('ld-size');
+  const kidNoteEl=document.getElementById('ld-kid-note');
+  const scaleEl=document.getElementById('ld-scale');
+  const scaleVal=document.getElementById('ld-scale-val');
+  const rotLayerEl=document.getElementById('ld-rot-layer');
+  const rotLayerVal=document.getElementById('ld-rot-layer-val');
+  const opaEl=document.getElementById('ld-opa');
+  const opaVal=document.getElementById('ld-opa-val');
+  const uploadsBox=document.getElementById('ld-uploader-list');
+  const badgeEl=document.getElementById('ld-view-badge');
+  const toggleBackBtn=document.getElementById('ld-toggle-back');
+  const checkoutBtn=document.getElementById('ld-checkout');
+  const totalEl=document.getElementById('ld-total');
+
+  const accWrap=document.getElementById('acc-select-wrap');
+  const accTypeEl=document.getElementById('acc-type');
+  const accPriceInfoEl=document.getElementById('acc-price-info');
+
+  const modalEl=document.getElementById('ld-suggest-modal');
+  const modalCloseBtn=document.getElementById('ld-modal-close');
+  const modalSkipBtn=document.getElementById('ld-modal-skip');
+  const modalCheckoutBtn=document.getElementById('ld-modal-checkout');
+
+  const IMAGE_CACHE={};
+  const cart=[];
+
+  let isAccessory=false;
+
+  function fmt(n){return n.toLocaleString('de-DE',{style:'currency',currency:'EUR'});}
+
+  function loadImage(src){
+    if(IMAGE_CACHE[src]) return IMAGE_CACHE[src];
+    const im=new Image();
+    im.crossOrigin='anonymous';
+    im.onload=()=>draw();
+    im.src=src;
+    IMAGE_CACHE[src]=im;
+    return im;
+  }
+
+  function effectiveProdForPreview(){
+    if(prod==='accessory' && accTypeEl && accTypeEl.value){
+      return accTypeEl.value; // toploaderBinder / stofftasche / basecap / bauchtasche
+    }
+    return prod;
+  }
+
+  function getFrameSet(){
+    const effProd = effectiveProdForPreview();
+    const useBackMap = (view==='back' && SPIN_BACK[effProd] && SPIN_BACK[effProd][color]);
+    const map = useBackMap ? SPIN_BACK : SPIN;
+    let arr=null;
+
+    if(map[effProd] && map[effProd][color]){
+      arr = map[effProd][color];
+    }else if(map[effProd] && map[effProd].w){
+      arr = map[effProd].w;
+    }else if(SPIN.tshirt){
+      arr = SPIN.tshirt.w;
+    }else{
+      arr = [];
+    }
+    return arr.map(loadImage);
+  }
+
+  function baseOverlayW(){return Math.round(canvas.width*0.38);}
+
+  function allLayers(){
+    return [...layersFront,...layersBack];
+  }
+
+  // Pro Slot nur 1 Motiv (Front+Back zusammengezählt)
+  function motifStats(){
+    let bw = 0;
+    let colorCount = 0;
+
+    for(let i=0;i<LAYER_COUNT;i++){
+      const F = layersFront[i];
+      const B = layersBack[i];
+
+      const hasImg =
+        (F && F.img && F.vis) ||
+        (B && B.img && B.vis);
+
+      if(!hasImg) continue;
+
+      const isBw =
+        (F && F.img && F.vis && F.bw) ||
+        (B && B.img && B.vis && B.bw);
+
+      if(isBw) bw++;
+      else colorCount++;
+    }
+
+    return { bw, color: colorCount };
+  }
+
+  function computeMotifCost(){
+    const s=motifStats();
+    return s.bw*MOTIF_PRICE.bw + s.color*MOTIF_PRICE.color;
+  }
+
+  function accessoryBasePrice(){
+    if(!isAccessory || !accTypeEl) return 0;
+    const t = accTypeEl.value || '';
+    return ACCESSORY_PRICE[t] || 0;
+  }
+
+  function updateAccessoryPriceInfo(){
+    if(!accPriceInfoEl) return;
+    const base = accessoryBasePrice();
+    if(base>0){
+      accPriceInfoEl.value = 'Blanko: ' + fmt(base) + ' (zzgl. Druck)';
+    }else{
+      accPriceInfoEl.value = 'Preis wird automatisch berechnet';
+    }
+  }
+
+  /* Zubehör-Modus an/aus */
+  function toggleAccessoryMode(on){
+    isAccessory = !!on;
+
+    if(accWrap) accWrap.style.display = on ? 'grid' : 'none';
+
+    // Textil-Controls deaktivieren bei Zubehör
+    sizeEl.disabled   = on;
+    genderEl.disabled = on;
+    qualityEl.disabled = on;
+
+    if(on){
+      sizeEl.value = '';
+      genderEl.value = '';
+      if(kidNoteEl) kidNoteEl.style.display='none';
+      updateAccessoryPriceInfo();
+    }else{
+      qualityEl.disabled = false;
+      if(accPriceInfoEl) accPriceInfoEl.value='Preis wird automatisch berechnet';
+      // Normaler Textilmodus – Größen-/Kindlogik wieder anwenden
+      applyKidSizeLock();
+    }
+
+    updatePrice();
+    loadFrames();
+  }
+
+  /* PREISLOGIK: Blanko + Motive, Kinder-Rabatt nur auf Blanko (25 %) */
+  function computeUnitPrice(){
+    // Zubehör: feste Preise pro Produkt, Kinder/Qualität ignoriert
+    if(isAccessory){
+      const baseAcc = accessoryBasePrice();
+      const motifCost = computeMotifCost();
+      return baseAcc + motifCost;
+    }
+
+    const group=PRODUCT_GROUP[prod]||'shirt';
+    const quality=(qualityEl&&qualityEl.value)||'basic';
+
+    let base=(BASE_PRICE[group]&&BASE_PRICE[group][quality])?BASE_PRICE[group][quality]:0;
+
+    if(genderEl && genderEl.value==='kid'){
+      base*=0.75; // 25 % Rabatt nur auf Textil
+    }
+
+    const motifCost=computeMotifCost();
+    return base+motifCost;
+  }
+
+  function updatePrice(){
+    const qty=Math.max(1,parseInt(qtyEl.value||'1',10));
+    const unit=computeUnitPrice();
+    priceEl.value=fmt(unit*qty);
+  }
+
+  /* Kindergrößen nur bei „Kind“, XXS/XS nur bei „Frau“, Zubehör ignoriert alles */
+  function applyKidSizeLock(){
+    if(!sizeEl) return;
+    if(isAccessory){
+      // Alles deaktivieren außer Placeholder
+      Array.from(sizeEl.options).forEach(o=>{
+        if(!o.value) o.disabled=false;
+        else o.disabled=true;
+      });
+      sizeEl.value='';
+      if(kidNoteEl) kidNoteEl.style.display='none';
+      return;
+    }
+
+    const genderVal = genderEl ? genderEl.value : '';
+    const isKid = genderVal === 'kid';
+    let firstEnabled=null;
+
+    Array.from(sizeEl.options).forEach(o=>{
+      if(!o.value){
+        o.disabled=false;
+        return;
+      }
+      const isChildOpt   = o.dataset.kid === '1';
+      const isWomanOnly  = o.dataset.woman === '1';
+      let enable = false;
+
+      if(isKid){
+        // Nur Kindergrößen
+        enable = isChildOpt;
+      }else if(genderVal === 'woman'){
+        // Alle Erwachsenengrößen, inkl. XXS/XS
+        enable = !isChildOpt;
+      }else if(genderVal === 'man'){
+        // Erwachsene, aber ohne Frau-only (XXS/XS)
+        enable = !isChildOpt && !isWomanOnly;
+      }else{
+        // Noch keine Passform gewählt: alles deaktiviert außer Placeholder
+        enable = false;
+      }
+
+      o.disabled = !enable;
+      if(enable && !firstEnabled) firstEnabled=o;
+    });
+
+    if(genderVal === 'kid' || genderVal === 'woman' || genderVal === 'man'){
+      sizeEl.value = firstEnabled ? firstEnabled.value : '';
+    }else{
+      sizeEl.value = '';
+    }
+
+    if(kidNoteEl) kidNoteEl.style.display = isKid ? 'block' : 'none';
+  }
+
+  function loadFrames(){frames=getFrameSet();frame=0;draw();}
+
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const base=frames[Math.floor(frame)%frames.length]||{};
+    if(!base.width||!base.height) return;
+
+    const marginX=canvas.width*0.07,marginY=canvas.height*0.06;
+    const maxW=canvas.width-marginX*2,maxH=canvas.height-marginY*2;
+    const ratio=base.height/base.width;
+    let W=maxW,H=W*ratio;
+    if(H>maxH){H=maxH;W=H/ratio;}
+    const sx=(canvas.width-W)/2,sy=(canvas.height-H)/2;
+    if(base.complete) ctx.drawImage(base,sx,sy,W,H);
+
+    const cx=canvas.width/2;
+    const centerFactor=(prod==='jogger')?0.62:0.46;
+    const cy=sy+H*centerFactor;
+
+    layers.forEach(L=>{
+      if(!L.img||!L.vis) return;
+      const iw=L.w||baseOverlayW();
+      const r=L.img.naturalHeight/Math.max(1,L.img.naturalWidth);
+      const ih=iw*r;
+      ctx.save();
+      ctx.translate(cx+L.x,cy+L.y);
+      ctx.rotate((L.rot||0)*Math.PI/180);
+      ctx.scale(L.scale||1,L.scale||1);
+      ctx.globalAlpha=L.op||1;
+      ctx.drawImage(L.img,-iw/2,-ih/2,iw,ih);
+      ctx.restore();
+    });
+  }
+
+  document.querySelectorAll('#hpt24 .ld-tab').forEach(b=>{
+    b.onclick=()=>{
+      document.querySelectorAll('#hpt24 .ld-tab').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      prod=b.dataset.prod;
+
+      // Zubehör-Mode aktivieren
+      if(prod==='accessory'){
+        toggleAccessoryMode(true);
+      }else{
+        toggleAccessoryMode(false);
+      }
+
+      colorSel.value=color;
+      loadFrames();
+      updatePrice();
+    };
+  });
+
+  function renderSwatches(){
+    const host=document.getElementById('ld-swatches');
+    host.innerHTML='';
+    COLORS.forEach(k=>{
+      const hex=({w:'#ffffff',s:'#0f172a',g:'#fbbf24',b:'#2563eb',r:'#ef4444'})[k];
+      const el=document.createElement('div');
+      el.title=COLOR_NAME[k];
+      el.style.width='28px';el.style.height='28px';
+      el.style.borderRadius='50%';
+      el.style.border='2px solid #cbd5e1';
+      el.style.cursor='pointer';
+      el.style.background=hex;
+      el.onclick=()=>{color=k;colorSel.value=k;loadFrames();};
+      host.appendChild(el);
+    });
+  }
+  colorSel.addEventListener('change',e=>{color=e.target.value;loadFrames();});
+
+  /* WICHTIG: Front & Back NICHT mehr automatisch kopieren */
+  function setView(v){
+    view = (v === 'back') ? 'back' : 'front';
+    layers = (view === 'front') ? layersFront : layersBack;
+    badgeEl.textContent = view.toUpperCase();
+    active = 0;
+    renderUploadRows();
+    syncUIFromLayer();
+    loadFrames();
+  }
+  toggleBackBtn.addEventListener('click',()=>{setView(view==='front'?'back':'front');});
+
+  function renderUploadRows(){
+    uploadsBox.innerHTML='';
+    for(let i=0;i<LAYER_COUNT;i++){
+      const row=document.createElement('div');
+      row.className='ld-upload-row';
+      row.innerHTML=`
+        <div>
+          <input id="ld-file-${i}" type="file" accept=".png,.jpg,.jpeg,.svg" class="ld-input">
+        </div>
+        <label class="hpt24-sw-toggle">
+          <input type="checkbox" data-bw="${i}">
+          S/W 3,50 €
+        </label>
+        <button class="ld-btn" data-act="${i}">Aktiv</button>
+        <button class="ld-btn" data-vis="${i}">${layers[i].vis?'👁 AUS':'👁 AN'}</button>
+        <button class="ld-btn" data-del="${i}" title="Entfernen">✖</button>
+      `;
+      uploadsBox.appendChild(row);
+
+      const inp=row.querySelector(`#ld-file-${i}`);
+      inp.addEventListener('change',e=>{
+        const f=e.target.files&&e.target.files[0];
+        if(!f) return;
+        const url=URL.createObjectURL(f);
+        const im=new Image();
+        im.onload=()=>{
+          const prevBw = layers[i].bw || false;
+          layers[i]={img:im,x:0,y:0,w:baseOverlayW(),rot:0,scale:1,op:1,vis:true,bw:prevBw,name:f.name||`Layer ${i+1}`};
+          active=i;
+          syncUIFromLayer();
+          renderUploadRows();
+          draw();
+          updatePrice();
+        };
+        im.src=url;
+      });
+
+      const swCb=row.querySelector(`[data-bw="${i}"]`);
+      swCb.checked=!!layers[i].bw;
+      swCb.onchange=()=>{
+        layers[i].bw = swCb.checked;
+        updatePrice();
+      };
+
+      row.querySelector(`[data-act="${i}"]`).onclick=()=>{active=i;syncUIFromLayer();renderUploadRows();};
+      row.querySelector(`[data-vis="${i}"]`).onclick=()=>{
+        if(!layers[i].img) return;
+        layers[i].vis=!layers[i].vis;
+        if(active===i) syncUIFromLayer();
+        renderUploadRows();
+        draw();
+        updatePrice();
+      };
+      row.querySelector(`[data-del="${i}"]`).onclick=()=>{
+        layers[i]=makeLayer();
+        if(active===i) active=Math.max(0,active-1);
+        syncUIFromLayer();
+        renderUploadRows();
+        draw();
+        updatePrice();
+      };
+    }
+  }
+
+  function applyPreset(name){
+    const L=layers[active];if(!L.img) return;
+    const H=canvas.height;
+    if(name==='center'){L.w=baseOverlayW();L.x=0;L.y=0;}
+    if(name==='back'){L.w=Math.round(baseOverlayW()*0.7);L.x=0;L.y=H*-0.30;}
+    draw();syncUIFromLayer();
+  }
+  document.querySelectorAll('#hpt24 [data-preset]').forEach(b=>b.addEventListener('click',()=>applyPreset(b.dataset.preset)));
+
+  function syncUIFromLayer(){
+    const L=layers[active]||{};
+    const scalePct=Math.round((L.scale||1)*100);
+    scaleEl.value=Math.min(400,Math.max(5,scalePct||100));
+    scaleVal.textContent=`(${scaleEl.value}%)`;
+    rotLayerEl.value=Math.round(L.rot||0);
+    rotLayerVal.textContent=`(${rotLayerEl.value}°)`;
+    opaEl.value=Math.round((L.op||1)*100);
+    opaVal.textContent=`(${opaEl.value}%)`;
+    document.getElementById('ld-layer-vis').textContent='Sichtbar: '+((L.img&&L.vis)?'AN':'AUS');
+  }
+  scaleEl.addEventListener('input',()=>{const L=layers[active];if(!L||!L.img)return;L.scale=Number(scaleEl.value)/100;scaleVal.textContent=`(${scaleEl.value}%)`;draw();});
+  rotLayerEl.addEventListener('input',()=>{const L=layers[active];if(!L||!L.img)return;L.rot=Number(rotLayerEl.value);rotLayerVal.textContent=`(${rotLayerEl.value}°)`;draw();});
+  opaEl.addEventListener('input',()=>{const L=layers[active];if(!L||!L.img)return;L.op=Number(opaEl.value)/100;opaVal.textContent=`(${opaEl.value}%)`;draw();});
+  document.getElementById('ld-layer-vis').addEventListener('click',()=>{
+    const L=layers[active];if(!L||!L.img)return;
+    L.vis=!L.vis;
+    syncUIFromLayer();
+    renderUploadRows();
+    draw();
+    updatePrice();
+  });
+  document.getElementById('ld-layer-del').addEventListener('click',()=>{
+    layers[active]=makeLayer();
+    renderUploadRows();
+    syncUIFromLayer();
+    draw();
+    updatePrice();
+  });
+
+  let dragging=false,last={x:0,y:0};
+  function getPos(e){const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*(canvas.width/r.width),y:(e.clientY-r.top)*(canvas.height/r.height)};}
+  canvas.addEventListener('mousedown',e=>{dragging=true;last=getPos(e);});
+  window.addEventListener('mouseup',()=>dragging=false);
+  canvas.addEventListener('mousemove',e=>{
+    if(!dragging) return;
+    const p=getPos(e),dx=p.x-last.x,dy=p.y-last.y;
+    const L=layers[active];
+    if(L&&L.img){L.x+=dx;L.y+=dy;draw();}
+    last=p;
+  });
+  canvas.addEventListener('wheel',e=>{
+    const L=layers[active];if(!L||!L.img)return;
+    e.preventDefault();
+    const cur=Number(scaleEl.value);
+    const next=Math.max(5,Math.min(400,cur-Math.sign(e.deltaY)*6));
+    scaleEl.value=next;L.scale=next/100;scaleVal.textContent=`(${next}%)`;draw();
+  });
+
+  const cartBox=document.getElementById('ld-cart');
+  function addToCart(it){cart.push(it);renderCart();}
+  function renderCart(){
+    cartBox.innerHTML='';
+    let sum=0;
+    cart.forEach((it,idx)=>{
+      sum+=it.price*it.qty;
+      const row=document.createElement('div');
+      row.className='ld-cart-row';
+      const qualLabel=(it.quality||'basic').charAt(0).toUpperCase()+(it.quality||'basic').slice(1);
+      const motifsText=(it.motifs||0)+' Motiv'+(it.motifs===1?'':'e');
+      row.innerHTML=`
+        <div>
+          <strong>${it.name}</strong>
+          <span class="ld-chip">${COLOR_NAME[it.color]||it.color}</span>
+          <span class="ld-chip">${it.size||'-'}</span>
+          <span class="ld-chip">${qualLabel}</span>
+          <span class="ld-chip">${motifsText}</span>
+        </div>
+        <div class="ld-cart-price">${fmt(it.price)}</div>
+        <div class="ld-cart-qty">
+          <button class="ld-btn" data-a="${idx}">−</button>
+          <div>${it.qty}</div>
+          <button class="ld-btn" data-b="${idx}">+</button>
+        </div>
+          <button class="ld-btn ld-cart-remove" data-x="${idx}">Entfernen</button>
+      `;
+      cartBox.appendChild(row);
+    });
+    totalEl.textContent=fmt(sum);
+    cartBox.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const i=+b.dataset.a;cart[i].qty=Math.max(1,cart[i].qty-1);renderCart();});
+    cartBox.querySelectorAll('[data-b]').forEach(b=>b.onclick=()=>{const i=+b.dataset.b;cart[i].qty++;renderCart();});
+    cartBox.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{cart.splice(+b.dataset.x,1);renderCart();});
+  }
+
+  document.getElementById('ld-add').onclick=()=>{
+    const size=isAccessory ? 'One Size' : (sizeEl.value||'-');
+    const qty=Math.max(1,parseInt(qtyEl.value||'1',10));
+
+    let quality = '';
+    let gender = '';
+
+    if(isAccessory){
+      quality = 'accessory';
+      gender = '';
+    }else{
+      quality = (qualityEl.value||'basic');
+      gender = (genderEl.value||'');
+    }
+
+    let finalProd = prod;
+    let finalName = '';
+
+    if(isAccessory){
+      const t = (accTypeEl && accTypeEl.value) || '';
+      if(!t){
+        alert('Bitte ein Zubehör-Produkt wählen.');
+        return;
+      }
+      finalProd = t || 'accessory';
+      finalName = ({
+        toploaderBinder:'Toploader Binder',
+        stofftasche:'Stoff Tasche',
+        basecap:'Base Cap',
+        bauchtasche:'Bauchtasche'
+      })[t] || 'Zubehör';
+    }else{
+      finalName = ({
+        tshirt:'T-Shirt',
+        vneck:'V-Ausschnitt',
+        polo:'Polo Shirt',
+        hoodie:'Hoodie',
+        sweat:'Sweatshirt',
+        track:'Trainingsjacke',
+        jogger:'Jogginghose'
+      })[prod] || 'Produkt';
+    }
+
+    const stats = motifStats();
+    const motifsCount = stats.bw + stats.color;
+    const unitPrice=computeUnitPrice();
+
+    addToCart({
+      name:finalName,
+      prod:finalProd,
+      color,
+      size,
+      qty,
+      price:unitPrice,
+      quality,
+      gender,
+      motifs:motifsCount
+    });
+    updatePrice();
+  };
+
+  qtyEl.addEventListener('input',updatePrice);
+  qualityEl.addEventListener('change',updatePrice);
+  genderEl.addEventListener('change',()=>{applyKidSizeLock();updatePrice();});
+  if(accTypeEl) accTypeEl.addEventListener('change',()=>{updateAccessoryPriceInfo();loadFrames();updatePrice();});
+
+  /* Placement im Modal pro Produkttyp */
+  const MODAL_PLACEMENT={
+    tshirt:{w:0.34,x:0.5,y:0.33},
+    vneck:{w:0.34,x:0.5,y:0.33},
+    polo:{w:0.34,x:0.5,y:0.33},
+    sweat:{w:0.34,x:0.5,y:0.33},
+    hoodie:{w:0.36,x:0.5,y:0.32},
+    track:{w:0.34,x:0.5,y:0.33},
+    jogger:{w:0.30,x:0.55,y:0.62},
+    toploader:{w:0.45,x:0.5,y:0.5},
+    binder:{w:0.45,x:0.5,y:0.5},
+    toploaderBinder:{w:0.45,x:0.5,y:0.5},
+    stofftasche:{w:0.45,x:0.5,y:0.5},
+    basecap:{w:0.45,x:0.5,y:0.5},
+    bauchtasche:{w:0.45,x:0.5,y:0.5}
+  };
+
+  function getFirstMotifLayer(){
+    return allLayers().find(L=>L.img && L.vis);
+  }
+
+  function drawModalVariantCanvas(id,prodKey,colorKey){
+    const cvs=document.getElementById(id);if(!cvs)return;
+    const c=cvs.getContext('2d');
+    c.clearRect(0,0,cvs.width,cvs.height);
+
+    const prodSpin=SPIN[prodKey];
+    if(!prodSpin) return;
+    const arr = (prodSpin[colorKey] || prodSpin['w'] || Object.values(prodSpin)[0]);
+    if(!arr) return;
+    const baseImg=loadImage(arr[0]);
+    if(!baseImg.complete){baseImg.onload=()=>drawModalVariantCanvas(id,prodKey,colorKey);return;}
+
+    const maxW=cvs.width*0.8,maxH=cvs.height*0.7;
+    const ratio=baseImg.height/baseImg.width;
+    let W=maxW,H=W*ratio;
+    if(H>maxH){H=maxH;W=H/ratio;}
+    const sx=(cvs.width-W)/2,sy=5;
+    c.drawImage(baseImg,sx,sy,W,H);
+
+    const layer=getFirstMotifLayer();
+    if(!layer || !layer.img) return;
+    const motif=layer.img;
+
+    const conf=MODAL_PLACEMENT[prodKey] || {w:0.34,x:0.5,y:0.35};
+    const scaleFactor=Math.max(0.5,Math.min(1.5,layer.scale||1));
+    const mw=W*conf.w*scaleFactor;
+    const mh=mw*(motif.naturalHeight/Math.max(1,motif.naturalWidth));
+    const mx=sx + W*conf.x - mw/2;
+    const my=sy + H*conf.y - mh/2;
+
+    c.save();
+    c.globalAlpha=layer.op || 1;
+    c.drawImage(motif,mx,my,mw,mh);
+    c.restore();
+  }
+
+  function getSuggestColors(){
+    const effProd = effectiveProdForPreview();
+    const available = COLORS.filter(k => SPIN[effProd] && SPIN[effProd][k]);
+    if(!available.length) return [color,color,color];
+    const others = available.filter(k=>k!==color);
+    const result = [];
+    if(others.length>=3){
+      return others.slice(0,3);
+    }
+    result.push(...others);
+    available.forEach(k=>{
+      if(result.length<3 && !result.includes(k)) result.push(k);
+    });
+    while(result.length<3) result.push(color);
+    return result.slice(0,3);
+  }
+
+  function renderModalPreviews(){
+    const effProd = effectiveProdForPreview();
+    const cols=getSuggestColors();
+    drawModalVariantCanvas('ld-modal-variant-1',effProd,cols[0]);
+    drawModalVariantCanvas('ld-modal-variant-2',effProd,cols[1]);
+    drawModalVariantCanvas('ld-modal-variant-3',effProd,cols[2]);
+  }
+
+  function openModal(){
+    if(!modalEl) return;
+    modalEl.style.display='flex';
+    renderModalPreviews();
+  }
+  function closeModal(){if(modalEl) modalEl.style.display='none';}
+
+  modalCloseBtn && modalCloseBtn.addEventListener('click',closeModal);
+  modalSkipBtn && modalSkipBtn.addEventListener('click',closeModal);
+
+  function redirectToCheckout(){
+    const url='https://www.homeprint24.com/';
+    window.location.href=url;
+  }
+  modalCheckoutBtn && modalCheckoutBtn.addEventListener('click',redirectToCheckout);
+
+  let checkoutStage=0;
+  checkoutBtn.addEventListener('click',()=>{
+    if(checkoutStage===0){
+      openModal();
+      checkoutStage=1;
+      checkoutBtn.textContent='Weiter zur Kasse';
+    }else{
+      redirectToCheckout();
+    }
+  });
+
+  document.getElementById('ld-download').onclick=()=>{
+    const a=document.createElement('a');
+    a.download=`HomePrint24_${effectiveProdForPreview()}_${COLOR_NAME[color]||color}_${view}.png`;
+    a.href=canvas.toDataURL('image/png');
+    a.click();
+  };
+
+  function init(){
+    renderSwatches();
+    loadFrames();
+    renderUploadRows();
+    syncUIFromLayer();
+    setView('front');
+    applyKidSizeLock();
+    updatePrice();
+  }
+  init();
+})();
+</script>
+
+</body>
+</html>
