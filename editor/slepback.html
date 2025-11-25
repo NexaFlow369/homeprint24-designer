@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>HomePrint24 – Snapback Editor</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+
+    :root{
+      --bg-dark:#0f172a;
+      --bg-panel:#e5e7eb;
+      --card:#f9fafb;
+      --accent:#2563eb;
+      --text-dark:#0f172a;
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      padding:0;
+      background:var(--bg-dark);
+      color:var(--bg-panel);
+      font-family:'Fjalla One';
+    }
+
+    #hpt24{
+      max-width:1180px;
+      margin:24px auto;
+      background:var(--bg-panel);
+      padding:16px;
+      border-radius:18px;
+      box-shadow:0 16px 45px rgba(15,23,42,.45);
+    }
+
+    .hpt24-title{
+      text-align:center;
+      margin:8px 0 16px;
+      color:#0f172a;
+      font-weight:800;
+      letter-spacing:.3px;
+    }
+
+    .hpt24-layout{
+      display:grid;
+      grid-template-columns:minmax(0,1.25fr) minmax(0,1.15fr);
+      gap:18px;
+      align-items:flex-start;
+    }
+
+    .ld-card{
+      background:var(--card);
+      border-radius:14px;
+      padding:14px;
+      border:1px solid #e5e7eb;
+    }
+
+    .ld-input{
+      padding:10px;
+      border-radius:10px;
+      border:1px solid #cbd5e1;
+      width:100%;
+      background:#fff;
+    }
+
+    .ld-btn{
+      padding:7px 10px;
+      border:none;
+      border-radius:9px;
+      background:#e2e8f0;
+      font-size:12px;
+      font-weight:600;
+      cursor:pointer;
+    }
+    .ld-btn.primary{background:#111827;color:#fff;}
+    .ld-btn.accent{background:#0ea5e9;color:#fff;}
+
+    #ld-canvas{
+      width:100%;
+      background:#fff;
+      border-radius:14px;
+      display:block;
+    }
+
+    .ld-swatches-row{
+      display:flex;
+      gap:6px;
+      justify-content:flex-end;
+    }
+
+    .ld-swatch{
+      width:22px;
+      height:22px;
+      border-radius:6px;
+      cursor:pointer;
+      border:1px solid #d1d5db;
+    }
+
+    .ld-cart-row{
+      display:grid;
+      grid-template-columns:minmax(0,1.7fr) auto auto auto;
+      gap:8px;
+      align-items:center;
+      background:#e5e7eb;
+      border-radius:12px;
+      padding:8px;
+    }
+    .ld-chip{
+      padding:1px 6px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid #cbd5e1;
+      font-size:10px;
+    }
+  </style>
+
+</head>
+<body>
+
+<div id="hpt24">
+
+  <h2 class="hpt24-title">HomePrint24 – Snapback Editor</h2>
+
+  <div class="hpt24-layout">
+
+    <!-- LEFT -->
+    <div>
+      <div class="ld-card">
+        <canvas id="ld-canvas" width="900" height="1100"></canvas>
+
+        <div style="display:flex;justify-content:space-between;margin-top:10px;">
+          <span style="font-size:13px;font-weight:600;color:#0f172a;">Farbe</span>
+          <div id="ld-swatches" class="ld-swatches-row"></div>
+        </div>
+
+        <div style="margin-top:14px;display:flex;gap:10px;">
+          <button class="ld-btn" id="ld-view-front">Front</button>
+          <button class="ld-btn" id="ld-view-side">Side</button>
+        </div>
+
+      </div>
+
+      <div class="ld-card" style="margin-top:14px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <label>Preset</label>
+            <button class="ld-btn" data-preset="center" style="margin-top:6px;">Center</button>
+          </div>
+
+          <div>
+            <label>Skalierung <span id="ld-scale-val">(100%)</span></label>
+            <input id="ld-scale" type="range" min="5" max="400" value="100" class="ld-input">
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">
+          <div>
+            <label>Rotation <span id="ld-rot-layer-val">(0°)</span></label>
+            <input id="ld-rot-layer" type="range" min="-180" max="180" value="0" class="ld-input">
+          </div>
+          <div>
+            <label>Deckkraft <span id="ld-opa-val">(100%)</span></label>
+            <input id="ld-opa" type="range" min="5" max="100" value="100" class="ld-input">
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:10px;">
+          <button id="ld-layer-vis" class="ld-btn">Sichtbar: AN</button>
+          <button id="ld-layer-del" class="ld-btn">Löschen</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div>
+
+      <div class="ld-card">
+        <label style="font-weight:800;">Dein Motiv hochladen</label>
+        <div id="ld-uploader-list" style="margin-top:10px;display:flex;flex-direction:column;gap:10px;"></div>
+      </div>
+
+      <div class="ld-card" style="margin-top:14px;">
+        <label style="font-weight:800;">Bestellangaben</label>
+
+        <select id="ld-size" class="ld-input" style="margin-top:10px;">
+          <option value="">Größe</option>
+          <option value="Uni">Universal</option>
+        </select>
+
+        <select id="ld-color-select" class="ld-input" style="margin-top:10px;"></select>
+
+        <div style="margin-top:12px;">
+          <label>Stückzahl & Preis</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px;">
+            <input id="ld-qty" type="number" min="1" value="1" class="ld-input">
+            <input id="ld-price" type="text" class="ld-input" value="0,00 €" readonly>
+          </div>
+        </div>
+
+        <textarea id="ld-notes" class="ld-input" style="margin-top:12px;height:80px;" placeholder="Notizen …"></textarea>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">
+          <button id="ld-add" class="ld-btn primary">In den Warenkorb</button>
+          <button id="ld-download" class="ld-btn">Mockup speichern</button>
+        </div>
+
+      </div>
+
+      <div class="ld-card" style="margin-top:14px;">
+        <div style="display:flex;justify-content:space-between;">
+          <strong>Warenkorb</strong>
+          <div id="ld-total" style="font-weight:800;color:#0f172a;">0,00 €</div>
+        </div>
+
+        <div id="ld-cart" style="margin-top:10px;display:flex;flex-direction:column;gap:8px;"></div>
+
+        <button id="ld-checkout" class="ld-btn accent" style="width:100%;margin-top:10px;">Zur Kasse</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- JAVASCRIPT -->
+<script>
+(function(){
+
+  const BASE_PRICE = 14.49;
+  const MOTIF_PRICE = { bw:3.50, color:5.50 };
+
+  const COLORS = ['black','olive','red','white','blue','green'];
+
+  const COLOR_NAME = {
+    black:'Black', olive:'Olive', red:'Red',
+    white:'White', blue:'Blue', green:'Green'
+  };
+
+  const FRONT = {
+    black:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9354.jpeg/:/rs=w:1440,h:1440',
+    olive:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9339.jpeg/:/rs=w:1440,h:1440',
+    red:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9361.jpeg/:/rs=w:1440,h:1440',
+    white:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9358.jpeg/:/rs=w:1440,h:1440',
+    blue:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9364.jpeg/:/rs=w:1440,h:1440',
+    green:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9372.jpeg/:/rs=w:1440,h:1440'
+  };
+
+  const SIDE = {
+    black:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9356.jpeg/:/rs=w:1440,h:1440',
+    olive:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9341.jpeg/:/rs=w:1440,h:1440',
+    red:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9349.jpeg/:/rs=w:1440,h:1440',
+    white:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9353.jpeg/:/rs=w:1440,h:1440',
+    blue:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9365.jpeg/:/rs=w:1440,h:1440',
+    green:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/IMG_9373.jpeg/:/rs=w:1440,h:1440'
+  };
+
+  let view = 'front';
+  let color = 'black';
+
+  const canvas = document.getElementById('ld-canvas');
+  const ctx = canvas.getContext('2d');
+
+  const colorSel = document.getElementById('ld-color-select');
+  const qtyEl = document.getElementById('ld-qty');
+  const priceEl = document.getElementById('ld-price');
+
+  const scaleEl = document.getElementById('ld-scale');
+  const scaleVal = document.getElementById('ld-scale-val');
+  const rotEl = document.getElementById('ld-rot-layer');
+  const rotVal = document.getElementById('ld-rot-layer-val');
+  const opaEl = document.getElementById('ld-opa');
+  const opaVal = document.getElementById('ld-opa-val');
+  const visBtn = document.getElementById('ld-layer-vis');
+  const delBtn = document.getElementById('ld-layer-del');
+
+  const uploadsBox = document.getElementById('ld-uploader-list');
+
+  const viewFront = document.getElementById('ld-view-front');
+  const viewSide = document.getElementById('ld-view-side');
+
+  const cartBox = document.getElementById('ld-cart');
+  const totalEl = document.getElementById('ld-total');
+
+  const IMAGE_CACHE = {};
+
+  function loadImage(src){
+    if(IMAGE_CACHE[src]) return IMAGE_CACHE[src];
+    const im=new Image();
+    im.crossOrigin='anonymous';
+    im.src=src;
+    IMAGE_CACHE[src]=im;
+    im.onload=draw;
+    return im;
+  }
+
+  function getBase(){
+    return loadImage(view==='front' ? FRONT[color] : SIDE[color]);
+  }
+
+  const LAYER_COUNT = 3;
+  const makeLayer = () => ({
+    img:null,x:0,y:0,scale:1,rot:0,op:1,vis:true,bw:false
+  });
+  const layers = [makeLayer(),makeLayer(),makeLayer()];
+  let active = 0;
+
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    const base=getBase();
+    if(!base.complete) return;
+
+    const marginX=canvas.width*0.1;
+    const marginY=canvas.height*0.06;
+    const maxW=canvas.width-marginX*2;
+    const maxH=canvas.height-marginY*2;
+    const ratio=base.height/base.width;
+
+    let W=maxW;
+    let H=W*ratio;
+    if(H>maxH){H=maxH;W=H/ratio;}
+
+    const sx=(canvas.width-W)/2;
+    const sy=(canvas.height-H)/2;
+
+    ctx.drawImage(base,sx,sy,W,H);
+
+    const cx=canvas.width/2;
+    const cy=sy+H*0.42;
+
+    layers.forEach(L=>{
+      if(!L.img||!L.vis) return;
+      const iw=canvas.width*0.35;
+      const ih=iw*(L.img.naturalHeight/Math.max(1,L.img.naturalWidth));
+      ctx.save();
+      ctx.translate(cx+L.x,cy+L.y);
+      ctx.rotate(L.rot*Math.PI/180);
+      ctx.scale(L.scale,L.scale);
+      ctx.globalAlpha=L.op;
+      ctx.drawImage(L.img,-iw/2,-ih/2,iw,ih);
+      ctx.restore();
+    });
+  }
+
+  function renderSwatches(){
+    const host=document.getElementById('ld-swatches');
+    host.innerHTML='';
+    COLORS.forEach(k=>{
+      const sw=document.createElement('div');
+      sw.className='ld-swatch';
+      sw.style.background=k;
+      if(k===color){
+        sw.style.outline='2px solid #111827';
+        sw.style.outlineOffset='1px';
+      }
+      sw.onclick=()=>{color=k;renderColorSelect();draw();};
+      host.appendChild(sw);
+    });
+  }
+
+  function renderColorSelect(){
+    colorSel.innerHTML='';
+    COLORS.forEach(k=>{
+      const opt=document.createElement('option');
+      opt.value=k;
+      opt.textContent=COLOR_NAME[k];
+      colorSel.appendChild(opt);
+    });
+    colorSel.value=color;
+  }
+
+  colorSel.onchange=e=>{color=e.target.value;draw();};
+
+  function renderUploadRows(){
+    uploadsBox.innerHTML='';
+    for(let i=0;i<LAYER_COUNT;i++){
+      const L=layers[i];
+      const row=document.createElement('div');
+      row.style.display='grid';
+      row.style.gridTemplateColumns='1fr auto auto auto auto';
+      row.style.gap='6px';
+      row.innerHTML=`
+        <input type="file" id="ld-file-${i}" class="ld-input">
+        <label style="font-size:10px;display:flex;align-items:center;gap:4px;">
+          <input type="checkbox" data-bw="${i}" ${L.bw?'checked':''}> S/W
+        </label>
+        <button class="ld-btn" data-act="${i}">Aktiv</button>
+        <button class="ld-btn" data-vis="${i}">${L.vis?'👁 AUS':'👁 AN'}</button>
+        <button class="ld-btn" data-del="${i}">✖</button>
+      `;
+      uploadsBox.appendChild(row);
+
+      const inp=row.querySelector(`#ld-file-${i}`);
+      inp.onchange=e=>{
+        const f=e.target.files[0];
+        if(!f) return;
+        const url=URL.createObjectURL(f);
+        const im=new Image();
+        im.onload=()=>{
+          layers[i]={img:im,x:0,y:0,scale:1,rot:0,op:1,vis:true,bw:L.bw};
+          active=i;
+          renderUploadRows();
+          syncUI();
+          draw();
+          updatePrice();
+        };
+        im.src=url;
+      };
+
+      const bw=row.querySelector(`[data-bw="${i}"]`);
+      bw.onchange=()=>{L.bw=bw.checked;updatePrice();};
+
+      row.querySelector(`[data-act="${i}"]`).onclick=()=>{
+        active=i;
+        syncUI();
+      };
+
+      row.querySelector(`[data-vis="${i}"]`).onclick=()=>{
+        L.vis=!L.vis;
+        renderUploadRows();
+        syncUI();
+        draw();
+        updatePrice();
+      };
+
+      row.querySelector(`[data-del="${i}"]`).onclick=()=>{
+        layers[i]=makeLayer();
+        if(active===i) active=0;
+        renderUploadRows();
+        syncUI();
+        draw();
+        updatePrice();
+      };
+    }
+  }
+
+  function syncUI(){
+    const L=layers[active];
+    scaleEl.value=L.scale*100;
+    scaleVal.textContent=`(${Math.round(L.scale*100)}%)`;
+    rotEl.value=L.rot;
+    rotVal.textContent=`(${L.rot}°)`;
+    opaEl.value=L.op*100;
+    opaVal.textContent=`(${Math.round(L.op*100)}%)`;
+    visBtn.textContent='Sichtbar: '+(L.vis?'AN':'AUS');
+  }
+
+  document.querySelector('[data-preset="center"]').onclick=()=>{
+    const L=layers[active];
+    L.x=0;L.y=0;L.scale=1;
+    syncUI();
+    draw();
+  };
+
+  scaleEl.oninput=()=>{
+    const L=layers[active];
+    L.scale=Number(scaleEl.value)/100;
+    scaleVal.textContent=`(${scaleEl.value}%)`;
+    draw();
+  };
+
+  rotEl.oninput=()=>{
+    const L=layers[active];
+    L.rot=Number(rotEl.value);
+    rotVal.textContent=`(${rotEl.value}°)`;
+    draw();
+  };
+
+  opaEl.oninput=()=>{
+    const L=layers[active];
+    L.op=Number(opaEl.value)/100;
+    opaVal.textContent=`(${opaEl.value}%)`;
+    draw();
+  };
+
+  visBtn.onclick=()=>{
+    const L=layers[active];
+    L.vis=!L.vis;
+    syncUI();
+    renderUploadRows();
+    draw();
+    updatePrice();
+  };
+
+  delBtn.onclick=()=>{
+    layers[active]=makeLayer();
+    syncUI();
+    renderUploadRows();
+    draw();
+    updatePrice();
+  };
+
+  let dragging=false;
+  let last={x:0,y:0};
+
+  function getPos(e){
+    const r=canvas.getBoundingClientRect();
+    return{
+      x:(e.clientX-r.left)*(canvas.width/r.width),
+      y:(e.clientY-r.top)*(canvas.height/r.height)
+    };
+  }
+
+  canvas.onmousedown=e=>{dragging=true;last=getPos(e);};
+  window.onmouseup=()=>dragging=false;
+
+  canvas.onmousemove=e=>{
+    if(!dragging) return;
+    const L=layers[active];
+    if(!L.img) return;
+    const p=getPos(e);
+    L.x+=p.x-last.x;
+    L.y+=p.y-last.y;
+    last=p;
+    draw();
+  };
+
+  canvas.onwheel=e=>{
+    const L=layers[active];
+    if(!L.img) return;
+    e.preventDefault();
+    if(e.shiftKey){
+      L.rot+=-Math.sign(e.deltaY)*4;
+      rotEl.value=L.rot;
+      rotVal.textContent=`(${L.rot}°)`;
+    }else{
+      let next=L.scale*100 - Math.sign(e.deltaY)*5;
+      next=Math.max(5,Math.min(400,next));
+      L.scale=next/100;
+      scaleEl.value=next;
+      scaleVal.textContent=`(${next}%)`;
+    }
+    draw();
+  };
+
+  function motifStats(){
+    let bw=0,color=0;
+    layers.forEach(L=>{
+      if(L.img&&L.vis){
+        if(L.bw) bw++; else color++;
+      }
+    });
+    return{bw,color};
+  }
+
+  function computeUnit(){
+    const s=motifStats();
+    const cost=s.bw*MOTIF_PRICE.bw + s.color*MOTIF_PRICE.color;
+    return BASE_PRICE+cost;
+  }
+
+  function fmt(n){
+    return n.toLocaleString('de-DE',{style:'currency',currency:'EUR'});
+  }
+
+  function updatePrice(){
+    const qty=Math.max(1,parseInt(qtyEl.value||'1'));
+    priceEl.value=fmt(computeUnit()*qty);
+  }
+
+  qtyEl.oninput=updatePrice;
+
+  const cart=[];
+
+  function renderCart(){
+    cartBox.innerHTML='';
+    let sum=0;
+    cart.forEach((it,i)=>{
+      sum+=it.unit*it.qty;
+      const row=document.createElement('div');
+      row.className='ld-cart-row';
+      row.innerHTML=`
+        <div>
+          <strong>Snapback</strong>
+          <span class="ld-chip">${COLOR_NAME[it.color]}</span>
+          <span class="ld-chip">${it.size}</span>
+          <span class="ld-chip">${it.motifs} Motive</span>
+        </div>
+        <div>${fmt(it.unit)}</div>
+        <div>
+          <button class="ld-btn" data-a="${i}">−</button>
+          <span>${it.qty}</span>
+          <button class="ld-btn" data-b="${i}">+</button>
+        </div>
+        <button class="ld-btn" data-x="${i}">✖</button>
+      `;
+      cartBox.appendChild(row);
+    });
+
+    totalEl.textContent=fmt(sum);
+
+    cartBox.querySelectorAll('[data-a]').forEach(b=>{
+      b.onclick=()=>{const i=b.dataset.a;cart[i].qty=Math.max(1,cart[i].qty-1);renderCart();};
+    });
+
+    cartBox.querySelectorAll('[data-b]').forEach(b=>{
+      b.onclick=()=>{const i=b.dataset.b;cart[i].qty++;renderCart();};
+    });
+
+    cartBox.querySelectorAll('[data-x]').forEach(b=>{
+      b.onclick=()=>{cart.splice(b.dataset.x,1);renderCart();};
+    });
+  }
+
+  document.getElementById('ld-add').onclick=()=>{
+    const size=document.getElementById('ld-size').value||'-';
+    const qty=Math.max(1,parseInt(qtyEl.value||'1'));
+    const s=motifStats();
+    const motifs=s.bw+s.color;
+    const unit=computeUnit();
+
+    cart.push({color,size,qty,motifs,unit});
+    renderCart();
+  };
+
+  document.getElementById('ld-download').onclick=()=>{
+    const a=document.createElement('a');
+    a.download=`HomePrint24_Snapback_${color}_${view}.png`;
+    a.href=canvas.toDataURL();
+    a.click();
+  };
+
+  document.getElementById('ld-checkout').onclick=()=>{
+    window.location.href='https://www.homeprint24.com/';
+  };
+
+  viewFront.onclick=()=>{view='front';draw();};
+  viewSide.onclick=()=>{view='side';draw();};
+
+  function init(){
+    renderSwatches();
+    renderColorSelect();
+    renderUploadRows();
+    syncUI();
+    updatePrice();
+    draw();
+  }
+
+  init();
+
+})();
+</script>
+
+</body>
+</html>
