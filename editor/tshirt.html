@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>HomePrint24 – 3D T-Shirt Editor</title>
+  <title>HomePrint24 – 3D T-Shirt Editor (Master V7)</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
 
@@ -26,7 +26,7 @@
     }
 
     #hpt24{
-      max-width:1080px;
+      max-width:1180px;
       margin:24px auto;
       background:var(--bg-panel);
       padding:16px;
@@ -46,9 +46,10 @@
       display:flex;
       justify-content:center;
       margin-bottom:12px;
+      gap:8px;
     }
     .ld-tab{
-      padding:8px 14px;
+      padding:8px 16px;
       border-radius:999px;
       border:1px solid #cbd5e1;
       background:#fff;
@@ -64,9 +65,9 @@
 
     .hpt24-layout{
       display:grid;
-      grid-template-columns:minmax(0,1.05fr) minmax(0,1.25fr);
+      grid-template-columns:minmax(0,1.25fr) minmax(0,1.15fr);
       gap:18px;
-      align-items:start;
+      align-items:flex-start;
     }
 
     .hpt24-left,
@@ -75,7 +76,6 @@
       flex-direction:column;
       gap:12px;
     }
-
     .hpt24-right{
       border-left:1px solid #d1d5db;
       padding-left:14px;
@@ -135,6 +135,7 @@
     }
     .hpt24-gap-top{margin-top:8px;}
 
+    /* PREVIEW / CANVAS */
     .ld-preview-shell{
       position:relative;
       background:#ffffff;
@@ -187,6 +188,8 @@
       cursor:pointer;
     }
 
+    /* LAYER / PRESET */
+    .ld-layer-card{margin-top:4px;}
     .hpt24-preset-wrap{
       display:flex;
       align-items:center;
@@ -197,16 +200,15 @@
       gap:6px;
       flex-wrap:wrap;
     }
-
     .hpt24-range{width:100%;}
     .hpt24-subval{font-size:12px;color:#64748b;}
 
-    .ld-layer-card{max-width:520px;margin:0 auto;}
     .hpt24-layer-buttons{
       display:flex;
       justify-content:flex-end;
       align-items:flex-end;
       gap:6px;
+      margin-top:8px;
     }
     .hpt24-small-btn{padding:5px 8px;font-size:11px;}
 
@@ -215,6 +217,7 @@
       justify-content:space-between;
       align-items:center;
     }
+
     .hpt24-upload-list{
       display:flex;
       flex-direction:column;
@@ -239,6 +242,7 @@
       resize:vertical;
     }
 
+    /* QUALITÄT */
     .ld-quality-wrap{margin-top:0;}
     .quality-row{display:flex;gap:6px;}
     .q-btn{
@@ -256,6 +260,7 @@
       border-color:#111827;
     }
 
+    /* CART */
     .ld-cart-card{
       margin:6px auto 0;
       border-top:2px solid #0f172a;
@@ -298,6 +303,26 @@
       margin-top:4px;
     }
 
+    /* --- FINAL V7 LAYOUT-FINETUNING --- */
+
+    /* Rechte Spalte: alle Karten voll breit, Upload etwas "größer" */
+    .hpt24-right .ld-card{
+      width:100%;
+    }
+    .hpt24-right .ld-card:first-child{
+      width:100%;
+      padding:20px 18px;
+    }
+
+    /* Preset-Card links nach unten ziehen, damit mit Warenkorb abschließt */
+    .hpt24-left{
+      display:flex;
+      flex-direction:column;
+    }
+    .hpt24-left .ld-layer-card{
+      margin-top:auto;
+    }
+
     @media(max-width:900px){
       .hpt24-layout{
         grid-template-columns:1fr;
@@ -324,16 +349,18 @@
 <div id="hpt24">
   <h2 class="hpt24-title">HomePrint24 – Print Your Legacy</h2>
 
-  <!-- Nur T-Shirt als Basis-Produkt -->
   <div id="hpt24-tabs">
     <button class="ld-tab active" data-prod="tshirt">T-Shirt</button>
   </div>
 
   <div class="hpt24-layout">
-    <!-- LINKE SEITE: Canvas + Layer Controls -->
+
+    <!-- LINKE SEITE: Canvas + Farbe + PRESET UNTEN -->
     <div class="hpt24-left">
+
+      <!-- Preview / Live-Bild -->
       <div class="ld-preview-shell">
-        <canvas id="ld-canvas" width="760" height="920"></canvas>
+        <canvas id="ld-canvas" width="900" height="1100"></canvas>
         <div class="ld-preview-hint">
           Ziehen = Position • Mausrad = Größe • Shift + Scroll = Rotation
         </div>
@@ -343,6 +370,7 @@
         </div>
       </div>
 
+      <!-- PRESET / LAYER CONTROLS – LINKS UNTEN -->
       <div class="ld-card ld-layer-card">
         <div class="hpt24-grid-2 hpt24-gap-top">
           <div>
@@ -377,15 +405,18 @@
           </div>
         </div>
 
-        <div class="hpt24-layer-buttons hpt24-gap-top">
+        <div class="hpt24-layer-buttons">
           <button id="ld-layer-vis" class="ld-btn hpt24-small-btn">Sichtbar: AN</button>
           <button id="ld-layer-del" class="ld-btn hpt24-small-btn">Layer löschen</button>
         </div>
       </div>
+
     </div>
 
-    <!-- RECHTE SEITE: Upload + Bestellangaben + Warenkorb -->
+    <!-- RECHTE SEITE: Upload + Bestellangaben + WARENKORB UNTEN -->
     <div class="hpt24-right">
+
+      <!-- Upload / Ansicht -->
       <div class="ld-card">
         <div class="hpt24-row-between">
           <label class="ld-label" style="margin:0;">Dein Motiv hochladen</label>
@@ -398,6 +429,7 @@
         <div id="ld-uploader-list" class="hpt24-upload-list"></div>
       </div>
 
+      <!-- Bestellangaben -->
       <div class="ld-card">
         <label class="ld-label">Bestellangaben</label>
 
@@ -432,7 +464,7 @@
           </select>
         </div>
 
-        <!-- Hidden Select, damit Logik einfach bleibt -->
+        <!-- Hidden Select für Logik -->
         <select id="ld-quality" style="display:none;">
           <option value="basic">basic</option>
           <option value="standard" selected>standard</option>
@@ -462,6 +494,7 @@
         </div>
       </div>
 
+      <!-- Warenkorb – RECHTS UNTEN -->
       <div class="ld-card ld-cart-card">
         <div class="hpt24-row-between">
           <div class="ld-label" style="margin:0;">Warenkorb</div>
@@ -474,12 +507,12 @@
           (S/W oder Vollfarbe). Bitte Mockup vor Checkout speichern.
         </p>
       </div>
+
     </div>
   </div>
 
   <p class="hpt24-footer">© HomePrint24 – Print Your Legacy</p>
 </div>
-
 <script>
 (function(){
   // --- PREISE ---
@@ -491,13 +524,13 @@
 
   const MOTIF_PRICE = { bw:3.50, color:5.50 };
 
-  // --- FARBEN – BASIC & STANDARD ---
+  // --- FARBEN ---
   const COLORS_BASIC = [
-    'black','red','blue','leaf','ecru','white',
-    'ice','mint','baby','green','pink','lachs','yellow'
+    'black','red','blue','leaf','ecru',
+    'white','ice','mint','baby','green',
+    'pink','lachs','yellow'
   ];
 
-  // --- FARBEN – PREMIUM ONLY ---
   const COLORS_PREMIUM = [
     'pegert','pnavy','pblack','pwhite','psand'
   ];
@@ -552,7 +585,6 @@
   }
 
   // --- BILDQUELLEN (TSHIRT) ---
-
   const FRONT_BASIC = {
     black:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Black%20Front-c4fc1ce.jpg/:/rs=w:1440,h:1440',
     red:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Red%20Front-24ec80c.jpg/:/rs=w:1440,h:1440',
@@ -616,7 +648,7 @@
   const canvas = document.getElementById('ld-canvas');
   const ctx = canvas.getContext('2d');
 
-  let view = 'front'; // front/back
+  let view = 'front';       // front / back
   let color = 'white';
   let selectedQuality = 'standard';
   let promoDiscount = 0;
@@ -957,10 +989,8 @@
     const L = layers[active]; if(!L || !L.img) return;
     e.preventDefault();
     if(e.shiftKey){
-      // Rotation
       L.rot += -Math.sign(e.deltaY)*4;
     }else{
-      // Scale
       const cur = L.scale*100;
       let next = cur - Math.sign(e.deltaY)*6;
       next = Math.max(5,Math.min(400,next));
@@ -973,8 +1003,6 @@
   // --- PREISKALKULATION ---
   function motifStats(){
     let bw=0,colorCount=0;
-    const allLayers = [...layersFront,...layersBack];
-    // Pro Slot = 1 Motiv (Front+Back kombiniert)
     for(let i=0;i<LAYER_COUNT;i++){
       const F = layersFront[i];
       const B = layersBack[i];
