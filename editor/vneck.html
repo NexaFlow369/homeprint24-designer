@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>HomePrint24 – 3D V-Neck Editor</title>
+  <title>HomePrint24 – 3D V-Neck Editor (Master V7)</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
 
@@ -26,7 +26,7 @@
     }
 
     #hpt24{
-      max-width:1080px;
+      max-width:1180px;
       margin:24px auto;
       background:var(--bg-panel);
       padding:16px;
@@ -46,9 +46,10 @@
       display:flex;
       justify-content:center;
       margin-bottom:12px;
+      gap:8px;
     }
     .ld-tab{
-      padding:8px 14px;
+      padding:8px 16px;
       border-radius:999px;
       border:1px solid #cbd5e1;
       background:#fff;
@@ -64,9 +65,9 @@
 
     .hpt24-layout{
       display:grid;
-      grid-template-columns:minmax(0,1.05fr) minmax(0,1.25fr);
+      grid-template-columns:minmax(0,1.25fr) minmax(0,1.15fr);
       gap:18px;
-      align-items:start;
+      align-items:flex-start;
     }
 
     .hpt24-left,
@@ -75,7 +76,6 @@
       flex-direction:column;
       gap:12px;
     }
-
     .hpt24-right{
       border-left:1px solid #d1d5db;
       padding-left:14px;
@@ -135,6 +135,7 @@
     }
     .hpt24-gap-top{margin-top:8px;}
 
+    /* PREVIEW / CANVAS */
     .ld-preview-shell{
       position:relative;
       background:#ffffff;
@@ -187,6 +188,8 @@
       cursor:pointer;
     }
 
+    /* LAYER / PRESET (links unten) */
+    .ld-layer-card{margin-top:4px;}
     .hpt24-preset-wrap{
       display:flex;
       align-items:center;
@@ -197,16 +200,15 @@
       gap:6px;
       flex-wrap:wrap;
     }
-
     .hpt24-range{width:100%;}
     .hpt24-subval{font-size:12px;color:#64748b;}
 
-    .ld-layer-card{max-width:520px;margin:0 auto;}
     .hpt24-layer-buttons{
       display:flex;
       justify-content:flex-end;
       align-items:flex-end;
       gap:6px;
+      margin-top:8px;
     }
     .hpt24-small-btn{padding:5px 8px;font-size:11px;}
 
@@ -215,6 +217,7 @@
       justify-content:space-between;
       align-items:center;
     }
+
     .hpt24-upload-list{
       display:flex;
       flex-direction:column;
@@ -223,7 +226,7 @@
     }
     .ld-upload-row{
       display:grid;
-      grid-template-columns:minmax(0,1.4fr) auto auto auto auto;
+      grid-template-columns:minmax(0,1.6fr) auto auto auto auto;
       gap:4px;
       align-items:center;
     }
@@ -239,6 +242,7 @@
       resize:vertical;
     }
 
+    /* QUALITÄT */
     .ld-quality-wrap{margin-top:0;}
     .quality-row{display:flex;gap:6px;}
     .q-btn{
@@ -256,6 +260,7 @@
       border-color:#111827;
     }
 
+    /* CART (rechts unten) */
     .ld-cart-card{
       margin:6px auto 0;
       border-top:2px solid #0f172a;
@@ -322,18 +327,20 @@
 </head>
 <body>
 <div id="hpt24">
-  <h2 class="hpt24-title">HomePrint24 – Print Your Legacy</h2>
+  <h2 class="hpt24-title">HomePrint24 – 3D V-Neck Editor</h2>
 
-  <!-- Nur V-Neck als Basis-Produkt -->
   <div id="hpt24-tabs">
     <button class="ld-tab active" data-prod="vneck">V-Neck</button>
   </div>
 
   <div class="hpt24-layout">
-    <!-- LINKE SEITE: Canvas + Layer Controls -->
+
+    <!-- LINKE SEITE: Canvas + Farbe + PRESET UNTEN -->
     <div class="hpt24-left">
+
+      <!-- Preview / Live-Bild -->
       <div class="ld-preview-shell">
-        <canvas id="ld-canvas" width="760" height="920"></canvas>
+        <canvas id="ld-canvas" width="900" height="1100"></canvas>
         <div class="ld-preview-hint">
           Ziehen = Position • Mausrad = Größe • Shift + Scroll = Rotation
         </div>
@@ -343,6 +350,7 @@
         </div>
       </div>
 
+      <!-- PRESET / LAYER CONTROLS – LINKS UNTEN -->
       <div class="ld-card ld-layer-card">
         <div class="hpt24-grid-2 hpt24-gap-top">
           <div>
@@ -377,15 +385,18 @@
           </div>
         </div>
 
-        <div class="hpt24-layer-buttons hpt24-gap-top">
+        <div class="hpt24-layer-buttons">
           <button id="ld-layer-vis" class="ld-btn hpt24-small-btn">Sichtbar: AN</button>
           <button id="ld-layer-del" class="ld-btn hpt24-small-btn">Layer löschen</button>
         </div>
       </div>
+
     </div>
 
-    <!-- RECHTE SEITE: Upload + Bestellangaben + Warenkorb -->
+    <!-- RECHTE SEITE: Upload + Bestellangaben + WARENKORB UNTEN -->
     <div class="hpt24-right">
+
+      <!-- Upload / Ansicht -->
       <div class="ld-card">
         <div class="hpt24-row-between">
           <label class="ld-label" style="margin:0;">Dein Motiv hochladen</label>
@@ -398,6 +409,7 @@
         <div id="ld-uploader-list" class="hpt24-upload-list"></div>
       </div>
 
+      <!-- Bestellangaben -->
       <div class="ld-card">
         <label class="ld-label">Bestellangaben</label>
 
@@ -431,7 +443,7 @@
           </select>
         </div>
 
-        <!-- Hidden Select nur für Logik -->
+        <!-- Hidden Select für Logik -->
         <select id="ld-quality" style="display:none;">
           <option value="standard" selected>standard</option>
           <option value="aktiv">aktiv</option>
@@ -460,6 +472,7 @@
         </div>
       </div>
 
+      <!-- Warenkorb – RECHTS UNTEN -->
       <div class="ld-card ld-cart-card">
         <div class="hpt24-row-between">
           <div class="ld-label" style="margin:0;">Warenkorb</div>
@@ -472,30 +485,31 @@
           (S/W oder Vollfarbe). Bitte Mockup vor Checkout speichern.
         </p>
       </div>
+
     </div>
   </div>
 
   <p class="hpt24-footer">© HomePrint24 – Print Your Legacy</p>
 </div>
 
+<!-- HIER KOMMT BLOCK 2 (JS) REIN -->
+</body>
+</html>
 <script>
 (function(){
-  // --- PREISE ---
-  // Standard blanko: 12,49 €  | Aktiv: 9,49 €
+  // --- PREISE V-NECK ---
   const BASE_PRICE = {
-    standard: 19.49,
-    aktiv:    12.49
+    standard: 12.49,  // V-Neck Standard blanko
+    aktiv:    9.49    // V-Neck Aktiv blanko
   };
 
   const MOTIF_PRICE = { bw:3.50, color:5.50 };
 
-  // --- FARBEN ---
-  // Standard V-Neck
+  // --- FARBEN (Standard & Aktiv) ---
   const COLORS_STANDARD = [
     'white','red','black','grey','navy','blue'
   ];
 
-  // Aktiv V-Neck
   const COLORS_AKTIV = [
     'blue','mint','ice','pink','white','black'
   ];
@@ -516,8 +530,8 @@
     white:'#ffffff',
     red:'#ef4444',
     black:'#020617',
-    grey:'#9ca3af',
-    navy:'#0f172a',
+    grey:'#4b5563',
+    navy:'#1e293b',
     blue:'#1d4ed8',
     mint:'#a7f3d0',
     ice:'#bfdbfe',
@@ -525,12 +539,13 @@
   };
 
   function currentPalette(){
-    return selectedQuality === 'aktiv' ? COLORS_AKTIV : COLORS_STANDARD;
+    const q = qualityEl.value || 'standard';
+    return q === 'aktiv' ? COLORS_AKTIV : COLORS_STANDARD;
   }
 
   // --- BILDQUELLEN (V-NECK) ---
 
-  // Standard
+  // STANDARD (12,49 €)
   const FRONT_STANDARD = {
     white:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/White%20Front.jpg/:/rs=w:1440,h:1440',
     red:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Red%20Front-66fd7ac.jpg/:/rs=w:1440,h:1440',
@@ -549,7 +564,7 @@
     blue:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Blue%20Back-8ebce6a.jpg/:/rs=w:1440,h:1440'
   };
 
-  // Aktiv
+  // AKTIV (9,49 €)
   const FRONT_AKTIV = {
     blue:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Blue%20Aktiv%20Front.jpg/:/rs=w:1440,h:1440',
     mint:'https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Mint%20Aktiv%20Front.jpg/:/rs=w:1440,h:1440',
@@ -583,7 +598,7 @@
   const canvas = document.getElementById('ld-canvas');
   const ctx = canvas.getContext('2d');
 
-  let view = 'front'; // front/back
+  let view = 'front';       // front / back
   let color = 'white';
   let selectedQuality = 'standard';
   let promoDiscount = 0;
@@ -683,7 +698,7 @@
     setView(view === 'front' ? 'back' : 'front');
   });
 
-  // --- BASE IMAGE ---
+  // --- BASE IMAGE (V-NECK) ---
   function getBaseImage(){
     const palette = currentPalette();
     if(!palette.includes(color)){
@@ -691,21 +706,13 @@
       renderColorSelect();
       renderSwatches();
     }
-
-    let mapFront, mapBack;
-    if(selectedQuality === 'aktiv'){
-      mapFront = FRONT_AKTIV;
-      mapBack  = BACK_AKTIV;
-    }else{
-      mapFront = FRONT_STANDARD;
-      mapBack  = BACK_STANDARD;
-    }
-
+    const isAktiv = (selectedQuality === 'aktiv');
+    const mapFront = isAktiv ? FRONT_AKTIV : FRONT_STANDARD;
+    const mapBack  = isAktiv ? BACK_AKTIV  : BACK_STANDARD;
     const src =
       (view === 'front'
         ? (mapFront[color] || mapFront[Object.keys(mapFront)[0]])
         : (mapBack[color]  || mapBack[Object.keys(mapBack)[0]]));
-
     return loadImage(src);
   }
 
@@ -932,10 +939,8 @@
     const L = layers[active]; if(!L || !L.img) return;
     e.preventDefault();
     if(e.shiftKey){
-      // Rotation
       L.rot += -Math.sign(e.deltaY)*4;
     }else{
-      // Scale
       const cur = L.scale*100;
       let next = cur - Math.sign(e.deltaY)*6;
       next = Math.max(5,Math.min(400,next));
@@ -948,7 +953,6 @@
   // --- PREISKALKULATION ---
   function motifStats(){
     let bw=0,colorCount=0;
-    // kombiniere Front/Back Slots
     for(let i=0;i<LAYER_COUNT;i++){
       const F = layersFront[i];
       const B = layersBack[i];
@@ -990,7 +994,7 @@
 
   qtyEl.addEventListener('input',updatePrice);
 
-  // --- QUALITÄT BUTTONS ---
+  // --- QUALITÄT BUTTONS (standard / aktiv) ---
   const qBtns = document.querySelectorAll('.q-btn');
   qBtns.forEach(btn=>{
     btn.addEventListener('click',()=>{
@@ -1103,7 +1107,6 @@
   });
 
   document.getElementById('ld-checkout').addEventListener('click',()=>{
-    // HIER deine GoDaddy / HomePrint24 V-Neck Produktseite eintragen
     window.location.href = 'https://www.homeprint24.com/';
   });
 
@@ -1122,5 +1125,3 @@
   init();
 })();
 </script>
-</body>
-</html>
