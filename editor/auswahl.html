@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>HomePrint24 – Produkt Auswahl</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+
+    :root{
+      --bg:#f3f4f6;
+      --panel:#e5e7eb;
+      --dark:#0f172a;
+      --card:#f9fafb;
+      --accent:#00A7E1;
+      --text:#0f172a;
+    }
+
+    body{
+      margin:0;
+      background:var(--bg);
+      font-family:'Fjalla One', system-ui;
+      color:var(--text);
+    }
+
+    .section{
+      max-width:1200px;
+      margin:28px auto;
+      padding:18px 16px;
+      background:var(--panel);
+      border-radius:18px;
+      box-shadow:0 10px 30px rgba(15,23,42,.15);
+    }
+
+    .slider-wrap{
+      position:relative;
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .btn{
+      width:38px; height:38px;
+      background:var(--dark);
+      color:white;
+      border:none;
+      border-radius:50%;
+      cursor:pointer;
+      font-size:20px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-shrink:0;
+      box-shadow:0 4px 16px rgba(0,0,0,.3);
+    }
+
+    .slider{
+      display:flex;
+      gap:18px;
+      overflow-x:auto;
+      scroll-behavior:smooth;
+      padding:6px 4px;
+    }
+
+    .slider::-webkit-scrollbar{height:6px;}
+    .slider::-webkit-scrollbar-thumb{background:#475569;border-radius:999px;}
+
+    .card{
+      flex:0 0 240px;
+      background:var(--card);
+      border-radius:16px;
+      border:1px solid #d1d5db;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      color:inherit;
+      text-decoration:none;
+      transition:.2s;
+    }
+
+    .card:hover{
+      transform:translateY(-3px);
+      border-color:var(--dark);
+    }
+
+    .img-wrap{
+      width:100%;
+      aspect-ratio:3/3.2;
+      background:white;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      overflow:hidden;
+    }
+
+    .img-wrap img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .body{padding:8px 10px;display:flex;flex-direction:column;}
+    .title{font-size:15px;margin-bottom:4px;}
+    .meta{font-size:11px;display:flex;justify-content:space-between;margin-bottom:8px;color:#4b5563;}
+    .pill{padding:2px 7px;background:white;border-radius:999px;border:1px solid #cbd5e1;font-size:10px;}
+    .price{font-weight:900;font-size:11px;}
+    .cta{
+      margin-top:auto;
+      background:var(--dark);
+      color:white;
+      padding:7px;
+      text-align:center;
+      border-radius:999px;
+      font-size:12px;
+      cursor:pointer;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<section class="section">
+
+  <div class="slider-wrap">
+    <button class="btn" id="l1">‹</button>
+
+    <div class="slider" id="s1">
+
+      <!-- T-SHIRT -->
+      <a href="https://www.homeprint24.com/editor/tshirt?src=https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ChatGPT%20Image%2025.%20Nov.%202025%2C%2022_33_35.png/:/rs=w:1440,h:1440" 
+         class="card">
+        <div class="img-wrap">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ChatGPT%20Image%2025.%20Nov.%202025%2C%2022_33_35.png/:/rs=w:1440,h:1440">
+        </div>
+        <div class="body">
+          <div class="title">T-Shirt</div>
+          <div class="meta">
+            <span class="pill">Casual</span>
+            <span class="price">ab 19,99 €</span>
+          </div>
+          <div class="cta">Design starten</div>
+        </div>
+      </a>
+
+      <!-- V-NECK -->
+      <a href="https://www.homeprint24.com/editor/vneck?src=https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/ChatGPT%20Image%2025.%20Nov.%202025%2C%2023_39_12.png/:/rs=w:1440,h:1440" 
+         class="card">
+        <div class="img-wrap">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/ChatGPT%20Image%2025.%20Nov.%202025%2C%2023_39_12.png/:/rs=w:1440,h:1440">
+        </div>
+        <div class="body">
+          <div class="title">V-Neck Shirt</div>
+          <div class="meta">
+            <span class="pill">Slim Fit</span>
+            <span class="price">ab 19,99 €</span>
+          </div>
+          <div class="cta">Design starten</div>
+        </div>
+      </a>
+
+      <!-- POLO -->
+      <a href="https://www.homeprint24.com/editor/polo?src=https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/9BD95597-90AA-465B-A21A-BB13B414F1F1.png/:/rs=w:1440,h:1440" 
+         class="card">
+        <div class="img-wrap">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/9BD95597-90AA-465B-A21A-BB13B414F1F1.png/:/rs=w:1440,h:1440">
+        </div>
+        <div class="body">
+          <div class="title">Polo Shirt</div>
+          <div class="meta">
+            <span class="pill">Elegant</span>
+            <span class="price">ab 24,99 €</span>
+          </div>
+          <div class="cta">Design starten</div>
+        </div>
+      </a>
+
+      <!-- HOODIE -->
+      <a href="https://www.homeprint24.com/editor/hoodie?src=https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Graffiti-Hoodie%20mit%20_dein%20Logo_.png/:/rs=w:1440,h:1440" 
+         class="card">
+        <div class="img-wrap">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Graffiti-Hoodie%20mit%20_dein%20Logo_.png/:/rs=w:1440,h:1440">
+        </div>
+        <div class="body">
+          <div class="title">Hoodie</div>
+          <div class="meta">
+            <span class="pill">Streetwear</span>
+            <span class="price">ab 29,99 €</span>
+          </div>
+          <div class="cta">Design starten</div>
+        </div>
+      </a>
+
+      <!-- SWEATSHIRT -->
+      <a href="https://www.homeprint24.com/editor/sweat?src=https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/ChatGPT%20Image%2025.%20Nov.%202025%2C%2022_45_41.png/:/rs=w:1440,h:1440" 
+         class="card">
+        <div class="img-wrap">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/ChatGPT%20Image%2025.%20Nov.%202025%2C%2022_45_41.png/:/rs=w:1440,h:1440">
+        </div>
+        <div class="body">
+          <div class="title">Sweatshirt</div>
+          <div class="meta">
+            <span class="pill">Unisex</span>
+            <span class="price">ab 29,99 €</span>
+          </div>
+          <div class="cta">Design starten</div>
+        </div>
+      </a>
+
+      <!-- ZIP HOODIE -->
+      <a href="https://www.homeprint24.com/editor/ziphoodie?src=https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Wei%C3%9Fe%20Jacke%20mit%20Graffiti-Logo.png/:/rs=w:1440,h:1440" 
+         class="card">
+        <div class="img-wrap">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Wei%C3%9Fe%20Jacke%20mit%20Graffiti-Logo.png/:/rs=w:1440,h:1440">
+        </div>
+        <div class="body">
+          <div class="title">Zip Hoodie</div>
+          <div class="meta">
+            <span class="pill">Teamwear</span>
+            <span class="price">ab 29,99 €</span>
+          </div>
+          <div class="cta">Design starten</div>
+        </div>
+      </a>
+
+      <!-- JOGGER -->
+      <a href="https://www.homeprint24.com/editor/jogger?src=https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Relaxe%20Sweatpants%20mit%20Graffiti-Design.png/:/rs=w:1440,h:1440" 
+         class="card">
+        <div class="img-wrap">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Relaxe%20Sweatpants%20mit%20Graffiti-Design.png/:/rs=w:1440,h:1440">
+        </div>
+        <div class="body">
+          <div class="title">Jogger</div>
+          <div class="meta">
+            <span class="pill">Street Fit</span>
+            <span class="price">ab 29,99 €</span>
+          </div>
+          <div class="cta">Design starten</div>
+        </div>
+      </a>
+
+    </div>
+
+    <button class="btn" id="r1">›</button>
+  </div>
+</section>
+
+<script>
+  const s1 = document.getElementById('s1');
+  document.getElementById('l1').onclick = () => s1.scrollBy({left:-240, behavior:'smooth'});
+  document.getElementById('r1').onclick = () => s1.scrollBy({left:240, behavior:'smooth'});
+</script>
+
+</body>
+</html>
