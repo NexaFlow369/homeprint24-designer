@@ -7,37 +7,46 @@
   <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
 
   <style>
-    .hp24-title{
+    body{
       font-family:'Fjalla One', sans-serif;
-      font-size:44px;
-      text-align:center;
+      margin:0;
+      padding:0;
       color:#0f172a;
-      letter-spacing:1px;
-      margin:32px 0 26px;
-      font-weight:900;
-      text-transform:uppercase;
     }
 
+    /* Haupttitel */
+    .hp24-title{
+      font-size:38px;
+      text-align:center;
+      margin:32px 0;
+      text-transform:uppercase;
+      font-weight:900;
+      letter-spacing:1px;
+      color:#0f172a;
+    }
+
+    /* Pulsierende rote "24" */
     .hp24-anim{
       color:#ff1a1a;
-      animation: pulseGlow 1.6s infinite ease-in-out;
       padding-left:4px;
+      animation:pulseGlow 1.6s infinite ease-in-out;
     }
 
+    /* Animation */
     @keyframes pulseGlow{
       0%{
         color:#ff1a1a;
-        text-shadow:0 0 0px rgba(255,0,0,0.0);
+        text-shadow:0 0 0px rgba(255,0,0,0);
         transform:scale(1);
       }
       50%{
         color:#ff0000;
-        text-shadow:0 0 14px rgba(255,0,0,0.55);
-        transform:scale(1.11);
+        text-shadow:0 0 12px rgba(255,0,0,0.6);
+        transform:scale(1.1);
       }
       100%{
         color:#ff1a1a;
-        text-shadow:0 0 0px rgba(255,0,0,0.0);
+        text-shadow:0 0 0px rgba(255,0,0,0);
         transform:scale(1);
       }
     }
@@ -47,7 +56,7 @@
 <body>
 
   <h1 class="hp24-title">
-    Wie gestaltest du deine Legacy by HomePrint<span class="hp24-anim">24</span>
+    Willkommen bei HomePrint<span class="hp24-anim">24</span> – wo jedes Motiv zum Statement wird
   </h1>
 
 </body>
