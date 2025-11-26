@@ -1,8 +1,8 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>  
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>HomePrint24 – 3D T-Shirt Editor (Master V7)</title>
+  <title>HomePrint24 – 3D T-Shirt Editor (Master V7 – GoDaddy)</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
 
@@ -13,9 +13,10 @@
       --accent:#2563eb;
       --accent-soft:#dbeafe;
       --text-dark:#0f172a;
+      --red:#ef4444;
     }
 
-    *{box-sizing:border-box;}
+    *{box-sizing:border-box;margin:0;padding:0;}
 
     body{
       margin:0;
@@ -40,6 +41,12 @@
       color:#0f172a;
       font-weight:800;
       letter-spacing:.3px;
+    }
+
+    .hpt24-topbar{
+      display:flex;
+      justify-content:flex-start;
+      margin-bottom:8px;
     }
 
     #hpt24-tabs{
@@ -303,9 +310,6 @@
       margin-top:4px;
     }
 
-    /* --- FINAL V7 LAYOUT-FINETUNING --- */
-
-    /* Rechte Spalte: alle Karten voll breit, Upload etwas "größer" */
     .hpt24-right .ld-card{
       width:100%;
     }
@@ -314,7 +318,6 @@
       padding:20px 18px;
     }
 
-    /* Preset-Card links nach unten ziehen, damit mit Warenkorb abschließt */
     .hpt24-left{
       display:flex;
       flex-direction:column;
@@ -349,8 +352,12 @@
 <div id="hpt24">
   <h2 class="hpt24-title">HomePrint24 – Print Your Legacy</h2>
 
+  <div class="hpt24-topbar">
+    <button id="ld-new-design" type="button" class="ld-btn accent">Neues Design starten</button>
+  </div>
+
   <div id="hpt24-tabs">
-    <button class="ld-tab active" data-prod="tshirt">T-Shirt</button>
+    <button type="button" class="ld-tab active" data-prod="tshirt">T-Shirt</button>
   </div>
 
   <div class="hpt24-layout">
@@ -377,8 +384,8 @@
             <div class="hpt24-preset-wrap">
               <span class="ld-sublabel">Preset:</span>
               <div class="hpt24-preset-row">
-                <button class="ld-btn" data-preset="center">Center</button>
-                <button class="ld-btn" data-preset="back">Back-Tag</button>
+                <button type="button" class="ld-btn" data-preset="center">Center</button>
+                <button type="button" class="ld-btn" data-preset="back">Back-Tag</button>
               </div>
             </div>
           </div>
@@ -406,8 +413,8 @@
         </div>
 
         <div class="hpt24-layer-buttons">
-          <button id="ld-layer-vis" class="ld-btn hpt24-small-btn">Sichtbar: AN</button>
-          <button id="ld-layer-del" class="ld-btn hpt24-small-btn">Layer löschen</button>
+          <button id="ld-layer-vis" type="button" class="ld-btn hpt24-small-btn">Sichtbar: AN</button>
+          <button id="ld-layer-del" type="button" class="ld-btn hpt24-small-btn">Layer löschen</button>
         </div>
       </div>
 
@@ -423,7 +430,7 @@
           <div class="hpt24-row-between" style="gap:6px;">
             <span class="ld-sublabel">Ansicht:</span>
             <span id="ld-view-badge" class="ld-sublabel">FRONT</span>
-            <button id="ld-toggle-back" class="ld-btn">Back</button>
+            <button id="ld-toggle-back" type="button" class="ld-btn">Back</button>
           </div>
         </div>
         <div id="ld-uploader-list" class="hpt24-upload-list"></div>
@@ -451,9 +458,9 @@
           <div class="ld-quality-wrap">
             <label class="ld-sublabel">Qualität</label>
             <div class="quality-row">
-              <button class="q-btn" data-q="basic">Basic</button>
-              <button class="q-btn active" data-q="standard">Standard</button>
-              <button class="q-btn" data-q="premium">Premium</button>
+              <button type="button" class="q-btn" data-q="basic">Basic</button>
+              <button type="button" class="q-btn active" data-q="standard">Standard</button>
+              <button type="button" class="q-btn" data-q="premium">Premium</button>
             </div>
           </div>
           <select id="ld-gender" class="ld-input">
@@ -489,8 +496,8 @@
           placeholder="Wünsche/Anmerkungen (z. B. 25 cm Breite, Ärmel rechts …)"></textarea>
 
         <div class="hpt24-grid-2 hpt24-gap-top">
-          <button id="ld-add" class="ld-btn primary">In den Warenkorb</button>
-          <button id="ld-download" class="ld-btn">Mockup herunterladen</button>
+          <button id="ld-add" type="button" class="ld-btn primary">In den Warenkorb</button>
+          <button id="ld-download" type="button" class="ld-btn">Mockup herunterladen</button>
         </div>
       </div>
 
@@ -501,7 +508,7 @@
           <div id="ld-total" class="hpt24-total">0,00 €</div>
         </div>
         <div id="ld-cart" class="hpt24-cart-list"></div>
-        <button id="ld-checkout" class="ld-btn accent hpt24-checkout-btn">Zur Kasse</button>
+        <button id="ld-checkout" type="button" class="ld-btn accent hpt24-checkout-btn">Zur Kasse</button>
         <p class="hpt24-hint-text">
           Der Gesamtpreis basiert auf T-Shirt-Qualität, Farbe, Motivanzahl und Druckart
           (S/W oder Vollfarbe). Bitte Mockup vor Checkout speichern.
@@ -549,7 +556,6 @@
     pink:'Pink',
     lachs:'Salmon',
     yellow:'Yellow',
-
     pegert:'Egert',
     pnavy:'Navy Blue',
     pblack:'Black (Premium)',
@@ -571,7 +577,6 @@
     pink:'#ec4899',
     lachs:'#fb7185',
     yellow:'#facc15',
-
     pegert:'#d4a373',
     pnavy:'#0f172a',
     pblack:'#020617',
@@ -676,6 +681,8 @@
   const uploadsBox = document.getElementById('ld-uploader-list');
   const promoInput = document.getElementById('ld-promocode');
   const promoHint  = document.getElementById('promo-hint');
+  const notesEl    = document.getElementById('ld-notes');
+  const newDesignBtn = document.getElementById('ld-new-design');
 
   const scaleEl    = document.getElementById('ld-scale');
   const scaleVal   = document.getElementById('ld-scale-val');
@@ -744,7 +751,8 @@
     draw();
   }
 
-  toggleBack.addEventListener('click',()=>{
+  toggleBack.addEventListener('click', (e)=>{
+    e.preventDefault();
     setView(view === 'front' ? 'back' : 'front');
   });
 
@@ -820,9 +828,9 @@
         <label class="hpt24-sw-toggle">
           <input type="checkbox" data-bw="${i}"> S/W 3,50 €
         </label>
-        <button class="ld-btn" data-act="${i}">Aktiv</button>
-        <button class="ld-btn" data-vis="${i}">${layers[i].vis?'👁 AUS':'👁 AN'}</button>
-        <button class="ld-btn" data-del="${i}">✖</button>
+        <button type="button" class="ld-btn" data-act="${i}">Aktiv</button>
+        <button type="button" class="ld-btn" data-vis="${i}">${layers[i].vis?'👁 AUS':'👁 AN'}</button>
+        <button type="button" class="ld-btn" data-del="${i}">✖</button>
       `;
       uploadsBox.appendChild(row);
 
@@ -856,12 +864,14 @@
         updatePrice();
       };
 
-      row.querySelector(`[data-act="${i}"]`).onclick = ()=>{
+      row.querySelector(`[data-act="${i}"]`).onclick = (ev)=>{
+        ev.preventDefault();
         active = i;
         syncUIFromLayer();
         renderUploadRows();
       };
-      row.querySelector(`[data-vis="${i}"]`).onclick = ()=>{
+      row.querySelector(`[data-vis="${i}"]`).onclick = (ev)=>{
+        ev.preventDefault();
         if(!layers[i].img) return;
         layers[i].vis = !layers[i].vis;
         draw();
@@ -869,7 +879,8 @@
         renderUploadRows();
         syncUIFromLayer();
       };
-      row.querySelector(`[data-del="${i}"]`).onclick = ()=>{
+      row.querySelector(`[data-del="${i}"]`).onclick = (ev)=>{
+        ev.preventDefault();
         layers[i] = makeLayer();
         if(active === i) active = Math.max(0,active-1);
         draw();
@@ -898,7 +909,10 @@
     draw();
   }
   document.querySelectorAll('[data-preset]').forEach(b=>{
-    b.addEventListener('click',()=>applyPreset(b.dataset.preset));
+    b.addEventListener('click',(e)=>{
+      e.preventDefault();
+      applyPreset(b.dataset.preset);
+    });
   });
 
   // --- UI SYNC ---
@@ -937,7 +951,8 @@
     draw();
   });
 
-  visBtn.addEventListener('click',()=>{
+  visBtn.addEventListener('click',(e)=>{
+    e.preventDefault();
     const L = layers[active]; if(!L || !L.img) return;
     L.vis = !L.vis;
     syncUIFromLayer();
@@ -946,7 +961,8 @@
     updatePrice();
   });
 
-  delBtn.addEventListener('click',()=>{
+  delBtn.addEventListener('click',(e)=>{
+    e.preventDefault();
     layers[active] = makeLayer();
     syncUIFromLayer();
     renderUploadRows();
@@ -1047,7 +1063,8 @@
   // --- QUALITÄT BUTTONS ---
   const qBtns = document.querySelectorAll('.q-btn');
   qBtns.forEach(btn=>{
-    btn.addEventListener('click',()=>{
+    btn.addEventListener('click',(e)=>{
+      e.preventDefault();
       qBtns.forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
       selectedQuality = btn.dataset.q || 'standard';
@@ -1077,13 +1094,18 @@
       updatePrice();
     });
   }
-
-  // --- WARENKORB ---
+  // --- WARENKORB (INTERN) ---
   function renderCart(){
     cartBox.innerHTML = '';
     let sum = 0;
     cart.forEach((it,idx)=>{
       sum += it.unit * it.qty;
+
+      const qualityLabel =
+        it.quality === 'premium'  ? 'Premium'  :
+        it.quality === 'standard' ? 'Standard' :
+        'Basic';
+
       const row = document.createElement('div');
       row.className = 'ld-cart-row';
       row.innerHTML = `
@@ -1091,16 +1113,16 @@
           <strong>${it.name}</strong>
           <span class="ld-chip">${COLOR_NAME[it.color] || it.color}</span>
           <span class="ld-chip">${it.size || '-'}</span>
-          <span class="ld-chip">${it.quality}</span>
+          <span class="ld-chip">${qualityLabel}</span>
           <span class="ld-chip">${it.motifs} Motiv${it.motifs===1?'':'e'}</span>
         </div>
         <div>${fmt(it.unit)}</div>
         <div>
-          <button class="ld-btn" data-a="${idx}">−</button>
+          <button type="button" class="ld-btn" data-a="${idx}">−</button>
           <span>${it.qty}</span>
-          <button class="ld-btn" data-b="${idx}">+</button>
+          <button type="button" class="ld-btn" data-b="${idx}">+</button>
         </div>
-        <button class="ld-btn" data-x="${idx}">Entfernen</button>
+        <button type="button" class="ld-btn" data-x="${idx}">Entfernen</button>
       `;
       cartBox.appendChild(row);
     });
@@ -1108,28 +1130,33 @@
     totalEl.textContent = fmt(sum);
 
     cartBox.querySelectorAll('[data-a]').forEach(b=>{
-      b.onclick = ()=>{
+      b.onclick = (ev)=>{
+        ev.preventDefault();
         const i = +b.dataset.a;
         cart[i].qty = Math.max(1,cart[i].qty-1);
         renderCart();
       };
     });
     cartBox.querySelectorAll('[data-b]').forEach(b=>{
-      b.onclick = ()=>{
+      b.onclick = (ev)=>{
+        ev.preventDefault();
         const i = +b.dataset.b;
         cart[i].qty++;
         renderCart();
       };
     });
     cartBox.querySelectorAll('[data-x]').forEach(b=>{
-      b.onclick = ()=>{
+      b.onclick = (ev)=>{
+        ev.preventDefault();
         cart.splice(+b.dataset.x,1);
         renderCart();
       };
     });
   }
 
-  document.getElementById('ld-add').addEventListener('click',()=>{
+  // --- DESIGN IN DEN WARENKORB LEGEN (ohne Reset!) ---
+  document.getElementById('ld-add').addEventListener('click',(e)=>{
+    e.preventDefault();
     const size = sizeEl.value || '-';
     const qty  = Math.max(1,parseInt(qtyEl.value || '1',10));
     const stats = motifStats();
@@ -1147,17 +1174,50 @@
     });
     renderCart();
     updatePrice();
+    // KEIN Reset, KEIN Redirect → Kunde bleibt im Editor
   });
 
-  document.getElementById('ld-download').addEventListener('click',()=>{
+  // --- NEUES DESIGN STARTEN (Canvas & Einstellungen, aber Warenkorb bleibt) ---
+  if(newDesignBtn){
+    newDesignBtn.addEventListener('click',(e)=>{
+      e.preventDefault();
+      for(let i=0;i<LAYER_COUNT;i++){
+        layersFront[i] = makeLayer();
+        layersBack[i]  = makeLayer();
+      }
+      active = 0;
+      view = 'front';
+      color = 'white';
+      sizeEl.value = '';
+      genderEl.value = '';
+      qtyEl.value = '1';
+      notesEl.value = '';
+      promoDiscount = 0;
+      if(promoInput) promoInput.value = '';
+      if(promoHint) promoHint.style.display = 'none';
+
+      renderColorSelect();
+      renderSwatches();
+      setView('front');
+      updatePrice();
+      draw();
+    });
+  }
+
+  // --- MOCKUP DOWNLOAD ---
+  document.getElementById('ld-download').addEventListener('click',(e)=>{
+    e.preventDefault();
     const a = document.createElement('a');
     a.download = `HomePrint24_TShirt_${COLOR_NAME[color] || color}_${view}.png`;
     a.href = canvas.toDataURL('image/png');
     a.click();
   });
 
-  document.getElementById('ld-checkout').addEventListener('click',()=>{
-    window.location.href = 'https://www.homeprint24.com/';
+  // --- CHECKOUT (Weiterleitung GoDaddy Shop) ---
+  document.getElementById('ld-checkout').addEventListener('click',(e)=>{
+    e.preventDefault();
+    // Hier ggf. deine exakte GoDaddy-Warenkorb- oder Produkt-URL eintragen:
+    window.location.href = 'https://www.homeprint24.com/shop';
   });
 
   // INIT
@@ -1169,8 +1229,8 @@
     renderUploadRows();
     syncUIFromLayer();
     updatePrice();
-    draw();
     setView('front');
+    draw();
   }
   init();
 })();
