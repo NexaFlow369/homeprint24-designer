@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>HomePrint24 –l-Auswahl</title>
+  <title>HomePrint24 – Auswahl</title>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
@@ -14,6 +14,7 @@
       --card:#f9fafb;
       --accent:#00A7E1;
       --text:#0f172a;
+      --red:#ef4444;
     }
 
     *{box-sizing:border-box;margin:0;padding:0;}
@@ -23,7 +24,7 @@
       color:var(--text);
     }
 
-    /* SECTION WRAPPER ------------------------------------------------*/
+    /* GLOBAL WRAPPER */
     .section{
       max-width:1200px;
       margin:28px auto;
@@ -32,20 +33,17 @@
       border-radius:18px;
       box-shadow:0 10px 30px rgba(15,23,42,.15);
     }
-    .section-title{
-      font-size:24px;
-      text-align:center;
-      margin-bottom:4px;
-      letter-spacing:.05em;
-    }
-    .section-sub{
-      font-size:13px;
-      text-align:center;
-      color:#4b5563;
-      margin-bottom:18px;
-    }
 
-    /* SLIDER ----------------------------------------------------------*/
+    /* TITLE */
+    .hp24-title{
+      text-align:center;
+      font-size:32px;
+      margin-bottom:18px;
+      font-weight:900;
+      letter-spacing:1px;
+    }
+    .hp24-title span{ color:var(--red); }
+
     .slider-wrap{
       position:relative;
       display:flex;
@@ -79,9 +77,8 @@
     .slider::-webkit-scrollbar{height:6px;}
     .slider::-webkit-scrollbar-thumb{background:#475569;border-radius:999px;}
 
-    /* CARD – FINAL LONG & FLAT VERSION -------------------------------*/
     .card{
-      flex:0 0 240px;              /* länger */
+      flex:0 0 240px;
       background:var(--card);
       border-radius:16px;
       border:1px solid #d1d5db;
@@ -99,7 +96,7 @@
 
     .img-wrap{
       width:100%;
-      aspect-ratio:3/3.2;          /* flacher */
+      aspect-ratio:1/1.15;
       background:white;
       display:flex;
       justify-content:center;
@@ -110,37 +107,14 @@
       width:100%;
       height:100%;
       object-fit:cover;
+      image-rendering:auto;
     }
 
-    .body{
-      padding:8px 10px;
-      display:flex;
-      flex-direction:column;
-    }
-
-    .title{
-      font-size:15px;
-      margin-bottom:4px;
-    }
-    .meta{
-      font-size:11px;
-      display:flex;
-      justify-content:space-between;
-      margin-bottom:8px;
-      color:#4b5563;
-    }
-    .pill{
-      padding:2px 7px;
-      background:white;
-      border-radius:999px;
-      border:1px solid #cbd5e1;
-      font-size:10px;
-    }
-    .price{
-      font-weight:900;
-      font-size:11px;
-    }
-
+    .body{padding:8px 10px;display:flex;flex-direction:column;}
+    .title{font-size:15px;margin-bottom:4px;}
+    .meta{font-size:11px;display:flex;justify-content:space-between;margin-bottom:8px;color:#4b5563;}
+    .pill{padding:2px 7px;background:white;border-radius:999px;border:1px solid #cbd5e1;font-size:10px;}
+    .price{font-weight:900;font-size:11px;}
     .cta{
       margin-top:auto;
       background:var(--dark);
@@ -151,15 +125,17 @@
       font-size:12px;
       cursor:pointer;
     }
-
   </style>
 </head>
 
 <body>
 
 <section class="section">
-  <h2 class="section-title">
-  <p class="section-sub">
+
+  <!-- TITELBLOCK -->
+  <div class="hp24-title">
+    Print Your Legacy by HomePrint<span>24</span>
+  </div>
 
   <div class="slider-wrap">
     <button class="btn" id="l1">‹</button>
@@ -167,9 +143,9 @@
     <div class="slider" id="s1">
 
       <!-- T-SHIRT -->
-      <a href="https://nexaflow369.github.io/homeprint24-designer/tshirt.html" class="card">
+      <a href="https://nexaflow369.github.io/homeprint24-designer/editor/tshirt.html" class="card">
         <div class="img-wrap">
-          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_39A4FE77-F206-4838-BD1C-CB77DEB7-4d95b85.jpeg/:/rs=w:1440,h:1440">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ChatGPT%20Image%2025.%20Nov.%202025%2C%2022_33_35.png">
         </div>
         <div class="body">
           <div class="title">T-Shirt</div>
@@ -179,9 +155,9 @@
       </a>
 
       <!-- V-NECK -->
-      <a href="https://nexaflow369.github.io/homeprint24-designer/vneck.html" class="card">
+      <a href="https://nexaflow369.github.io/homeprint24-designer/editor/vneck.html" class="card">
         <div class="img-wrap">
-          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_13A4C3DF-6F22-485E-866A-9796679D-15ae9bc.jpeg/:/rs=w:1440,h:1440">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/ChatGPT%20Image%2025.%20Nov.%202025%2C%2023_39_12.png">
         </div>
         <div class="body">
           <div class="title">V-Neck Shirt</div>
@@ -191,9 +167,9 @@
       </a>
 
       <!-- POLO -->
-      <a href="https://nexaflow369.github.io/homeprint24-designer/polo.html" class="card">
+      <a href="https://nexaflow369.github.io/homeprint24-designer/editor/polo.html" class="card">
         <div class="img-wrap">
-          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_F2280821-1845-4CD9-ACEE-F252A3AF-348b007.jpeg/:/rs=w:1440,h:1440">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/BD10E198-BF85-43E2-A4B4-4D622FBAA937.jpeg">
         </div>
         <div class="body">
           <div class="title">Polo Shirt</div>
@@ -203,9 +179,9 @@
       </a>
 
       <!-- HOODIE -->
-      <a href="https://nexaflow369.github.io/homeprint24-designer/hoodie.html" class="card">
+      <a href="https://nexaflow369.github.io/homeprint24-designer/editor/hoodie.html" class="card">
         <div class="img-wrap">
-          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_2C06C545-468C-41A1-AD84-4487C484-e074e75.jpeg/:/rs=w:1440,h:1440">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Graffiti-Hoodie%20mit%20_dein%20Logo_.png">
         </div>
         <div class="body">
           <div class="title">Hoodie</div>
@@ -215,9 +191,9 @@
       </a>
 
       <!-- SWEATSHIRT -->
-      <a href="https://nexaflow369.github.io/homeprint24-designer/sweat.html" class="card">
+      <a href="https://nexaflow369.github.io/homeprint24-designer/editor/sweat.html" class="card">
         <div class="img-wrap">
-          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_18E0CA15-00B7-4DF7-924B-F9C78694-4871c4a.jpeg/:/rs=w:1440,h:1440">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/ChatGPT%20Image%2025.%20Nov.%202025%2C%2022_45_41.png">
         </div>
         <div class="body">
           <div class="title">Sweatshirt</div>
@@ -226,22 +202,22 @@
         </div>
       </a>
 
-      <!-- TRAININGSJACKE -->
-      <a href="https://nexaflow369.github.io/homeprint24-designer/track.html" class="card">
+      <!-- ZIP HOODIE -->
+      <a href="https://nexaflow369.github.io/homeprint24-designer/editor/ziphoodie.html" class="card">
         <div class="img-wrap">
-          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_752DCC1C-A663-4066-A9B0-1581BF7B-e914983.jpeg/:/rs=w:1440,h:1440">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Wei%C3%9Fe%20Jacke%20mit%20Graffiti-Logo.png">
         </div>
         <div class="body">
-          <div class="title">Trainingsjacke</div>
+          <div class="title">Zip Hoodie</div>
           <div class="meta"><span class="pill">Teamwear</span><span class="price">ab 29,99 €</span></div>
           <div class="cta">Design starten</div>
         </div>
       </a>
 
       <!-- JOGGER -->
-      <a href="https://nexaflow369.github.io/homeprint24-designer/jogger.html" class="card">
+      <a href="https://nexaflow369.github.io/homeprint24-designer/editor/jogger.html" class="card">
         <div class="img-wrap">
-          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/copy_40C1501A-C5B6-43ED-9712-69A34E5D-85c052c.jpeg/:/rs=w:1440,h:1440">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Relaxe%20Sweatpants%20mit%20Graffiti-Design.png">
         </div>
         <div class="body">
           <div class="title">Jogger</div>
@@ -259,7 +235,7 @@
 <script>
   const s1 = document.getElementById('s1');
   document.getElementById('l1').onclick = () => s1.scrollBy({left:-240, behavior:'smooth'});
-  document.getElementById('r1').onclick = () => s1.scrollBy({left:240,  behavior:'smooth'});
+  document.getElementById('r1').onclick = () => s1.scrollBy({left:240, behavior:'smooth'});
 </script>
 
 </body>
