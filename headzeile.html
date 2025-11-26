@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+
+  <style>
+    .hp24-title{
+      font-family:'Fjalla One', sans-serif;
+      font-size:44px;
+      text-align:center;
+      color:#0f172a;
+      letter-spacing:1px;
+      margin:32px 0 26px;
+      font-weight:900;
+      text-transform:uppercase;
+    }
+
+    .hp24-anim{
+      color:#ff1a1a;
+      animation: pulseGlow 1.6s infinite ease-in-out;
+      padding-left:4px;
+    }
+
+    @keyframes pulseGlow{
+      0%{
+        color:#ff1a1a;
+        text-shadow:0 0 0px rgba(255,0,0,0.0);
+        transform:scale(1);
+      }
+      50%{
+        color:#ff0000;
+        text-shadow:0 0 14px rgba(255,0,0,0.55);
+        transform:scale(1.11);
+      }
+      100%{
+        color:#ff1a1a;
+        text-shadow:0 0 0px rgba(255,0,0,0.0);
+        transform:scale(1);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1 class="hp24-title">
+    Wie gestaltest du deine Legacy by HomePrint<span class="hp24-anim">24</span>
+  </h1>
+
+</body>
+</html>
