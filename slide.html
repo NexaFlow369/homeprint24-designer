@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>HomePrint24 – Auswahl</title>
+  <title>HomePrint24– Produkt Auswahl</title>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
@@ -17,32 +17,55 @@
       --red:#ef4444;
     }
 
-    *{box-sizing:border-box;margin:0;padding:0;}
     body{
+      margin:0;
       background:var(--bg);
-      font-family:'Fjalla One',system-ui;
+      font-family:'Fjalla One', system-ui;
       color:var(--text);
     }
 
-    /* GLOBAL WRAPPER */
+    /* ------------------------------------ */
+    /* BANNER */
+    /* ------------------------------------ */
+    .hp24-banner{
+      text-align:center;
+      font-size:46px;
+      letter-spacing:1px;
+      font-weight:900;
+      margin-top:26px;
+      margin-bottom:10px;
+      text-transform:uppercase;
+      opacity:0;
+      animation:fadeIn 1.2s forwards ease-out;
+    }
+
+    .hp24-red{
+      color:var(--red);
+      animation:pulse 1.4s infinite ease-in-out;
+      text-shadow:0 0 12px rgba(239,68,68,0.45);
+    }
+
+    @keyframes fadeIn{
+      0%{opacity:0; transform:translateY(-12px);}
+      100%{opacity:1; transform:translateY(0);}
+    }
+    @keyframes pulse{
+      0%{color:var(--red);}
+      50%{color:#ff2a2a;}
+      100%{color:var(--red);}
+    }
+
+    /* ------------------------------------ */
+    /* SECTION / SLIDER / CARDS */
+    /* ------------------------------------ */
     .section{
       max-width:1200px;
-      margin:28px auto;
+      margin:18px auto 28px;
       padding:18px 16px;
       background:var(--panel);
       border-radius:18px;
       box-shadow:0 10px 30px rgba(15,23,42,.15);
     }
-
-    /* TITLE */
-    .hp24-title{
-      text-align:center;
-      font-size:32px;
-      margin-bottom:18px;
-      font-weight:900;
-      letter-spacing:1px;
-    }
-    .hp24-title span{ color:var(--red); }
 
     .slider-wrap{
       position:relative;
@@ -52,7 +75,7 @@
     }
 
     .btn{
-      width:38px;height:38px;
+      width:38px; height:38px;
       background:var(--dark);
       color:white;
       border:none;
@@ -63,7 +86,6 @@
       justify-content:center;
       align-items:center;
       box-shadow:0 4px 16px rgba(0,0,0,.3);
-      flex-shrink:0;
     }
 
     .slider{
@@ -89,28 +111,26 @@
       text-decoration:none;
       transition:.2s;
     }
-    .card:hover{
-      transform:translateY(-3px);
-      border-color:var(--dark);
-    }
 
     .img-wrap{
-      width:100%;
-      aspect-ratio:1/1.15;
-      background:white;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      overflow:hidden;
-    }
+  width:100%;
+  background:white;
+  overflow:hidden;
+}
+
+.img-wrap img{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
     .img-wrap img{
       width:100%;
       height:100%;
       object-fit:cover;
-      image-rendering:auto;
     }
 
-    .body{padding:8px 10px;display:flex;flex-direction:column;}
+    .body{padding:8px 10px;.idisplay:flex;flex-direction:column;}
     .title{font-size:15px;margin-bottom:4px;}
     .meta{font-size:11px;display:flex;justify-content:space-between;margin-bottom:8px;color:#4b5563;}
     .pill{padding:2px 7px;background:white;border-radius:999px;border:1px solid #cbd5e1;font-size:10px;}
@@ -123,29 +143,27 @@
       text-align:center;
       border-radius:999px;
       font-size:12px;
-      cursor:pointer;
     }
+
   </style>
 </head>
 
 <body>
 
+<!-- BANNER -->
+<span class="hp24-red">24</span></h1>
+
 <section class="section">
-
-  <!-- TITELBLOCK -->
-  <div class="hp24-title">
-    Print Your Legacy by HomePrint<span>24</span>
-  </div>
-
   <div class="slider-wrap">
+
     <button class="btn" id="l1">‹</button>
 
     <div class="slider" id="s1">
 
       <!-- T-SHIRT -->
-      <a href="https://nexaflow369.github.io/homeprint24-designer/editor/tshirt.html" class="card">
+      <a href="https://websites.godaddy.com/de-DE/editor/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/9eeae0ca-7b0d-4896-b195-2a59da7df5bf/edit" class="card">
         <div class="img-wrap">
-          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ChatGPT%20Image%2025.%20Nov.%202025%2C%2022_33_35.png">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/863BBF70-94B2-4DCB-B76B-D4C03A278B26.jpeg/:/rs=w:1440,h:1440">
         </div>
         <div class="body">
           <div class="title">T-Shirt</div>
@@ -155,33 +173,33 @@
       </a>
 
       <!-- V-NECK -->
-      <a href="https://nexaflow369.github.io/homeprint24-designer/editor/vneck.html" class="card">
+      <a href="https://websites.godaddy.com/de-DE/editor/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/f9320e69-920a-4b00-a230-bfe948d009d4/edit" class="card">
         <div class="img-wrap">
-          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/ChatGPT%20Image%2025.%20Nov.%202025%2C%2023_39_12.png">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/F8D50276-9E59-492F-BE77-8633FACFD414.jpeg/:/rs=w:1440,h:1440">
         </div>
         <div class="body">
-          <div class="title">V-Neck Shirt</div>
+          <div class="title">V-Neck</div>
           <div class="meta"><span class="pill">Slim Fit</span><span class="price">ab 19,99 €</span></div>
           <div class="cta">Design starten</div>
         </div>
       </a>
 
       <!-- POLO -->
-      <a href="https://nexaflow369.github.io/homeprint24-designer/editor/polo.html" class="card">
+      <a href="https://websites.godaddy.com/de-DE/editor/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/31f6d5b3-9046-4b0a-9d37-5b322e9e2105/edit" class="card">
         <div class="img-wrap">
-          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/BD10E198-BF85-43E2-A4B4-4D622FBAA937.jpeg">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/95037351-7442-4D1B-9107-3CB628087EA6.jpeg/:/rs=w:1440,h:1440">
         </div>
         <div class="body">
-          <div class="title">Polo Shirt</div>
+          <div class="title">Polo</div>
           <div class="meta"><span class="pill">Elegant</span><span class="price">ab 24,99 €</span></div>
           <div class="cta">Design starten</div>
         </div>
       </a>
 
       <!-- HOODIE -->
-      <a href="https://nexaflow369.github.io/homeprint24-designer/editor/hoodie.html" class="card">
+      <a href="https://websites.godaddy.com/de-DE/editor/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/6e8872a3-b152-4d3a-b40e-d159f3b1273e/edit" class="card">
         <div class="img-wrap">
-          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Graffiti-Hoodie%20mit%20_dein%20Logo_.png">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/F4D9248A-B6C5-46DD-B713-464EAF6084D8.jpeg/:/rs=w:1440,h:1440">
         </div>
         <div class="body">
           <div class="title">Hoodie</div>
@@ -190,22 +208,10 @@
         </div>
       </a>
 
-      <!-- SWEATSHIRT -->
-      <a href="https://nexaflow369.github.io/homeprint24-designer/editor/sweat.html" class="card">
-        <div class="img-wrap">
-          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/ChatGPT%20Image%2025.%20Nov.%202025%2C%2022_45_41.png">
-        </div>
-        <div class="body">
-          <div class="title">Sweatshirt</div>
-          <div class="meta"><span class="pill">Unisex</span><span class="price">ab 29,99 €</span></div>
-          <div class="cta">Design starten</div>
-        </div>
-      </a>
-
       <!-- ZIP HOODIE -->
-      <a href="https://nexaflow369.github.io/homeprint24-designer/editor/ziphoodie.html" class="card">
+      <a href="https://websites.godaddy.com/de-DE/editor/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/caa6803b-592c-4cd6-ab62-a89b0cb26fc9/edit" class="card">
         <div class="img-wrap">
-          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Wei%C3%9Fe%20Jacke%20mit%20Graffiti-Logo.png">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/C86F9C06-D423-4910-8D86-A8C189C1236E.jpeg/:/rs=w:1440,h:1440">
         </div>
         <div class="body">
           <div class="title">Zip Hoodie</div>
@@ -214,10 +220,22 @@
         </div>
       </a>
 
-      <!-- JOGGER -->
-      <a href="https://nexaflow369.github.io/homeprint24-designer/editor/jogger.html" class="card">
+      <!-- SWEATSHIRT -->
+      <a href="https://websites.godaddy.com/de-DE/editor/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/f414f728-c3fa-4d54-9fc4-96f1e4cd5952/edit" class="card">
         <div class="img-wrap">
-          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Relaxe%20Sweatpants%20mit%20Graffiti-Design.png">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/49C900AA-00C3-43D8-ADFF-C6E8DEF28A50.jpeg/:/rs=w:1440,h:1440">
+        </div>
+        <div class="body">
+          <div class="title">Sweatshirt</div>
+          <div class="meta"><span class="pill">Unisex</span><span class="price">ab 29,99 €</span></div>
+          <div class="cta">Design starten</div>
+        </div>
+      </a>
+
+      <!-- JOGGER -->
+      <a href="https://websites.godaddy.com/de-DE/editor/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/856c1a6e-38af-4509-a9a7-19872c884680/edit" class="card">
+        <div class="img-wrap">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/ChatGPT%20Image%2026.%20Nov.%202025%2C%2020_18_46.png/:/rs=w:1440,h:1440">
         </div>
         <div class="body">
           <div class="title">Jogger</div>
