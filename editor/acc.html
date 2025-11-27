@@ -20,11 +20,10 @@
     *{box-sizing:border-box;margin:0;padding:0;}
     body{
       background:var(--bg);
-      font-family:'Fjalla One',system-ui;
+      font-family:'Fjalla One', system-ui;
       color:var(--text);
     }
 
-    /* SECTION WRAPPER */
     .section{
       max-width:1200px;
       margin:28px auto;
@@ -34,7 +33,6 @@
       box-shadow:0 10px 30px rgba(15,23,42,.15);
     }
 
-    /* TITLE */
     .hp24-title{
       text-align:center;
       font-size:32px;
@@ -49,12 +47,11 @@
     }
 
     @keyframes pulse{
-      0%{text-shadow:0 0 0px rgba(239,68,68,0);}
+      0%{text-shadow:0 0 0 rgba(239,68,68,0);}
       50%{text-shadow:0 0 12px rgba(239,68,68,0.8);}
-      100%{text-shadow:0 0 0px rgba(239,68,68,0);}
+      100%{text-shadow:0 0 0 rgba(239,68,68,0);}
     }
 
-    /* SLIDER */
     .slider-wrap{
       position:relative;
       display:flex;
@@ -86,9 +83,11 @@
     }
 
     .slider::-webkit-scrollbar{height:6px;}
-    .slider::-webkit-scrollbar-thumb{background:#475569;border-radius:999px;}
+    .slider::-webkit-scrollbar-thumb{
+      background:#475569;
+      border-radius:999px;
+    }
 
-    /* CARD */
     .card{
       flex:0 0 240px;
       background:var(--card);
@@ -97,10 +96,11 @@
       overflow:hidden;
       display:flex;
       flex-direction:column;
-      color:inherit;
       text-decoration:none;
-      transition:.2s;
+      color:inherit;
+      transition:0.2s;
     }
+
     .card:hover{
       transform:translateY(-3px);
       border-color:var(--dark);
@@ -108,23 +108,37 @@
 
     .img-wrap{
       width:100%;
-      aspect-ratio:1/1.15;
       background:white;
-      display:flex;
-      justify-content:center;
-      align-items:center;
       overflow:hidden;
     }
+
     .img-wrap img{
       width:100%;
-      height:100%;
-      object-fit:cover;
+      height:auto;
+      display:block;
     }
 
-    .body{padding:8px 10px;display:flex;flex-direction:column;}
+    .body{
+      padding:8px 10px;
+      display:flex;
+      flex-direction:column;
+    }
+
     .title{font-size:15px;margin-bottom:4px;}
-    .meta{font-size:11px;display:flex;justify-content:space-between;margin-bottom:8px;color:#4b5563;}
-    .pill{padding:2px 7px;background:white;border-radius:999px;border:1px solid #cbd5e1;font-size:10px;}
+    .meta{
+      font-size:11px;
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:8px;
+      color:#4b5563;
+    }
+    .pill{
+      padding:2px 7px;
+      background:white;
+      border-radius:999px;
+      border:1px solid #cbd5e1;
+      font-size:10px;
+    }
     .price{font-weight:900;font-size:11px;}
     .cta{
       margin-top:auto;
@@ -136,6 +150,7 @@
       font-size:12px;
       cursor:pointer;
     }
+
   </style>
 </head>
 
@@ -143,7 +158,6 @@
 
 <section class="section">
 
-  <!-- TITELBLOCK -->
   <div class="hp24-title">
     ACCESSOIRE by HomePrint<span class="hp24-red">24</span>
   </div>
@@ -153,62 +167,74 @@
 
     <div class="slider" id="s1">
 
-      <!-- 1 — POKEPATE BINDER -->
+      <!-- Binder – PokePate / Toploader -->
       <a href="#" class="card">
         <div class="img-wrap">
-          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/E92647B1-0DAC-46ED-92A5-A71318E653EA.png/:/rs=w:1440,h:1440">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Elegante%20Portfolio%20mit%20Logo-Platzhalter.png/:/rs=w:1440,h:1440">
         </div>
         <div class="body">
-          <div class="title">PokePate & Toploader Binder</div>
-          <div class="meta"><span class="pill">Collector</span><span class="price">ab 34,99 €</span></div>
+          <div class="title">Toploader & PokePate Binder</div>
+          <div class="meta"><span class="pill">Collector</span> <span class="price">ab 34,99 €</span></div>
           <div class="cta">Design starten</div>
         </div>
       </a>
 
-      <!-- 2 — TURNBEUTEL -->
+      <!-- Binder Nummer 2 – gleiche Darstellung -->
       <a href="#" class="card">
         <div class="img-wrap">
-          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/83A27AEE-C72C-48CA-858E-47BAE1BD75F0.png/:/rs=w:1440,h:1440">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/Elegante%20Portfolio%20mit%20Logo-Platzhalter.png/:/rs=w:1440,h:1440">
+        </div>
+        <div class="body">
+          <div class="title">Toploader & PokePate Binder </div>
+          <div class="meta"><span class="pill">Collector</span> <span class="price">ab 34,99 €</span></div>
+          <div class="cta">Design starten</div>
+        </div>
+      </a>
+
+      <!-- Turnbeutel -->
+      <a href="#" class="card">
+        <div class="img-wrap">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/5D436EC2-0157-46AE-90D0-099980A17CF7.jpeg/:/rs=w:1440,h:1440">
         </div>
         <div class="body">
           <div class="title">Turnbeutel</div>
-          <div class="meta"><span class="pill">Gym</span><span class="price">ab 9,99 €</span></div>
+          <div class="meta"><span class="pill">Gym</span> <span class="price">ab 9,99 €</span></div>
           <div class="cta">Design starten</div>
         </div>
       </a>
 
-      <!-- 3 — BAUCHTASCHE -->
+      <!-- Bauchtasche -->
       <a href="#" class="card">
         <div class="img-wrap">
-          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/94FFCBA4-8D83-44C0-A777-68169D4B8F26.jpeg/:/rs=w:1440,h:1440">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/51705571-D00D-44DB-A5CC-F48CE92B2716.jpeg/:/rs=w:1440,h:1440">
         </div>
-        <div class="body">
+        <div .body>
           <div class="title">Bauchtasche</div>
-          <div class="meta"><span class="pill">Urban</span><span class="price">ab 14,99 €</span></div>
+          <div class="meta"><span class="pill">Urban</span> <span class="price">ab 14,99 €</span></div>
           <div class="cta">Design starten</div>
         </div>
       </a>
 
-      <!-- 4 — CAP -->
+      <!-- Snapback / Flexfit -->
       <a href="#" class="card">
         <div class="img-wrap">
-          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/ChatGPT%20Image%2025.%20Nov.%202025%2C%2022_33_37.png/:/rs=w:1440,h:1440">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/ChatGPT%20Image%2026.%20Nov.%202025%2C%2020_25_44.png/:/rs=w:1440,h:1440">
         </div>
         <div class="body">
-          <div class="title">Cap</div>
-          <div class="meta"><span class="pill">Classic</span><span class="price">ab 14,99 €</span></div>
+          <div class="title">Snapback / Flexfit</div>
+          <div class="meta"><span class="pill">Classic</span> <span class="price">ab 14,99 €</span></div>
           <div class="cta">Design starten</div>
         </div>
       </a>
 
-      <!-- 5 — STOFFBEUTEL -->
+      <!-- Stoffbeutel -->
       <a href="#" class="card">
         <div class="img-wrap">
-          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/ChatGPT%20Image%2025.%20Nov.%202025%2C%2022_33_43.png/:/rs=w:1440,h:1440">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/ChatGPT%20Image%2026.%20Nov.%202025%2C%2020_55_42.png/:/rs=w:1440,h:1440">
         </div>
         <div class="body">
           <div class="title">Stoffbeutel</div>
-          <div class="meta"><span class="pill">Eco</span><span class="price">ab 9,99 €</span></div>
+          <div class="meta"><span class="pill">Eco</span> <span class="price">ab 9,99 €</span></div>
           <div class="cta">Design starten</div>
         </div>
       </a>
