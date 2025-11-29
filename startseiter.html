@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>HomePrint24 – Print Your Legacy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#DCDCDC;
+      --card:#696969;
+      --accent:#00A7E1;
+      --accent-dark:#007BA8;
+      --text:#0f172a;
+      --white:#ffffff;
+      --shadow-soft:0 8px 24px rgba(0,0,0,0.25);
+      --shadow-strong:0 12px 32px rgba(0,0,0,0.35);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+
+    body{
+      font-family:'Fjalla One',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    a{text-decoration:none;color:inherit;}
+
+    /* ---------------------- TOP BAR ---------------------- */
+    .hp24-shell{
+      max-width:1200px;
+      margin:0 auto;
+      padding:20px;
+    }
+
+    .hp24-topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:26px;
+    }
+
+    .hp24-logo{
+      font-size:36px;
+      font-weight:900;
+      text-transform:uppercase;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .logo-24{
+      color:red;
+      animation:heartbeat 1.6s infinite ease-in-out;
+      text-shadow:0 0 16px rgba(255,0,0,0.8);
+    }
+
+    @keyframes heartbeat {
+      0% {transform:scale(1); text-shadow:0 0 10px rgba(255,0,0,0.4);}
+      25%{transform:scale(1.2); text-shadow:0 0 22px rgba(255,0,0,1);}
+      40%{transform:scale(1); text-shadow:0 0 10px rgba(255,0,0,0.5);}
+      60%{transform:scale(1.18); text-shadow:0 0 22px rgba(255,0,0,1);}
+      100%{transform:scale(1); text-shadow:0 0 10px rgba(255,0,0,0.4);}
+    }
+
+    .hp24-nav{
+      display:flex;
+      gap:14px;
+    }
+
+    .hp24-nav a{
+      padding:8px 14px;
+      border-radius:50px;
+      background:#505050;
+      color:white;
+      font-size:13px;
+      box-shadow:var(--shadow-soft);
+    }
+
+    .hp24-nav a.hp24-nav-cta{
+      background:var(--accent);
+    }
+
+    /* ---------------------- HERO ---------------------- */
+    .hero-title{
+      font-size:46px;
+      text-transform:uppercase;
+      margin-bottom:22px;
+      letter-spacing:.12em;
+      text-shadow:0 0 14px rgba(0,0,0,.25);
+    }
+
+    /* ---------------------- SLIDER ---------------------- */
+    .hp24-slider-title{
+      margin-top:10px;
+      margin-bottom:14px;
+      font-size:26px;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      text-shadow:0 0 10px rgba(0,0,0,0.25);
+    }
+
+    .slider-container{
+      position:relative;
+      width:100%;
+      margin-bottom:42px;
+      overflow:hidden;
+      padding:10px 0;
+    }
+
+    .slider-track{
+      display:flex;
+      gap:18px;
+      scroll-behavior:smooth;
+      padding:8px;
+      overflow-x:hidden;
+      backdrop-filter:blur(6px);
+    }
+
+    .slider-item{
+      min-width:200px;
+      background:var(--card);
+      border-radius:18px;
+      padding:12px;
+      color:white;
+      text-align:center;
+      box-shadow:0 8px 22px rgba(0,0,0,.28);
+      border:1px solid rgba(255,255,255,0.15);
+      transition:all .25s ease-out;
+    }
+
+    .slider-item:hover{
+      transform:translateY(-4px) scale(1.03);
+      box-shadow:0 12px 32px rgba(0,0,0,.38);
+      border-color:rgba(255,255,255,0.35);
+    }
+
+    .slider-item img{
+      width:100%;
+      border-radius:14px;
+      margin-bottom:10px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.35);
+    }
+
+    .slider-item h3{
+      font-size:14px;
+      margin-bottom:8px;
+      text-transform:uppercase;
+    }
+
+    .hp24-btn-mini{
+      display:inline-block;
+      margin-top:6px;
+      padding:8px 14px;
+      border-radius:999px;
+      font-size:12px;
+      text-transform:uppercase;
+      background:var(--accent);
+      color:white;
+      letter-spacing:.08em;
+      box-shadow:0 6px 18px rgba(0,0,0,.35);
+    }
+
+    .slider-btn{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      padding:13px;
+      border-radius:50%;
+      border:none;
+      font-size:22px;
+      cursor:pointer;
+      background:var(--accent);
+      color:white;
+      box-shadow:0 6px 20px rgba(0,0,0,.3);
+      transition:.2s;
+    }
+
+    .slider-btn:hover{ transform:translateY(-50%) scale(1.1); }
+
+    .slider-btn.left{ left:-14px; }
+    .slider-btn.right{ right:-14px; }
+
+    /* ---------------------- BANNER ---------------------- */
+    .hp24-banner{
+      background:linear-gradient(145deg,#6d6d6d,#595959);
+      padding:40px;
+      border-radius:24px;
+      text-align:center;
+      margin:40px 0;
+      box-shadow:0 12px 32px rgba(0,0,0,.32);
+      border:1px solid rgba(255,255,255,0.18);
+    }
+
+    .hp24-banner h2{
+      font-size:28px;
+      margin-bottom:12px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      color:white;
+      text-shadow:0 0 10px rgba(0,0,0,.4);
+    }
+
+    .hp24-banner p{
+      color:white;
+      opacity:.9;
+      font-size:15px;
+      margin-bottom:22px;
+    }
+
+    .hp24-banner-actions{
+      display:flex;
+      justify-content:center;
+      gap:14px;
+    }
+
+    .hp24-banner-btn{
+      padding:12px 20px;
+      border-radius:999px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-size:14px;
+      color:white;
+      box-shadow:0 10px 26px rgba(0,0,0,.35);
+    }
+
+    .hp24-banner-btn.primary{background:var(--accent);}
+    .hp24-banner-btn.secondary{background:#404040;}
+
+    /* ---------------------- FOOTER ---------------------- */
+    .footer{
+      text-align:center;
+      margin-top:40px;
+      font-size:12px;
+      opacity:.7;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="hp24-shell">
+
+  <!-- TOP BAR -->
+  <header class="hp24-topbar">
+    <div class="hp24-logo">
+      HomePrint<span class="logo-24">24</span>
+    </div>
+
+    <nav class="hp24-nav">
+      <a href="#produkte">Produkte</a>
+      <a href="#accessories">Accessoires</a>
+      <a class="hp24-nav-cta" href="#editor">Editor starten</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <h1 class="hero-title">Print Your Legacy</h1>
+
+  <!-- SLIDER 1 -->
+  <section id="produkte">
+    <h2 class="hp24-slider-title">PRINT YOUR LEGACY</h2>
+
+    <div class="slider-container">
+      <button class="slider-btn left" onclick="slideLeft('slider1')">&#10094;</button>
+
+      <div class="slider-track" id="slider1">
+
+        <div class="slider-item">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/863BBF70-94B2-4DCB-B76B-D4C03A278B26.jpeg/:/rs=w:1440,h:1440">
+          <h3>T-Shirt</h3>
+          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
+        </div>
+
+        <div class="slider-item">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/F8D50276-9E59-492F-BE77-8633FACFD414.jpeg/:/rs=w:1440,h:1440">
+          <h3>V-Ausschnitt</h3>
+          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
+        </div>
+
+        <div class="slider-item">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/95037351-7442-4D1B-9107-3CB628087EA6.jpeg/:/rs=w:1440,h:1440">
+          <h3>Polo Shirt</h3>
+          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
+        </div>
+
+        <div class="slider-item">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/49C900AA-00C3-43D8-ADFF-C6E8DEF28A50.jpeg/:/rs=w:1440,h:1440">
+          <h3>Sweatshirt</h3>
+          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
+        </div>
+
+        <div class="slider-item">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/F4D9248A-B6C5-46DD-B713-464EAF6084D8.jpeg/:/rs=w:1440,h:1440">
+          <h3>Hoodie</h3>
+          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
+        </div>
+
+        <div class="slider-item">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/C86F9C06-D423-4910-8D86-A8C189C1236E.jpeg/:/rs=w:1440,h:1440">
+          <h3>Zip Hoodie</h3>
+          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
+        </div>
+
+        <!-- NEW JOGGER IMAGE V12 -->
+        <div class="slider-item">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/77A7481C-FFBA-41B6-ABEA-73778C627D54.jpeg/:/rs=w:1440,h:1440">
+          <h3>Jogger</h3>
+          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
+        </div>
+
+      </div>
+
+      <button class="slider-btn right" onclick="slideRight('slider1')">&#10095;</button>
+    </div>
+  </section>
+
+  <!-- BANNER -->
+  <section class="hp24-banner">
+    <h2>HomePrint24 – Print Your Legacy</h2>
+    <p>Premium Druck ab 1 Stück. Für Creator, Teams, Marken & Business.</p>
+    <div class="hp24-banner-actions">
+      <a class="hp24-banner-btn primary" href="#editor">Jetzt gestalten</a>
+      <a class="hp24-banner-btn secondary" href="#produkte">Kollektion ansehen</a>
+    </div>
+  </section>
+
+  <!-- SLIDER 2 ACCESSOIRES -->
+  <section id="accessories">
+    <h2 class="hp24-slider-title">Accessories</h2>
+
+    <div class="slider-container">
+      <button class="slider-btn left" onclick="slideLeft('slider2')">&#10094;</button>
+
+      <div class="slider-track" id="slider2">
+
+        <div class="slider-item">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/5D436EC2-0157-46AE-90D0-099980A17CF7.jpeg/:/rs=w:1440,h:1440">
+          <h3>Turnbeutel</h3>
+          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
+        </div>
+
+        <div class="slider-item">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/51705571-D00D-44DB-A5CC-F48CE92B2716.jpeg/:/rs=w:1440,h:1440">
+          <h3>Bauchtasche</h3>
+          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
+        </div>
+
+        <div class="slider-item">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/64E7DD16-D214-4726-82F5-7BF588AA00B4.jpeg/:/rs=w:1440,h:1440">
+          <h3>Cap / Snapback</h3>
+          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
+        </div>
+
+        <div class="slider-item">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/6D4353C5-9860-4994-9154-F6CE9E6A6AF2.jpeg/:/rs=w:1440,h:1440">
+          <h3>Stoffbeutel</h3>
+          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
+        </div>
+
+        <div class="slider-item">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/0FA0CEFE-2C00-4ACB-B689-20309985B6AF.jpeg/:/rs=w:1440,h:1440">
+          <h3>Toploader Binder</h3>
+          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
+        </div>
+
+        <div class="slider-item">
+          <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/0FA0CEFE-2C00-4ACB-B689-20309985B6AF.jpeg/:/rs=w:1440,h:1440">
+          <h3>PokéPate Binder</h3>
+          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
+        </div>
+
+      </div>
+
+      <button class="slider-btn right" onclick="slideRight('slider2')">&#10095;</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    © 2025 HomePrint24 – Print Your Legacy
+  </div>
+
+</div>
+
+<script>
+function slideLeft(id){
+  document.getElementById(id).scrollBy({left:-300, behavior:"smooth"});
+}
+function slideRight(id){
+  document.getElementById(id).scrollBy({left:300, behavior:"smooth"});
+}
+</script>
+
+</body>
+</html>
