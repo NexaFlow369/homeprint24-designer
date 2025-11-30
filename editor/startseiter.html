@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>HomePrint24 – Print Your Legacy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -28,13 +28,14 @@
 
     a{text-decoration:none;color:inherit;}
 
-    /* ---------------------- TOP BAR ---------------------- */
+    /* ---------------------- SHELL ---------------------- */
     .hp24-shell{
       max-width:1200px;
       margin:0 auto;
       padding:20px;
     }
 
+    /* ---------------------- TOP BAR ---------------------- */
     .hp24-topbar{
       display:flex;
       justify-content:space-between;
@@ -58,11 +59,11 @@
     }
 
     @keyframes heartbeat {
-      0% {transform:scale(1); text-shadow:0 0 10px rgba(255,0,0,0.4);}
-      25%{transform:scale(1.2); text-shadow:0 0 22px rgba(255,0,0,1);}
-      40%{transform:scale(1); text-shadow:0 0 10px rgba(255,0,0,0.5);}
-      60%{transform:scale(1.18); text-shadow:0 0 22px rgba(255,0,0,1);}
-      100%{transform:scale(1); text-shadow:0 0 10px rgba(255,0,0,0.4);}
+      0% {transform:scale(1);}
+      25%{transform:scale(1.2);}
+      40%{transform:scale(1);}
+      60%{transform:scale(1.18);}
+      100%{transform:scale(1);}
     }
 
     .hp24-nav{
@@ -88,18 +89,25 @@
       font-size:46px;
       text-transform:uppercase;
       margin-bottom:22px;
-      letter-spacing:.12em;
+      text-align:center;
+      letter-spacing:.14em;
       text-shadow:0 0 14px rgba(0,0,0,.25);
+    }
+
+    .banner-24{
+      color:red;
+      animation:heartbeat 1.6s infinite ease-in-out;
+      text-shadow:0 0 16px rgba(255,0,0,0.8);
     }
 
     /* ---------------------- SLIDER ---------------------- */
     .hp24-slider-title{
-      margin-top:10px;
       margin-bottom:14px;
       font-size:26px;
       text-transform:uppercase;
       letter-spacing:.14em;
       text-shadow:0 0 10px rgba(0,0,0,0.25);
+      text-align:center;
     }
 
     .slider-container{
@@ -146,8 +154,17 @@
 
     .slider-item h3{
       font-size:14px;
-      margin-bottom:8px;
+      margin-bottom:4px;
       text-transform:uppercase;
+    }
+
+    .price-tag{
+      font-size:13px;
+      opacity:.85;
+      margin-bottom:6px;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      color:white;
     }
 
     .hp24-btn-mini{
@@ -156,11 +173,10 @@
       padding:8px 14px;
       border-radius:999px;
       font-size:12px;
-      text-transform:uppercase;
       background:var(--accent);
       color:white;
       letter-spacing:.08em;
-      box-shadow:0 6px 18px rgba(0,0,0,.35);
+      text-transform:uppercase;
     }
 
     .slider-btn{
@@ -175,10 +191,7 @@
       background:var(--accent);
       color:white;
       box-shadow:0 6px 20px rgba(0,0,0,.3);
-      transition:.2s;
     }
-
-    .slider-btn:hover{ transform:translateY(-50%) scale(1.1); }
 
     .slider-btn.left{ left:-14px; }
     .slider-btn.right{ right:-14px; }
@@ -198,9 +211,8 @@
       font-size:28px;
       margin-bottom:12px;
       text-transform:uppercase;
-      letter-spacing:.12em;
       color:white;
-      text-shadow:0 0 10px rgba(0,0,0,.4);
+      letter-spacing:.12em;
     }
 
     .hp24-banner p{
@@ -223,20 +235,17 @@
       letter-spacing:.08em;
       font-size:14px;
       color:white;
-      box-shadow:0 10px 26px rgba(0,0,0,.35);
     }
 
     .hp24-banner-btn.primary{background:var(--accent);}
     .hp24-banner-btn.secondary{background:#404040;}
 
-    /* ---------------------- FOOTER ---------------------- */
     .footer{
       text-align:center;
       margin-top:40px;
       font-size:12px;
       opacity:.7;
     }
-
   </style>
 </head>
 
@@ -253,64 +262,77 @@
     <nav class="hp24-nav">
       <a href="#produkte">Produkte</a>
       <a href="#accessories">Accessoires</a>
-      <a class="hp24-nav-cta" href="#editor">Editor starten</a>
+      <a class="hp24-nav-cta" href="https://homeprint24.com/tshirt">Editor starten</a>
     </nav>
   </header>
 
-  <!-- HERO -->
-  <h1 class="hero-title">Print Your Legacy</h1>
+  <!-- HERO TITLE -->
+  <h1 class="hero-title">
 
-  <!-- SLIDER 1 -->
+  <!-- PRODUKT SLIDER -->
   <section id="produkte">
-    <h2 class="hp24-slider-title">PRINT YOUR LEGACY</h2>
+    <h2 class="hp24-slider-title">Produkte</h2>
 
     <div class="slider-container">
       <button class="slider-btn left" onclick="slideLeft('slider1')">&#10094;</button>
 
       <div class="slider-track" id="slider1">
 
-        <div class="slider-item">
+        <!-- TSHIRT -->
+        <a class="slider-item" href="https://homeprint24.com/tshirt">
           <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/863BBF70-94B2-4DCB-B76B-D4C03A278B26.jpeg/:/rs=w:1440,h:1440">
           <h3>T-Shirt</h3>
-          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
-        </div>
+          <div class="price-tag">ab 9,49 €</div>
+          <span class="hp24-btn-mini">Gestalten</span>
+        </a>
 
-        <div class="slider-item">
+        <!-- VNECK -->
+        <a class="slider-item" href="https://homeprint24.com/vneck">
           <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/F8D50276-9E59-492F-BE77-8633FACFD414.jpeg/:/rs=w:1440,h:1440">
           <h3>V-Ausschnitt</h3>
-          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
-        </div>
+          <div class="price-tag">ab 9,49 €</div>
+          <span class="hp24-btn-mini">Gestalten</span>
+        </a>
 
-        <div class="slider-item">
+        <!-- POLO -->
+        <a class="slider-item" href="https://homeprint24.com/polo">
           <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/95037351-7442-4D1B-9107-3CB628087EA6.jpeg/:/rs=w:1440,h:1440">
           <h3>Polo Shirt</h3>
-          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
-        </div>
+          <div class="price-tag">ab 24,49 €</div>
+          <span class="hp24-btn-mini">Gestalten</span>
+        </a>
 
-        <div class="slider-item">
+        <!-- SWEAT -->
+        <a class="slider-item" href="https://homeprint24.com/sweat">
           <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/49C900AA-00C3-43D8-ADFF-C6E8DEF28A50.jpeg/:/rs=w:1440,h:1440">
           <h3>Sweatshirt</h3>
-          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
-        </div>
+          <div class="price-tag">ab 29,49 €</div>
+          <span class="hp24-btn-mini">Gestalten</span>
+        </a>
 
-        <div class="slider-item">
+        <!-- HOODIE -->
+        <a class="slider-item" href="https://homeprint24.com/hoodie">
           <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/F4D9248A-B6C5-46DD-B713-464EAF6084D8.jpeg/:/rs=w:1440,h:1440">
           <h3>Hoodie</h3>
-          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
-        </div>
+          <div class="price-tag">ab 29,49 €</div>
+          <span class="hp24-btn-mini">Gestalten</span>
+        </a>
 
-        <div class="slider-item">
+        <!-- ZIPHOODIE -->
+        <a class="slider-item" href="https://homeprint24.com/ziphoodie">
           <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/C86F9C06-D423-4910-8D86-A8C189C1236E.jpeg/:/rs=w:1440,h:1440">
           <h3>Zip Hoodie</h3>
-          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
-        </div>
+          <div class="price-tag">ab 29,49 €</div>
+          <span class="hp24-btn-mini">Gestalten</span>
+        </a>
 
-        <!-- NEW JOGGER IMAGE V12 -->
-        <div class="slider-item">
+        <!-- JOGGER -->
+        <a class="slider-item" href="https://homeprint24.com/jogger">
           <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/77A7481C-FFBA-41B6-ABEA-73778C627D54.jpeg/:/rs=w:1440,h:1440">
           <h3>Jogger</h3>
-          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
-        </div>
+          <div class="price-tag">ab 24,49 €</div>
+          <span class="hp24-btn-mini">Gestalten</span>
+        </a>
 
       </div>
 
@@ -320,58 +342,70 @@
 
   <!-- BANNER -->
   <section class="hp24-banner">
-    <h2>HomePrint24 – Print Your Legacy</h2>
+    <h2>HomePrint<span class="banner-24">24</span> – wie gestaltest du deine legacy
     <p>Premium Druck ab 1 Stück. Für Creator, Teams, Marken & Business.</p>
     <div class="hp24-banner-actions">
-      <a class="hp24-banner-btn primary" href="#editor">Jetzt gestalten</a>
+      <a class="hp24-banner-btn primary" href="https://homeprint24.com/tshirt">Jetzt gestalten</a>
       <a class="hp24-banner-btn secondary" href="#produkte">Kollektion ansehen</a>
     </div>
   </section>
 
-  <!-- SLIDER 2 ACCESSOIRES -->
+  <!-- ACCESSORIES -->
   <section id="accessories">
-    <h2 class="hp24-slider-title">Accessories</h2>
+    <h2 class="hp24-slider-title">ACCESSORIES</h2>
 
     <div class="slider-container">
       <button class="slider-btn left" onclick="slideLeft('slider2')">&#10094;</button>
 
       <div class="slider-track" id="slider2">
 
-        <div class="slider-item">
+        <!-- TURNBEUTEL -->
+        <a class="slider-item" href="https://homeprint24.com/turnbeutel">
           <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/5D436EC2-0157-46AE-90D0-099980A17CF7.jpeg/:/rs=w:1440,h:1440">
           <h3>Turnbeutel</h3>
-          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
-        </div>
+          <div class="price-tag">ab 14,49 €</div>
+          <span class="hp24-btn-mini">Gestalten</span>
+        </a>
 
-        <div class="slider-item">
+        <!-- BAUCHTASCHE -->
+        <a class="slider-item" href="https://homeprint24.com/bauchtasche">
           <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/51705571-D00D-44DB-A5CC-F48CE92B2716.jpeg/:/rs=w:1440,h:1440">
           <h3>Bauchtasche</h3>
-          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
-        </div>
+          <div class="price-tag">ab 14,49 €</div>
+          <span class="hp24-btn-mini">Gestalten</span>
+        </a>
 
-        <div class="slider-item">
+        <!-- SNAPBACK -->
+        <a class="slider-item" href="https://homeprint24.com/snapback">
           <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/64E7DD16-D214-4726-82F5-7BF588AA00B4.jpeg/:/rs=w:1440,h:1440">
           <h3>Cap / Snapback</h3>
-          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
-        </div>
+          <div class="price-tag">ab 14,49 €</div>
+          <span class="hp24-btn-mini">Gestalten</span>
+        </a>
 
-        <div class="slider-item">
+        <!-- STOFFBEUTEL -->
+        <a class="slider-item" href="https://homeprint24.com/beutel">
           <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/6D4353C5-9860-4994-9154-F6CE9E6A6AF2.jpeg/:/rs=w:1440,h:1440">
           <h3>Stoffbeutel</h3>
-          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
-        </div>
+          <div class="price-tag">ab 9,49 €</div>
+          <span class="hp24-btn-mini">Gestalten</span>
+        </a>
 
-        <div class="slider-item">
+        <!-- TOPLOADER -->
+        <a class="slider-item" href="https://homeprint24.com/toploader-binder">
           <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/0FA0CEFE-2C00-4ACB-B689-20309985B6AF.jpeg/:/rs=w:1440,h:1440">
           <h3>Toploader Binder</h3>
-          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
-        </div>
+          <div class="price-tag">ab 34,49 €</div>
+          <span class="hp24-btn-mini">Gestalten</span>
+        </a>
 
-        <div class="slider-item">
+        <!-- POKEPATE -->
+        <a class="slider-item" href="https://homeprint24.com/pokepate">
           <img src="https://img1.wsimg.com/isteam/ip/b7f2d84f-ac0c-40e3-8f17-c80a8147cdc6/ols/0FA0CEFE-2C00-4ACB-B689-20309985B6AF.jpeg/:/rs=w:1440,h:1440">
           <h3>PokéPate Binder</h3>
-          <a class="hp24-btn-mini" href="#editor">Gestalten</a>
-        </div>
+          <div class="price-tag">ab 34,49 €</div>
+          <span class="hp24-btn-mini">Gestalten</span>
+        </a>
 
       </div>
 
@@ -379,7 +413,6 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
   <div class="footer">
     © 2025 HomePrint24 – Print Your Legacy
   </div>
